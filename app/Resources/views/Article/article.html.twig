@@ -1,7 +1,30 @@
 {% extends 'base.html.twig' %}
 
+{% block js %}
+
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $("document").ready(function(){
+            $('#modal').modal();
+        });
+    </script>
+
+{% endblock js %}
+
 {% block main %}
     <div class="col-lg-10 main">
+        <div id="myModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header"><button class="close" type="button" data-dismiss="modal">×</button>
+                        <h4 class="modal-title">Remove article</h4>
+                    </div>
+                    <div class="modal-body">Do you realy want to remove?</div>
+                    <div class="modal-footer"><a class="btn btn-danger" href="{{ path('remove_article', {'id':article.id}) }}">Remove</a><a href="#modal" class="btn btn-default" type="button" data-dismiss="modal">Close</a></div>
+                </div>
+            </div>
+        </div>
                <h1>{{ article.title }}</h1>
                <p><span class="glyphicon glyphicon-time"></span>
                    Posted on {{ article.publishedAt|date('Y-m-d H:i') }} by {{ article.author }}</p>
@@ -11,6 +34,8 @@
                                         'img/50708_1280x720-318x180.jpg']))
                     }}"/>
                 <hr>
+        <a href="{{ path('edit_article', {'id':article.id}) }}"> <p class="glyphicon glyphicon-pencil">edit</p></a>
+        <a href="#modal" role="button" data-toggle="modal" data-target="#myModal"><p class="glyphicon glyphicon-remove-circle">remove</p></a>
                <p class="lead">{{ article.content }}</p>
 
                          <p>Sing in to leave a comment</p>

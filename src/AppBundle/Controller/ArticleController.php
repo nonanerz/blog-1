@@ -92,7 +92,7 @@ class ArticleController extends Controller
 
     /**
      * @param $article
-     * @Route("article/{id}/remove")
+     * @Route("article/{id}/remove", name="remove_article")
      *
      * @return Response
      */
