@@ -1,0 +1,14 @@
+AppBundle\Entity\Article:
+ article{1..10}:
+         author: <name()>
+         title: <text(20)>
+         content: <realText(2000, 4)>
+         publishedAt: <dateTimeBetween("-200 days", "now")>
+
+
+AppBundle\Entity\Comment:
+  comment{1..10}:
+    author: <name()>
+    content: <realText(250, 2)>
+    publishedAt: <dateTimeBetween("-200 days", "now")>
+    isPublished: <boolean(60)>

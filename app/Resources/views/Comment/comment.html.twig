@@ -1,0 +1,13 @@
+{% block comment %}
+<div class="col-lg-10 main">
+    <h2>Comments:</h2>
+    {% for comment in comments %}
+        <img src="{{ asset('img/avatar.png') }}">
+        <blockquote>
+            <p>{{ comment.content }}</p>
+            <small><cite>{{ comment.author }}</cite></small>
+        </blockquote>
+        <p style="border-bottom: 2px solid gainsboro" class="small text-right"><span class="glyphicon glyphicon-time"></span> Posted on {{ comment.publishedAt|date('Y-m-d H:i') }}</p>
+    {% endfor %}
+</div>
+{% endblock %}
