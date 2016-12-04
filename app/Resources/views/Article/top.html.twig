@@ -1,16 +1,20 @@
 {% block topnews %}
-        <h2 class="main">Top articles</h2>
-        {% for article in articles %}
-            <div>
-                <a style="text-decoration: none" href="{{ path('show_article', {'id': article.id}) }}" >
-                    <p class="top-articles">
-                            {{ article.title }} <br />
-                        <img class="image_block" src="{{ asset(random(['img/om160617-133-318x160.jpg', 'img/50708_1280x720-318x180.jpg'])) }}" width="165" height=""/>
-                            <small>{{ article.author }}<br /><span class="glyphicon glyphicon-time"></span> Posted on {{ article.publishedAt|date('Y-m-d H:i') }}</small>
-                    </p>
-                </a>
-            </div>
-        {% endfor %}
+    <h2 class="main">Top articles</h2>
+    {% for article in articles %}
+        <div>
+            <a style="text-decoration: none" href="{{ path('show_article', {'id': article.id}) }}" >
+                <p class="top-articles">
+                    {{ article.title }} <br />
+                    <img class="image_block" src="{{ asset(random(['img/om160617-133-318x160.jpg',
+                    'img/50708_1280x720-318x180.jpg'])) }}" width="165" height=""/>
+                    <small>{{ article.author }}<br />
+                        <span class="glyphicon glyphicon-time"></span>
+                        Posted on {{ article.publishedAt|date('Y-m-d H:i') }}
+                    </small>
+                </p>
+            </a>
+        </div>
+    {% endfor %}
 {% endblock %}
 
 

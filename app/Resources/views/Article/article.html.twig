@@ -3,13 +3,14 @@
 {% block main %}
     <div class="col-lg-10 main">
                <h1>{{ article.title }}</h1>
+               <p><span class="glyphicon glyphicon-time"></span>
+                   Posted on {{ article.publishedAt|date('Y-m-d H:i') }} by {{ article.author }}</p>
 
-               <p><span class="glyphicon glyphicon-time"></span> Posted on {{ article.publishedAt|date('Y-m-d H:i') }} by {{ article.author }}</p>
-
-               <img class="image_block" src="{{ asset(random(['img/om160617-133-318x160.jpg', 'img/50708_1280x720-318x180.jpg'])) }}"/>
-
+               <img class="image_block"
+                    src="{{ asset(random(['img/om160617-133-318x160.jpg',
+                                        'img/50708_1280x720-318x180.jpg']))
+                    }}"/>
                 <hr>
-
                <p class="lead">{{ article.content }}</p>
 
                          <p>Sing in to leave a comment</p>

@@ -2,18 +2,21 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link href="{{ asset('main.css') }}" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.js" integrity="sha256-5i/mQ300M779N2OVDrl16lbohwXNUdzL/R2aVUXyXWA=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <title>{% block title %} {{ 'Welcome to my Blog!' }} {% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="/web/favicon.ico" />
+    {% block css %}
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link href="{{ asset('main.css') }}" rel="stylesheet">
+    {% endblock css %}
+    {% block js %}
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.js" integrity="sha256-5i/mQ300M779N2OVDrl16lbohwXNUdzL/R2aVUXyXWA=" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    {% endblock js %}
+    <title>{% block title %} {{ 'Welcome to my Blog!' }} {% endblock %}</title>
 </head>
 <body>
 
     {% include 'nav.html.twig' %}
-
-    <div>
+    <!--flash msg-->
          {% block message %}
             {% for msg in app.session.flashBag.get('success') %}
 
@@ -23,14 +26,14 @@
 
             {% endfor %}
         {% endblock message %}
+    <!--flash msg end-->
 
-    </div>
-
+    <!--content-->
         <div class="container">
             <div class="row">
                     {% block main %}{% endblock %}
             </div>
         </div>
-    <script>{% block js %}{% endblock js %}</script>
+    <!--content-->
     </body>
 </html>
