@@ -1,4 +1,5 @@
-symf1
+Blog
 =====
 
-A Symfony project created on November 16, 2016, 9:35 pm.
+To setup the project you should only run install.sh  
+Please enter valid Database parameters.
