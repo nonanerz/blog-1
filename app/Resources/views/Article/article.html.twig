@@ -29,10 +29,7 @@
                <p><span class="glyphicon glyphicon-time"></span>
                    Posted on {{ article.publishedAt|date('Y-m-d H:i') }} by {{ article.author }}</p>
 
-               <img class="image_block"
-                    src="{{ asset(random(['img/om160617-133-318x160.jpg',
-                                        'img/50708_1280x720-318x180.jpg']))
-                    }}"/>
+               <img class="image_block" src="{{ asset('img/') }}{{ article.image }}"/>
                 <hr>
         <a href="{{ path('edit_article', {'id':article.id}) }}"> <p class="glyphicon glyphicon-pencil">edit</p></a>
         <a href="#modal" role="button" data-toggle="modal" data-target="#myModal"><p class="glyphicon glyphicon-remove-circle">remove</p></a>
