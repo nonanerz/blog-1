@@ -30,3 +30,7 @@ body{
 .article:hover{
     background: lavender;
 }
+
+ div.comment div:nth-child(2n){
+    background: #d6e1de;
+}

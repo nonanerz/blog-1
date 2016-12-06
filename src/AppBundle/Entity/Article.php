@@ -39,7 +39,7 @@ class Article
     /**
      * @ORM\Column(type="string")
      */
-    private $image;
+    private $image = 'om160617-133-318x160.jpg';
 
     public function __construct()
     {
