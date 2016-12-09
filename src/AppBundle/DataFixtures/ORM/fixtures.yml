@@ -1,0 +1,15 @@
+AppBundle\Entity\Article:
+ article{1..10}:
+         author: <name()>
+         title: <text(20)>
+         content: <realText(2000, 4)>
+         publishedAt: <dateTimeBetween("-200 days", "now")>
+         image: '50%? 50708_1280x720-318x180.jpg : om160617-133-318x160.jpg'
+
+
+AppBundle\Entity\Comment:
+  comment{1..10}:
+    author: <name()>
+    content: <realText(250, 2)>
+    publishedAt: <dateTimeBetween("-200 days", "now")>
+    isPublished: <boolean(60)>
