@@ -28,12 +28,6 @@ class Tag
      */
     private $title;
 
-    /**
-     * @var string
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Article", inversedBy="tags")
-     * @ORM\JoinTable(name="article_tags")
-     */
-    private $article;
 
 
     /**
@@ -68,30 +62,6 @@ class Tag
     public function getTitle()
     {
         return $this->title;
-    }
-
-    /**
-     * Set article
-     *
-     * @param string $article
-     *
-     * @return Tag
-     */
-    public function setArticle($article)
-    {
-        $this->article = $article;
-
-        return $this;
-    }
-
-    /**
-     * Get article
-     *
-     * @return string
-     */
-    public function getArticle()
-    {
-        return $this->article;
     }
 }
 

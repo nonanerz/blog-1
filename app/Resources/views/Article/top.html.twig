@@ -1,0 +1,19 @@
+{% block topnews %}
+    <h2 class="main">Top articles</h2>
+    {% for article in articles %}
+        <div>
+            <a style="text-decoration: none" href="{{ path('show_article', {'id': article.id}) }}" >
+                <p class="top-articles">
+                    {{ article.title }} <br />
+                    <img class="image_block" src="{{ asset('img/') }}{{ article.image }}" width="165" height=""/>
+                    <small>{{ article.author.firstName }} {{ article.author.lastName }}<br />
+                        <span class="glyphicon glyphicon-time"></span>
+                        Posted on {{ article.publishedAt|date('Y-m-d H:i') }}
+                    </small>
+                </p>
+            </a>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+

@@ -64,8 +64,8 @@ class Article
 
     /**
      * @var string
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag", mappedBy="article")
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag")
+     * @ORM\JoinTable(name="article_tags")
      */
     private $tags;
 

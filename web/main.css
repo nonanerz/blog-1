@@ -1,0 +1,36 @@
+body{
+    background: #b5c0bd;
+}
+
+.content{
+    margin-top: 50px;
+}
+
+.main{
+    background: white;
+    margin-top: 50px;
+}
+ a {
+    color: black;
+    text-decoration: none;
+}
+.top-articles{
+    background: white;
+}
+.top-articles:hover{
+    background: lavender;
+}
+
+.article{
+    display: inline-block;
+    margin: 20px;
+    background: white;
+}
+
+.article:hover{
+    background: lavender;
+}
+
+ div.comment div:nth-child(2n){
+    background: #d6e1de;
+}

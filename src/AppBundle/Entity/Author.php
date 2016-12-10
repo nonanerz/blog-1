@@ -37,14 +37,12 @@ class Author
     private $lastName;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
-    private $posts;
+    private $avatar;
+
 
     /**
-     * @var string
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\User")
      */
     private $user;
@@ -52,6 +50,7 @@ class Author
     private function __construct()
     {
         $this->posts = new ArrayCollection();
+
     }
 
 
@@ -152,5 +151,22 @@ class Author
     {
         $this->user = $user;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param mixed $avatar
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+    }
+
 }
 

@@ -1,15 +1,33 @@
-AppBundle\Entity\Article:
- article{1..10}:
-         author: <name()>
-         title: <text(20)>
-         content: <realText(2000, 4)>
-         publishedAt: <dateTimeBetween("-200 days", "now")>
-         image: '50%? 50708_1280x720-318x180.jpg : om160617-133-318x160.jpg'
+AppBundle\Entity\User:
+  user{1..10}:
+         username: <username()>
+         email: <email()>
+         password: <password()>
 
+AppBundle\Entity\Author:
+  author{1..10}:
+    firstName: <firstName()>
+    lastName: <lastName()>
+    user: '@user<current()>'
+    avatar: 'avatar.png'
+
+AppBundle\Entity\Article:
+  article{1..20}:
+    title: '<text(50)>'
+    content: <realText(1000)>
+    image: '50%? 50708_1280x720-318x180.jpg : om160617-133-318x160.jpg'
+    publishedAt: <datetime()>
+    updatedAt: '30%? <datetime()>'
+    tags: '@tag{1..<numberBetween(2, 5)>}'
+    author: '@author*'
 
 AppBundle\Entity\Comment:
-  comment{1..10}:
-    author: <name()>
-    content: <realText(250, 2)>
-    publishedAt: <dateTimeBetween("-200 days", "now")>
-    isPublished: <boolean(60)>
+  comment{1..100}:
+    content: <realText(200)>
+    author: '@author*'
+    publishedAt: <datetime()>
+    article: '@article*'
+
+AppBundle\Entity\Tag:
+  tag{1..5}:
+    title: <text(5)>

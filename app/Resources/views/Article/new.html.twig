@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+
+{% block main %}
+    <div class="col-lg-10 main">
+        <h1>New article</h1>
+        {{ form_start(articleForm) }}
+        {{ form_widget(articleForm) }}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        {{ form_end(articleForm) }}
+    </div>
+    <div class="col-lg-2">
+        {% block topnews %}
+            {{ render(controller('AppBundle:Article:topArticles')) }}
+        {% endblock %}
+    </div>
+{% endblock %}

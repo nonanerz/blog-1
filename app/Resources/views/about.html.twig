@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="col-lg-10 main">
+        <img src="{{ asset('img/ePNQfvkcEEM.jpg') }}">
+        <h2>Something about me:</h2>
+        <p>Repellat vero omnis voluptates id amet et. Suscipit qui recusandae totam nulla quam ipsam. Cupiditate sed natus debitis voluptas aut. Sit repudiandae esse perspiciatis dignissimos error. Quibusdam tempora velit porro ut velit soluta explicabo eligendi. Debitis et saepe eum sint dolorem delectus. Ipsum inventore sed libero et. Qui suscipit a deserunt laudantium quibusdam. Soluta qui ipsam non ipsum. Reiciendis aperiam et fuga doloribus nisi. Cumque est ducimus temporibus modi saepe architecto unde. Eveniet exercitationem aut porro. Magni cupiditate sit vitae voluptas. Non voluptates ut optio quos qui illo error nihil. Vero a officia id corporis incidunt saepe. Hic eligendi quos culpa ut ab. Sed a nam et sint autem inventore aut. Aut aut blanditiis et ducimus eos odit. Et est ut eum nisi. Ut sunt et quidem est accusamus aut. Fuga est placeat rerum ut et. Ex eveniet facere sunt quia. Aut nam et eum architecto fugit repellendus illo veritatis. Ex esse veritatis voluptate vel possimus.
+
+        </p>
+    </div>
+    <div class="col-lg-2">
+        {% block topnews %}
+            {{ render(controller('AppBundle:Article:topArticles')) }}
+        {% endblock %}
+    </div>
+{% endblock main %}
