@@ -44,19 +44,25 @@ class ArticleController extends Controller
     }
 
     /**
-     * @Route("/", name="homepage")
+     * @Route("/{page}", name="homepage")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction()
+    public function listAction(Request $request, $page = 1)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')
-                        ->findAll();
+        $paginator = $this->get('knp_paginator');
+
+        $pagination = $paginator->paginate(
+            $em->getRepository('AppBundle:Article')
+               ->findAll(),
+            $request->query->getInt('page', $page),
+            5
+        );
 
         return $this->render('Article/list.html.twig', [
-        'articles' => $articles,
+        'articles' => $pagination,
     ]);
     }
 

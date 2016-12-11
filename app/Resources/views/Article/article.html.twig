@@ -1,19 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block js %}
-
-    {{ parent() }}
-
-    <script type="text/javascript">
-        $("document").ready(function(){
-            $('#modal').modal();
-        });
-    </script>
-
-{% endblock js %}
-
 {% block main %}
-    <div class="col-lg-10 main">
+    <div class="col-lg-12 main">
         <div id="myModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -26,10 +14,10 @@
             </div>
         </div>
                <h1>{{ article.title }}</h1>
-               <p><span class="glyphicon glyphicon-time"></span>
+               <p><span class="glyphicon glyphicon-time" data-scrollflow-start="0" data-scrollflow-distance="30" data-scrollflow-amount="200"></span>
                    Posted on {{ article.publishedAt|date('Y-m-d H:i') }} by {{ article.author.firstName }} {{ article.author.lastName }}</p>
 
-               <img class="image_block" src="{{ asset('img/') }}{{ article.image }}"/>
+               <img class="image_block img-rounded" src="{{ asset('img/') }}{{ article.image }}"/>
                 <hr>
         <a href="{{ path('edit_article', {'id':article.id}) }}"> <p class="glyphicon glyphicon-pencil">edit</p></a>
         <a href="#modal" role="button" data-toggle="modal" data-target="#myModal"><p class="glyphicon glyphicon-remove-circle">remove</p></a>
@@ -37,16 +25,14 @@
 
                          <p>Sing in to leave a comment</p>
     </div>
-    <div class="col-lg-2">
         {% block topnews %}
             {{ render(controller('AppBundle:Article:topArticles')) }}
         {% endblock %}
-    </div>
 
-    <div class="col-lg-10 main comment">
+    <div class="col-lg-8  scrollflow -slide-right" data-scrollflow-start="0" data-scrollflow-distance="100" data-scrollflow-amount="30">
         <h2>Comments:</h2>
         {% for comment in comments %}
-            <div class="comment">
+            <div class="comment main">
                 <img src="{{ asset('img/') }}{{ comment.author.avatar }} ">
                 <blockquote>
                     <p>{{ comment.content }}</p>
@@ -56,5 +42,11 @@
             </div>
         {% endfor %}
     </div>
+
+    <script type="text/javascript">
+        $("document").ready(function(){
+            $('#modal').modal();
+        });
+    </script>
 
 {% endblock %}

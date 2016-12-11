@@ -47,12 +47,6 @@ class Author
      */
     private $user;
 
-    private function __construct()
-    {
-        $this->posts = new ArrayCollection();
-
-    }
-
 
     /**
      * Get id

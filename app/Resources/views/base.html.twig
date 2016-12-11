@@ -5,35 +5,52 @@
     <link rel="icon" type="image/x-icon" href="/web/favicon.ico" />
     {% block css %}
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link href="{{ asset('main.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/secondary.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/nav.css') }}" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Concert+One" rel="stylesheet">
+        <link href="{{ asset('css/skdslider.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/eskju.jquery.scrollflow.css') }}" rel="stylesheet">
     {% endblock css %}
     {% block js %}
-        <script src="https://code.jquery.com/jquery-3.1.1.slim.js" integrity="sha256-5i/mQ300M779N2OVDrl16lbohwXNUdzL/R2aVUXyXWA=" crossorigin="anonymous"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="//code.jquery.com/jquery.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="{{ asset('js/eskju.jquery.scrollflow.min.js') }}"></script>
+        <script src="{{ asset('js/skdslider.js') }}"></script>
     {% endblock js %}
     <title>{% block title %} {{ 'Welcome to my Blog!' }} {% endblock %}</title>
 </head>
 <body>
 
-    {% include 'nav.html.twig' %}
-    <!--flash msg-->
-         {% block message %}
-            {% for msg in app.session.flashBag.get('success') %}
+{% include 'nav.html.twig' %}
+
+    <div class="container">
+        <div class="row">
+        {% include 'slider.html.twig' %}
+        </div>
+
+
+
+        <!--flash msg-->
+             {% block message %}
+                {% for msg in app.session.flashBag.get('success') %}
+
+                    <div class="row">
+                        <div style="margin-top: 50px" class="alert alert-success col-md-2 col-md-offset-5 text-center">{{ msg }}</div>
+                    </div>
+
+                {% endfor %}
+            {% endblock message %}
+        <!--flash msg end-->
+
+        <!--content-->
 
                 <div class="row">
-                    <div style="margin-top: 50px" class="alert alert-success col-md-2 col-md-offset-5 text-center">{{ msg }}</div>
+                        {% block main %}{% endblock %}
                 </div>
+    </div>
 
-            {% endfor %}
-        {% endblock message %}
-    <!--flash msg end-->
-
-    <!--content-->
-        <div class="container">
-            <div class="row">
-                    {% block main %}{% endblock %}
-            </div>
-        </div>
     <!--content-->
     </body>
 </html>

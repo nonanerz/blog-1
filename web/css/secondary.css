@@ -1,11 +1,12 @@
 body{
     background: white;
     font-family: 'Concert One', cursive;
-    overflow-x:hidden;
+
 }
 
 .container{
-    overflow: hidden;
+    overflow: inherit;
+
 }
 
 .main{
@@ -13,6 +14,7 @@ body{
     border: 2px solid black;
     margin-bottom: 25px;
     padding: 10px;
+    overflow-x:hidden;
 }
  a {
     color: black;
@@ -42,11 +44,7 @@ body{
     background: rgba(240, 241, 246, 0.91);
 }
 
-.image-bg-fixed-height {
-    background: url('img/logo.jpg') no-repeat center center scroll;
-    height: 450px;
-}
-
-.img-center {
+.image-logo {
     margin: 0 auto;
+    height: 450px;
 }
