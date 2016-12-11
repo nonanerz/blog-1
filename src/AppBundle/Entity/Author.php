@@ -2,11 +2,10 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Author
+ * Author.
  *
  * @ORM\Table(name="author")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AuthorRepository")
@@ -41,15 +40,13 @@ class Author
      */
     private $avatar;
 
-
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\User")
      */
     private $user;
 
-
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -59,7 +56,7 @@ class Author
     }
 
     /**
-     * Set firstName
+     * Set firstName.
      *
      * @param string $firstName
      *
@@ -73,7 +70,7 @@ class Author
     }
 
     /**
-     * Get firstName
+     * Get firstName.
      *
      * @return string
      */
@@ -83,7 +80,7 @@ class Author
     }
 
     /**
-     * Set lastName
+     * Set lastName.
      *
      * @param string $lastName
      *
@@ -97,37 +94,13 @@ class Author
     }
 
     /**
-     * Get lastName
+     * Get lastName.
      *
      * @return string
      */
     public function getLastName()
     {
         return $this->lastName;
-    }
-
-    /**
-     * Set posts
-     *
-     * @param string $posts
-     *
-     * @return Author
-     */
-    public function setPosts($posts)
-    {
-        $this->posts = $posts;
-
-        return $this;
-    }
-
-    /**
-     * Get posts
-     *
-     * @return string
-     */
-    public function getPosts()
-    {
-        return $this->posts;
     }
 
     /**
@@ -161,6 +134,4 @@ class Author
     {
         $this->avatar = $avatar;
     }
-
 }
-

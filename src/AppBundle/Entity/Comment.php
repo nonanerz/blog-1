@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Comment
+ * Comment.
  *
  * @ORM\Table(name="comment")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommentRepository")
@@ -48,9 +48,8 @@ class Comment
      */
     private $article;
 
-
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -60,7 +59,7 @@ class Comment
     }
 
     /**
-     * Set content
+     * Set content.
      *
      * @param string $content
      *
@@ -74,7 +73,7 @@ class Comment
     }
 
     /**
-     * Get content
+     * Get content.
      *
      * @return string
      */
@@ -84,7 +83,7 @@ class Comment
     }
 
     /**
-     * Set author
+     * Set author.
      *
      * @param string $author
      *
@@ -98,7 +97,7 @@ class Comment
     }
 
     /**
-     * Get author
+     * Get author.
      *
      * @return string
      */
@@ -108,7 +107,7 @@ class Comment
     }
 
     /**
-     * Set publishedAt
+     * Set publishedAt.
      *
      * @param \DateTime $publishedAt
      *
@@ -122,7 +121,7 @@ class Comment
     }
 
     /**
-     * Get publishedAt
+     * Get publishedAt.
      *
      * @return \DateTime
      */
@@ -132,7 +131,7 @@ class Comment
     }
 
     /**
-     * Set article
+     * Set article.
      *
      * @param string $article
      *
@@ -146,7 +145,7 @@ class Comment
     }
 
     /**
-     * Get article
+     * Get article.
      *
      * @return string
      */
@@ -155,4 +154,3 @@ class Comment
         return $this->article;
     }
 }
-

@@ -1,15 +1,16 @@
 body{
-    background: white;
     font-family: 'Concert One', cursive;
-
+    background-image: url("../img/bg.png");
 }
 
 .container{
+
     overflow: inherit;
 
 }
 
 .main{
+    background: white;
     border-radius: 10px;
     border: 2px solid black;
     margin-bottom: 25px;
@@ -25,13 +26,6 @@ body{
     text-decoration: none;
 }
 
-.article{
-    background: white;
-}
-
-.article:hover{
-    background: lavender;
-}
 
 .top-articles{
     display:inline-block;

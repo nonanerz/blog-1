@@ -41,6 +41,9 @@
                 <p style="border-bottom: 2px solid gainsboro" class="small text-right"><span class="glyphicon glyphicon-time"></span> Posted on {{ comment.publishedAt|date('Y-m-d H:i') }}</p>
             </div>
         {% endfor %}
+        <div class="navigation col-md-offset-4">
+            {{ knp_pagination_render(comments) }}
+        </div>
     </div>
 
     <script type="text/javascript">

@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Article
+ * Article.
  *
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
@@ -75,9 +75,8 @@ class Article
      */
     private $author;
 
-
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -87,7 +86,7 @@ class Article
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -101,7 +100,7 @@ class Article
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -111,7 +110,7 @@ class Article
     }
 
     /**
-     * Set content
+     * Set content.
      *
      * @param string $content
      *
@@ -125,7 +124,7 @@ class Article
     }
 
     /**
-     * Get content
+     * Get content.
      *
      * @return string
      */
@@ -135,7 +134,7 @@ class Article
     }
 
     /**
-     * Set image
+     * Set image.
      *
      * @param string $image
      *
@@ -149,7 +148,7 @@ class Article
     }
 
     /**
-     * Get image
+     * Get image.
      *
      * @return string
      */
@@ -159,7 +158,7 @@ class Article
     }
 
     /**
-     * Set publishedAt
+     * Set publishedAt.
      *
      * @param \DateTime $publishedAt
      *
@@ -173,7 +172,7 @@ class Article
     }
 
     /**
-     * Get publishedAt
+     * Get publishedAt.
      *
      * @return \DateTime
      */
@@ -183,7 +182,7 @@ class Article
     }
 
     /**
-     * Set updatedAt
+     * Set updatedAt.
      *
      * @param \DateTime $updatedAt
      *
@@ -197,7 +196,7 @@ class Article
     }
 
     /**
-     * Get updatedAt
+     * Get updatedAt.
      *
      * @return \DateTime
      */
@@ -207,7 +206,7 @@ class Article
     }
 
     /**
-     * Set comments
+     * Set comments.
      *
      * @param string $comments
      *
@@ -221,7 +220,7 @@ class Article
     }
 
     /**
-     * Get comments
+     * Get comments.
      *
      * @return string
      */
@@ -231,7 +230,7 @@ class Article
     }
 
     /**
-     * Set tags
+     * Set tags.
      *
      * @param string $tags
      *
@@ -245,7 +244,7 @@ class Article
     }
 
     /**
-     * Get tags
+     * Get tags.
      *
      * @return string
      */
@@ -270,4 +269,3 @@ class Article
         $this->author = $author;
     }
 }
-

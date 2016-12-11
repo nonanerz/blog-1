@@ -5,27 +5,25 @@
     <table class="table table-hover">
         <tr>
             <th>Author</th>
-            <th>Content</th>
+            <th>Article</th>
+            <th>Comment</th>
             <th>Date</th>
-            <th>Status</th>
+
         </tr>
 
             {% for comment in comments %}
         <tr>
-                 <td>{{ comment.author }}</td>
+                 <td>{{ comment.author.firstName }} {{ comment.author.lastName }}</td>
+                 <td>{{ comment.article.title }}</td>
                  <td>{{ comment.content }}</td>
                  <td>{{ comment.publishedAt|date('Y-m-d H:i') }}</td>
-                 <td>
 
-                     {% if comment.isPublished %}
-                        <img class="tip" rel="tooltip" title="Published" src="{{ asset('img/scheck36.png') }}">
-                     {% else %}
-                        <img class="tip" rel="tooltip" title="Unpublished" src="{{ asset('img/sminus04.png') }}">
-                     {% endif %}
-                 </td>
         </tr>
             {% endfor %}
 
     </table>
+    <div class="navigation col-md-offset-4">
+        {{ knp_pagination_render(comments) }}
+    </div>
 </div>
 {% endblock %}

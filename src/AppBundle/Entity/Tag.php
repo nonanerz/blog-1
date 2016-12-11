@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Tag
+ * Tag.
  *
  * @ORM\Table(name="tag")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TagRepository")
@@ -28,10 +28,8 @@ class Tag
      */
     private $title;
 
-
-
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -41,7 +39,7 @@ class Tag
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -55,7 +53,7 @@ class Tag
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -64,4 +62,3 @@ class Tag
         return $this->title;
     }
 }
-

@@ -44,7 +44,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * @Route("/{page}", name="homepage")
+     * @Route("/{page}", name="homepage", requirements={"page": "\d+"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -112,12 +112,13 @@ class ArticleController extends Controller
     }
 
     /**
-     * @param $article|null
-     * @Route("/article/{id}", name="show_article")
+     * @param $article
+     *
+     * @Route("/article/{id}/{page}", name="show_article")
      *
      * @return Response
      */
-    public function showAction(Article $article = null)
+    public function showAction(Request $request, Article $article = null, $page = 1)
     {
         if (!$article) {
             throw $this->createNotFoundException('Article is not exist!');
@@ -125,14 +126,19 @@ class ArticleController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')
+        $paginator = $this->get('knp_paginator');
+
+        $article = $em->getRepository('AppBundle:Article')
             ->findOneBy(['id' => $article]);
 
-        $comments = $articles->getComments();
+        $pagination = $paginator->paginate($article->getComments(),
+            $request->query->getInt('page', $page), 5
+
+            );
 
         return $this->render('Article/article.html.twig', [
-            'article' => $articles,
-            'comments' => $comments
+            'article' => $article,
+            'comments' => $pagination,
         ]);
     }
 
