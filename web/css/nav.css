@@ -147,7 +147,7 @@ button {
     left: 24px;
     width: 24px;
     height: 24px;
-    background-color: transparent;
+    background-color: rgba(236,240,241, 0.9);
     border: none;
     outline: none;
     cursor: pointer;
@@ -165,7 +165,7 @@ button:before, button:after {
     bottom: 0;
     left: 0;
     margin: auto;
-    width: 3px;
+    width: 5px;
     height: 100%;
     background-color: #3d3d3d;
 }
@@ -181,6 +181,7 @@ button:after {
 }
 
 .is-open button {
+    content: '123';
     opacity: 1;
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);

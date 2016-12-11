@@ -1,7 +1,5 @@
 {% block nav %}
-
     <nav>
-
         <ul class="nav navbar-nav">
             <li><a href="{{ path("homepage") }}">Home</a></li>
             <li><a href="{{ path("about_me") }}">About me</a></li>
@@ -16,6 +14,8 @@
             </li>
         </ul>
         <button class="is-closed"></button>
+        <small>OPEN</small>
     </nav>
+
     <script src="{{ asset('js/nav.js') }}"></script>
 {% endblock nav %}
