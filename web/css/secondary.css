@@ -1,0 +1,52 @@
+body{
+    background: white;
+    font-family: 'Concert One', cursive;
+    overflow-x:hidden;
+}
+
+.container{
+    overflow: hidden;
+}
+
+.main{
+    border-radius: 10px;
+    border: 2px solid black;
+    margin-bottom: 25px;
+    padding: 10px;
+}
+ a {
+    color: black;
+    text-decoration: none;
+}
+.pagination>li>a{
+    color: black;
+    text-decoration: none;
+}
+
+.article{
+    background: white;
+}
+
+.article:hover{
+    background: lavender;
+}
+
+.top-articles{
+    display:inline-block;
+}
+.comment{
+    display:inline-block;
+}
+
+ div.comment div:nth-child(2n){
+    background: rgba(240, 241, 246, 0.91);
+}
+
+.image-bg-fixed-height {
+    background: url('img/logo.jpg') no-repeat center center scroll;
+    height: 450px;
+}
+
+.img-center {
+    margin: 0 auto;
+}
