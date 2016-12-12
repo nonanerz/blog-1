@@ -1,21 +1,57 @@
 {% block nav %}
-    <nav>
-        <ul class="nav navbar-nav">
-            <li><a href="{{ path("homepage") }}">Home</a></li>
-            <li><a href="{{ path("about_me") }}">About me</a></li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Panel
-                    <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="{{ path('check_comments') }}">Check comments</a></li>
-                    <li><a href="#">Check users</a></li>
-                    <li><a href="{{ path('new_article') }}">New article</a></li>
-                </ul>
-            </li>
-        </ul>
-        <button class="is-closed"></button>
-        <small>OPEN</small>
-    </nav>
+    <div id="topo">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-ms-6 col-xs-6" id="logo-topo">
+                    <h2>Blog</h2>
+                </div>
+                <div class="col-md-6 col-ms-6 col-xs-6" id="abre-menu-topo">
 
-    <script src="{{ asset('js/nav.js') }}"></script>
+                    <a href="#" class="btn-collapse">
+                        <div class="lista-collapse"></div>
+                        <div class="lista-collapse"></div>
+                        <div class="lista-collapse"></div>
+                    </a>
+
+                </div>
+            </div><!--Fim da Row1 -->
+            <div class="row">
+                <ul id="menu-topo">
+                    <li><a href="{{ path("homepage") }}">Home</a></li>
+                    <li><a href="{{ path("about_me") }}">About me</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Panel
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('check_comments') }}">Check comments</a></li>
+                            <li><a href="#">Check users</a></li>
+                            <li><a href="{{ path('new_article') }}">New article</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div><!--Fim da coontainer -->
+    </div><!--Fim do topo -->
+
+    <script>
+        $(document).ready(function(e) {
+            $('#menu-topo').hide();
+            var menuaberto = false;
+            $('.btn-collapse').click(function(event) {
+                event.preventDefault();
+                $('#menu-topo').toggle('');
+                if(menuaberto == true){
+                    menuaberto = false;
+                    $(".lista-collapse:nth-child(1)").removeClass('botao-lista-cima');
+                    $(".lista-collapse:nth-child(2)").removeClass('hidden');
+                    $(".lista-collapse:nth-child(3)").removeClass('botao-lista-baixo');
+                }else {
+                    menuaberto = true;
+                    $(".lista-collapse:nth-child(1)").addClass('botao-lista-cima');
+                    $(".lista-collapse:nth-child(2)").addClass('hidden');
+                    $(".lista-collapse:nth-child(3)").addClass('botao-lista-baixo');
+                }
+            });
+        });
+    </script>
 {% endblock nav %}
