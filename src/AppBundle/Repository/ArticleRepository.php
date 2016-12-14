@@ -20,4 +20,23 @@ class ArticleRepository extends EntityRepository
             ->getQuery()
             ->execute();
     }
+
+    public function getRandomOne()
+    {
+        $max = $this->getEntityManager()
+            ->createQuery('SELECT COUNT(a.id) FROM AppBundle:Article a')
+            ->getSingleScalarResult();
+
+        $article = $this->createQueryBuilder('article')
+            ->andWhere('article.id = :rand')
+            ->setParameter('rand', rand(1, $max))
+            ->setMaxResults(1)
+            ->getQuery()
+            ->execute();
+        if (!$article) {
+            $this->getRandomOne();
+        }
+
+        return array_shift($article);
+    }
 }

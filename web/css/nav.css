@@ -3,12 +3,11 @@
     background-color: #FFF;
     width: 100%;
     position: fixed;
-    border-bottom: 1px solid #16618D;
+    border-bottom: 1px solid black;
     opacity: 0.9;
-}#logo-topo img {
-     margin: 2.8% 0 4% 0;
+
  }#menu-topo{
-      border-top: 1px solid #1C79AD;
+      border-top: 1px solid black;
       text-align: center;
       padding: 0;
   }#menu-topo li{
@@ -21,7 +20,7 @@
          font-size: 1.5em;
          padding:1% 0;
          font-weight: bold;
-         color: #2a6496;
+         color: gray;
      }#menu-topo li a:hover{
           background-color:#D6D6DC;
           text-decoration: none;
@@ -35,7 +34,7 @@
        }.lista-collapse {
             width: 100%;
             height: 5px;
-            background-color: #1C79AD;
+            background-color: gray;
             -ms-transition: all 0.5s;
             -webkit-transition: all 0.5s;
             -moz-transition: all 0.5s;

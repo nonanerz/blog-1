@@ -1,0 +1,13 @@
+{% block random %}
+    <h2 class="">Random article</h2>
+    <div class="main scrollflow -slide-left -opacity" style="font-size: 15px;" data-scrollflow-start="0" data-scrollflow-distance="30" data-scrollflow-amount="200">
+        <a style="text-decoration: none" href="{{ path('show_article', {'id': random.id}) }}" >
+            <p>{{ random.title }}</p>
+            <img class="image_block img-rounded" src="{{ asset('img/') }}{{ random.image }}" width="165" height=""/>
+            <p>{{ random.author.firstName }} {{ random.author.lastName }}</p>
+            <p>Posted on {{ random.publishedAt|date('Y-m-d H:i') }}</p><small class="glyphicon glyphicon-time"></small>
+        </a>
+    </div>
+{% endblock %}
+
+

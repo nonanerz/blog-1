@@ -8,7 +8,6 @@
         <link href="{{ asset('css/secondary.css') }}" rel="stylesheet">
         <link href="{{ asset('css/nav.css') }}" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Concert+One" rel="stylesheet">
-        <link href="{{ asset('css/skdslider.css') }}" rel="stylesheet">
         <link href="{{ asset('css/eskju.jquery.scrollflow.css') }}" rel="stylesheet">
     {% endblock css %}
     {% block js %}
@@ -22,16 +21,10 @@
     <title>{% block title %} {{ 'Welcome to my Blog!' }} {% endblock %}</title>
 </head>
 <body>
-
-{% include 'nav.html.twig' %}
-
+<header class="navi">
+    {% include 'nav.html.twig' %}
+</header>
     <div class="container">
-
-        <div class="row">
-        {% include 'slider.html.twig' %}
-        </div>
-
-
 
         <!--flash msg-->
              {% block message %}
@@ -47,7 +40,7 @@
 
         <!--content-->
 
-                <div class="row">
+                <div class="row articles">
                         {% block main %}{% endblock %}
                 </div>
     </div>

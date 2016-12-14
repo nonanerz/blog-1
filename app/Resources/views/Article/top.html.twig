@@ -13,6 +13,9 @@
             </a>
         </div>
     {% endfor %}
+    {% block random %}
+        {{ render(controller('AppBundle:Article:randomOne')) }}
+    {% endblock %}
     </div>
 {% endblock %}
 

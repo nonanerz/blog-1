@@ -4,9 +4,11 @@ body{
 }
 
 .container{
-
     overflow: inherit;
+}
 
+.articles{
+    margin-top: 100px;
 }
 
 .main{
@@ -36,9 +38,4 @@ body{
 
  div.comment div:nth-child(2n){
     background: rgba(240, 241, 246, 0.91);
-}
-
-.image-logo {
-    margin: 0 auto;
-    height: 450px;
 }

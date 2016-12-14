@@ -156,4 +156,15 @@ class ArticleController extends Controller
             'articles' => $articles,
         ]);
     }
+
+    public function randomOneAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $random = $em->getRepository('AppBundle:Article')
+            ->getRandomOne();
+
+        return $this->render(':Article:random.html.twig', [
+            'random' => $random,
+        ]);
+    }
 }
