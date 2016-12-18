@@ -36,6 +36,7 @@ class Author
     private $lastName;
 
     /**
+     * @var string
      * @ORM\Column(type="string", nullable=true)
      */
     private $avatar;
@@ -46,9 +47,15 @@ class Author
     private $user;
 
     /**
-     * Get id.
+     * @ORM\Column(nullable=true)
+     */
+    private $article;
+
+
+    /**
+     * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -56,7 +63,7 @@ class Author
     }
 
     /**
-     * Set firstName.
+     * Set firstName
      *
      * @param string $firstName
      *
@@ -70,7 +77,7 @@ class Author
     }
 
     /**
-     * Get firstName.
+     * Get firstName
      *
      * @return string
      */
@@ -80,7 +87,7 @@ class Author
     }
 
     /**
-     * Set lastName.
+     * Set lastName
      *
      * @param string $lastName
      *
@@ -94,7 +101,7 @@ class Author
     }
 
     /**
-     * Get lastName.
+     * Get lastName
      *
      * @return string
      */
@@ -104,23 +111,23 @@ class Author
     }
 
     /**
+     * Set avatar
+     *
+     * @param string $avatar
+     *
+     * @return Author
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * Get avatar
+     *
      * @return string
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param string $user
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
-    }
-
-    /**
-     * @return mixed
      */
     public function getAvatar()
     {
@@ -128,10 +135,50 @@ class Author
     }
 
     /**
-     * @param mixed $avatar
+     * Set article
+     *
+     * @param string $article
+     *
+     * @return Author
      */
-    public function setAvatar($avatar)
+    public function setArticle($article)
     {
-        $this->avatar = $avatar;
+        $this->article = $article;
+
+        return $this;
+    }
+
+    /**
+     * Get article
+     *
+     * @return string
+     */
+    public function getArticle()
+    {
+        return $this->article;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Author
+     */
+    public function setUser(User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

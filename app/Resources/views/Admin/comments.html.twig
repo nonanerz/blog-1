@@ -16,7 +16,7 @@
                  <td>{{ comment.author.firstName }} {{ comment.author.lastName }}</td>
                  <td>{{ comment.article.title }}</td>
                  <td>{{ comment.content }}</td>
-                 <td>{{ comment.publishedAt|date('Y-m-d H:i') }}</td>
+                 <td>{{ comment.createdAt|date('Y-m-d H:i') }}</td>
 
         </tr>
             {% endfor %}

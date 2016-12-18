@@ -12,4 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class CommentRepository extends EntityRepository
 {
+    public function findAllOrdered()
+    {
+        $qb = $this->createQueryBuilder('article')
+            ->addOrderBy('article.createdAt', 'DESC');
+        $query = $qb->getQuery();
+        return $query->execute();
+
+    }
 }

@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class ArticleController.
@@ -18,7 +19,7 @@ class ArticleController extends Controller
      * @param $request
      * @Route("/article/new", name="new_article")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function newAction(Request $request)
     {
@@ -45,21 +46,24 @@ class ArticleController extends Controller
 
     /**
      * @Route("/{page}", name="homepage", requirements={"page": "\d+"})
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param $request
+     * @param $page
+     * @return Response
      */
     public function listAction(Request $request, $page = 1)
     {
         $em = $this->getDoctrine()->getManager();
 
+        $articleRepository = $em->getRepository('AppBundle:Article');
+
         $paginator = $this->get('knp_paginator');
 
-        $pagination = $paginator->paginate(
-            $em->getRepository('AppBundle:Article')
-               ->findAll(),
-            $request->query->getInt('page', $page),
-            5
-        );
+        $pagination = $paginator->paginate($articleRepository->findAllOrdered(),
+            $request->query->getInt('page', $page), 5
+            );
+        if (!$articleRepository->findAll()){
+            throw new NotFoundHttpException('Noooo!');
+        }
 
         return $this->render('Article/list.html.twig', [
         'articles' => $pagination,
@@ -98,7 +102,7 @@ class ArticleController extends Controller
 
     /**
      * @param $article
-     * @Route("article/{id}/remove", name="remove_article")
+     * @Route("article/{id}/remove", name="remove_article", requirements={"id": "\d+"})
      *
      * @return Response
      */
@@ -114,7 +118,11 @@ class ArticleController extends Controller
     /**
      * @param $article
      *
-     * @Route("/article/{id}/{page}", name="show_article")
+     * @param $page
+     *
+     * @param $request Request
+     *
+     * @Route("/article/{id}/{page}", name="show_article", requirements={"id": "\d+", "page": "\d+"})
      *
      * @return Response
      */
@@ -143,7 +151,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function topArticlesAction()
     {
@@ -157,14 +165,34 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function randomOneAction()
+    /**
+     * @Route("/search", name="search")
+     * @param Request $request
+     * @param int $page
+     * @return Response
+     */
+    public function searchAction(Request $request, $page = 1)
     {
         $em = $this->getDoctrine()->getManager();
-        $random = $em->getRepository('AppBundle:Article')
-            ->getRandomOne();
 
-        return $this->render(':Article:random.html.twig', [
-            'random' => $random,
+        $paginator = $this->get('knp_paginator');
+
+        $articleRepository = $em->getRepository('AppBundle:Article');
+
+        $search = $request->query->get('q');
+
+        $result = $articleRepository->search($search);
+        if (!$result){
+            throw new NotFoundHttpException('Nothing to show');
+        }else{
+            $pagination = $paginator->paginate($result,
+                $request->query->getInt('page', $page),
+                5
+            );
+        }
+
+        return $this->render('Article/list.html.twig', [
+            'articles' => $pagination,
         ]);
     }
 }

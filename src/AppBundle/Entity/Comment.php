@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 
 /**
  * Comment.
@@ -10,8 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="comment")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CommentRepository")
  */
-class Comment
+class Comment extends Paragraph
 {
+    use ORMBehaviors\Timestampable\Timestampable;
     /**
      * @var int
      *
@@ -23,35 +25,15 @@ class Comment
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="content", type="text")
-     */
-    private $content;
-
-    /**
-     * @var string
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Author")
-     */
-    private $author;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="publishedAt", type="datetime")
-     */
-    private $publishedAt;
-
-    /**
-     * @var string
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Article", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $article;
 
+
     /**
-     * Get id.
+     * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -59,7 +41,7 @@ class Comment
     }
 
     /**
-     * Set content.
+     * Set content
      *
      * @param string $content
      *
@@ -73,7 +55,7 @@ class Comment
     }
 
     /**
-     * Get content.
+     * Get content
      *
      * @return string
      */
@@ -83,13 +65,13 @@ class Comment
     }
 
     /**
-     * Set author.
+     * Set author
      *
-     * @param string $author
+     * @param \AppBundle\Entity\Author $author
      *
      * @return Comment
      */
-    public function setAuthor($author)
+    public function setAuthor(\AppBundle\Entity\Author $author = null)
     {
         $this->author = $author;
 
@@ -97,9 +79,9 @@ class Comment
     }
 
     /**
-     * Get author.
+     * Get author
      *
-     * @return string
+     * @return \AppBundle\Entity\Author
      */
     public function getAuthor()
     {
@@ -107,37 +89,13 @@ class Comment
     }
 
     /**
-     * Set publishedAt.
+     * Set article
      *
-     * @param \DateTime $publishedAt
-     *
-     * @return Comment
-     */
-    public function setPublishedAt($publishedAt)
-    {
-        $this->publishedAt = $publishedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get publishedAt.
-     *
-     * @return \DateTime
-     */
-    public function getPublishedAt()
-    {
-        return $this->publishedAt;
-    }
-
-    /**
-     * Set article.
-     *
-     * @param string $article
+     * @param \AppBundle\Entity\Article $article
      *
      * @return Comment
      */
-    public function setArticle($article)
+    public function setArticle(\AppBundle\Entity\Article $article)
     {
         $this->article = $article;
 
@@ -145,9 +103,9 @@ class Comment
     }
 
     /**
-     * Get article.
+     * Get article
      *
-     * @return string
+     * @return \AppBundle\Entity\Article
      */
     public function getArticle()
     {

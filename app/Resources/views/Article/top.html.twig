@@ -7,15 +7,12 @@
         <div class="main scrollflow -slide-left -opacity" style="font-size: 15px;" data-scrollflow-start="0" data-scrollflow-distance="30" data-scrollflow-amount="200">
             <a style="text-decoration: none" href="{{ path('show_article', {'id': article.id}) }}" >
                 <p>{{ article.title }}</p>
-                    <img class="image_block img-rounded" src="{{ asset('img/') }}{{ article.image }}" width="165" height=""/>
+                    <img class="image_block img-rounded" src="{{ asset('includes/img/') }}{{ article.image }}" width="165" height=""/>
                 <p>{{ article.author.firstName }} {{ article.author.lastName }}</p>
-                <p>Posted on {{ article.publishedAt|date('Y-m-d H:i') }}</p><small class="glyphicon glyphicon-time"></small>
+                <p>Posted on {{ article.createdAt|date('Y-m-d H:i') }}</p><small class="glyphicon glyphicon-time"></small>
             </a>
         </div>
     {% endfor %}
-    {% block random %}
-        {{ render(controller('AppBundle:Article:randomOne')) }}
-    {% endblock %}
     </div>
 {% endblock %}
 

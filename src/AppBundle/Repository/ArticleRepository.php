@@ -12,31 +12,39 @@ use Doctrine\ORM\EntityRepository;
  */
 class ArticleRepository extends EntityRepository
 {
+
+    /**
+     * @return array
+     */
     public function findLastFive()
     {
         return $this->createQueryBuilder('article')
             ->setMaxResults(5)
-            ->orderBy('article.publishedAt', 'DESC')
+            ->orderBy('article.createdAt', 'DESC')
             ->getQuery()
-            ->execute();
+            ->getResult();
     }
 
-    public function getRandomOne()
+    /**
+     * @param $param
+     * @return mixed
+     */
+    public function search($param)
     {
-        $max = $this->getEntityManager()
-            ->createQuery('SELECT COUNT(a.id) FROM AppBundle:Article a')
-            ->getSingleScalarResult();
-
-        $article = $this->createQueryBuilder('article')
-            ->andWhere('article.id = :rand')
-            ->setParameter('rand', rand(1, $max))
-            ->setMaxResults(1)
+        return $this->createQueryBuilder('article')
+            ->andWhere('article.title LIKE :param')
+            ->orWhere('article.content LIKE :param')
+            ->setParameter(':param', '%'.$param.'%')
             ->getQuery()
-            ->execute();
-        if (!$article) {
-            $this->getRandomOne();
-        }
+            ->getResult();
+    }
 
-        return array_shift($article);
+    public function findAllOrdered()
+    {
+        $qb = $this->createQueryBuilder('article')
+            ->addOrderBy('article.createdAt', 'DESC');
+        $query = $qb->getQuery();
+        return $query->execute();
+
     }
 }

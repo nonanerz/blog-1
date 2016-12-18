@@ -16,7 +16,7 @@ AppBundle\Entity\Article:
     title: '<text(50)>'
     content: <realText(1000)>
     image: '50%? 50708_1280x720-318x180.jpg : om160617-133-318x160.jpg'
-    publishedAt: '<dateTimeBetween("-200 days", "now")>'
+    createdAt: '<dateTimeBetween("-200 days", "now")>'
     updatedAt: '30%? <dateTimeBetween("-200 days", "now")>'
     tags: '@tag{1..<numberBetween(2, 5)>}'
     author: '@author*'
@@ -25,7 +25,7 @@ AppBundle\Entity\Comment:
   comment{1..200}:
     content: <realText(200)>
     author: '@author*'
-    publishedAt: '<dateTimeBetween("-200 days", "now")>'
+    createdAt: '<dateTimeBetween("-200 days", "now")>'
     article: '@article*'
 
 AppBundle\Entity\Tag:

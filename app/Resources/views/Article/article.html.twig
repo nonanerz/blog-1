@@ -15,13 +15,19 @@
         </div>
                <h1>{{ article.title }}</h1>
                <p><span class="glyphicon glyphicon-time" data-scrollflow-start="0" data-scrollflow-distance="30" data-scrollflow-amount="200"></span>
-                   Posted on {{ article.publishedAt|date('Y-m-d H:i') }} by {{ article.author.firstName }} {{ article.author.lastName }}</p>
+                   Posted on {{ article.createdAt|date('Y-m-d H:i') }} by {{ article.author.firstName }} {{ article.author.lastName }}</p>
 
-               <img class="image_block img-rounded" src="{{ asset('img/') }}{{ article.image }}"/>
+               <img class="image_block img-rounded" src="{{ asset('includes/img/') }}{{ article.image }}"/>
+        <div class="tags">
+            <h3>Tags:</h3>
+            {% for tag in article.tags %}
+                <span class="label label-info mark">{{ tag.title }}</span>
+            {% endfor %}
+        </div>
                 <hr>
         <a href="{{ path('edit_article', {'id':article.id}) }}"> <p class="glyphicon glyphicon-pencil">edit</p></a>
         <a href="#modal" role="button" data-toggle="modal" data-target="#myModal"><p class="glyphicon glyphicon-remove-circle">remove</p></a>
-               <p class="lead">{{ article.content }}</p>
+        <p class="lead">{{ article.content }}</p>
 
                          <p>Sing in to leave a comment</p>
     </div>
@@ -33,23 +39,16 @@
         <h2>Comments:</h2>
         {% for comment in comments %}
             <div class="comment main">
-                <img src="{{ asset('img/') }}{{ comment.author.avatar }} ">
+                <img src="{{ asset('includes/img/') }}{{ comment.author.avatar }} ">
                 <blockquote>
                     <p>{{ comment.content }}</p>
                     <small><cite>{{ comment.author.firstName }} {{ comment.author.lastName }}</cite></small>
                 </blockquote>
-                <p style="border-bottom: 2px solid gainsboro" class="small text-right"><span class="glyphicon glyphicon-time"></span> Posted on {{ comment.publishedAt|date('Y-m-d H:i') }}</p>
+                <p style="border-bottom: 2px solid gainsboro" class="small text-right"><span class="glyphicon glyphicon-time"></span> Posted on {{ comment.createdAt|date('Y-m-d H:i') }}</p>
             </div>
         {% endfor %}
         <div class="navigation col-md-offset-4">
             {{ knp_pagination_render(comments) }}
         </div>
     </div>
-
-    <script type="text/javascript">
-        $("document").ready(function(){
-            $('#modal').modal();
-        });
-    </script>
-
 {% endblock %}

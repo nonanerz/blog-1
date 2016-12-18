@@ -31,7 +31,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=100, unique=true)
+     * @ORM\Column(name="email", type="string", length=150)
      */
     private $email;
 
@@ -42,10 +42,11 @@ class User
      */
     private $password;
 
+
     /**
-     * Get id.
+     * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -53,7 +54,7 @@ class User
     }
 
     /**
-     * Set username.
+     * Set username
      *
      * @param string $username
      *
@@ -67,7 +68,7 @@ class User
     }
 
     /**
-     * Get username.
+     * Get username
      *
      * @return string
      */
@@ -77,7 +78,7 @@ class User
     }
 
     /**
-     * Set email.
+     * Set email
      *
      * @param string $email
      *
@@ -91,7 +92,7 @@ class User
     }
 
     /**
-     * Get email.
+     * Get email
      *
      * @return string
      */
@@ -101,7 +102,7 @@ class User
     }
 
     /**
-     * Set password.
+     * Set password
      *
      * @param string $password
      *
@@ -115,7 +116,7 @@ class User
     }
 
     /**
-     * Get password.
+     * Get password
      *
      * @return string
      */

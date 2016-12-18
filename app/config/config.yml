@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    knp.doctrine_behaviors.timestampable_subscriber.db_field_type: datetimetz
 
 framework:
     #esi:             ~
@@ -82,3 +83,6 @@ knp_paginator:
     template:
         pagination: KnpPaginatorBundle:Pagination:foundation_v5_pagination.html.twig    # sliding pagination controls template
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
+knp_doctrine_behaviors:
+    timestampable:      true

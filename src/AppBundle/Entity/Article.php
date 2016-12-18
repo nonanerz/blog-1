@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,8 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
  */
-class Article
+class Article extends Paragraph
 {
+    use ORMBehaviors\Timestampable\Timestampable;
     /**
      * @var int
      *
@@ -29,56 +32,36 @@ class Article
     private $title;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="content", type="text")
-     */
-    private $content;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="image", nullable=true)
+     * @ORM\Column(type="string")
      */
     private $image;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="publishedAt", type="datetime")
-     */
-    private $publishedAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updatedAt", type="datetime", nullable=true)
-     */
-    private $updatedAt;
-
-    /**
-     * @var string
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="article")
+     * @var ArrayCollection
+     * @ORM\OrderBy({"createdAt" = "DESC"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="article", cascade={"persist", "remove"})
      */
     private $comments;
 
     /**
-     * @var string
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag")
-     * @ORM\JoinTable(name="article_tags")
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag", inversedBy="articles")
      */
     private $tags;
 
     /**
-     * @var string
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Author")
+     * Constructor
      */
-    private $author;
+    public function __construct()
+    {
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
-     * Get id.
+     * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -86,7 +69,7 @@ class Article
     }
 
     /**
-     * Set title.
+     * Set title
      *
      * @param string $title
      *
@@ -100,7 +83,7 @@ class Article
     }
 
     /**
-     * Get title.
+     * Get title
      *
      * @return string
      */
@@ -110,7 +93,7 @@ class Article
     }
 
     /**
-     * Set content.
+     * Set content
      *
      * @param string $content
      *
@@ -124,7 +107,7 @@ class Article
     }
 
     /**
-     * Get content.
+     * Get content
      *
      * @return string
      */
@@ -134,7 +117,7 @@ class Article
     }
 
     /**
-     * Set image.
+     * Set image
      *
      * @param string $image
      *
@@ -148,7 +131,7 @@ class Article
     }
 
     /**
-     * Get image.
+     * Get image
      *
      * @return string
      */
@@ -158,71 +141,33 @@ class Article
     }
 
     /**
-     * Set publishedAt.
+     * Add comment
      *
-     * @param \DateTime $publishedAt
+     * @param \AppBundle\Entity\Comment $comment
      *
      * @return Article
      */
-    public function setPublishedAt($publishedAt)
+    public function addComment(Comment $comment)
     {
-        $this->publishedAt = $publishedAt;
+        $this->comments[] = $comment;
 
         return $this;
     }
 
     /**
-     * Get publishedAt.
+     * Remove comment
      *
-     * @return \DateTime
+     * @param \AppBundle\Entity\Comment $comment
      */
-    public function getPublishedAt()
+    public function removeComment(Comment $comment)
     {
-        return $this->publishedAt;
+        $this->comments->removeElement($comment);
     }
 
     /**
-     * Set updatedAt.
+     * Get comments
      *
-     * @param \DateTime $updatedAt
-     *
-     * @return Article
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt.
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set comments.
-     *
-     * @param string $comments
-     *
-     * @return Article
-     */
-    public function setComments($comments)
-    {
-        $this->comments = $comments;
-
-        return $this;
-    }
-
-    /**
-     * Get comments.
-     *
-     * @return string
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getComments()
     {
@@ -230,23 +175,33 @@ class Article
     }
 
     /**
-     * Set tags.
+     * Add tag
      *
-     * @param string $tags
+     * @param \AppBundle\Entity\Tag $tag
      *
      * @return Article
      */
-    public function setTags($tags)
+    public function addTag(Tag $tag)
     {
-        $this->tags = $tags;
+        $this->tags[] = $tag;
 
         return $this;
     }
 
     /**
-     * Get tags.
+     * Remove tag
      *
-     * @return string
+     * @param \AppBundle\Entity\Tag $tag
+     */
+    public function removeTag(Tag $tag)
+    {
+        $this->tags->removeElement($tag);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTags()
     {
@@ -254,18 +209,26 @@ class Article
     }
 
     /**
-     * @return string
+     * Set author
+     *
+     * @param \AppBundle\Entity\Author $author
+     *
+     * @return Article
+     */
+    public function setAuthor(Author $author = null)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \AppBundle\Entity\Author
      */
     public function getAuthor()
     {
         return $this->author;
-    }
-
-    /**
-     * @param string $author
-     */
-    public function setAuthor($author)
-    {
-        $this->author = $author;
     }
 }

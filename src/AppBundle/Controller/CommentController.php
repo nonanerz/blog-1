@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -43,5 +45,34 @@ class CommentController extends Controller
         return $this->render('Admin/comments.html.twig', [
             'comments' => $pagination,
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function addNewAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $article = $em->find('AppBundle:Article', 1);
+
+        $author = $em->find('AppBundle:Author', 1);
+
+        $comment = new Comment();
+
+        $comment->setArticle($article)
+            ->setAuthor($author)
+            ->setContent('123');
+        $em->persist($comment);
+        $em->flush();
+
+        return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
+    }
+
+    public function removeAction()
+    {
+
     }
 }
