@@ -195,4 +195,28 @@ class ArticleController extends Controller
             'articles' => $pagination,
         ]);
     }
+
+    /**
+     * @Route("/article/tag/{tag}/{page}", name="tags", requirements={"page": "\d+"})
+     * @param Request $request
+     * @param $tag
+     * @param int $page
+     * @return Response
+     */
+    public function tagAction(Request $request, $tag, $page = 1)
+    {
+        $paginator = $this->get('knp_paginator');
+
+        $em = $this->getDoctrine()->getManager();
+        $tag = $em->getRepository('AppBundle:Tag')
+            ->findOneBy(['title' => $tag]);
+        $pagination = $paginator->paginate($tag->getArticles(),
+            $request->query->getInt('page', $page), 5);
+
+
+
+        return $this->render('Article/list.html.twig', [
+            'articles' => $pagination,
+        ]);
+    }
 }

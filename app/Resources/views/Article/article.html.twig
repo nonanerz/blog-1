@@ -21,7 +21,7 @@
         <div class="tags">
             <h3>Tags:</h3>
             {% for tag in article.tags %}
-                <a href="{{ path('tags', {'id':tag.id}) }}"><span class="label label-info mark">{{ tag.title }}</span></a>
+                <a href="{{ path('tags', {'tag':tag.title}) }}"><span class="label label-info mark">{{ tag.title }}</span></a>
             {% endfor %}
         </div>
                 <hr>
