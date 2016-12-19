@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Article;
 use AppBundle\Entity\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\BrowserKit\Response;
@@ -52,8 +53,8 @@ class CommentController extends Controller
      *
      * @return Response
      */
-    public function addNewAction(Request $request)
-    {
+//    public function addNewAction(Request $request)
+//    {
 
 //        $em = $this->getDoctrine()->getManager();
 
@@ -70,9 +71,22 @@ class CommentController extends Controller
 //        $em->flush();
 
 //        return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
-    }
+//    }
 
-    public function removeAction()
+    /**
+     * @param Article $article
+     * @param Comment $comment
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/remove_comment/{article}/{comment}", name="remove_comment")
+     */
+    public function removeAction(Article $article, Comment $comment)
     {
+        // Do not working. How should i solve it?
+        $article->getComments()->removeElement($comment);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($article);
+        $em->flush();
+        return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
     }
 }

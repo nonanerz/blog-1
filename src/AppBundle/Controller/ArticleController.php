@@ -4,11 +4,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
 use AppBundle\Form\ArticleForm;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class ArticleController.
@@ -175,17 +175,12 @@ class ArticleController extends Controller
      */
     public function searchAction(Request $request, $page = 1)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $paginator = $this->get('knp_paginator');
-
-        $search = $request->query->get('q');
-
-        $result = $em->getRepository('AppBundle:Article')->search($search);
+        $result = $this->getDoctrine()->getManager()->getRepository('AppBundle:Article')
+            ->search($request->query->get('q'));
         if (!$result) {
             throw new NotFoundHttpException('Nothing to show');
         } else {
-            $pagination = $paginator->paginate($result,
+            $pagination = $this->get('knp_paginator')->paginate($result,
                 $request->query->getInt('page', $page),
                 5
             );

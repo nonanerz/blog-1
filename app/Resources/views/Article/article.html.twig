@@ -39,6 +39,7 @@
         <h2>Comments:</h2>
         {% for comment in comments %}
             <div class="comment main">
+                <a href="{{ path('remove_comment', {'article':article.id, 'comment':comment.id}) }}">remove</a>
                 <img src="{{ asset('includes/img/') }}{{ comment.author.avatar }} ">
                 <blockquote>
                     <p>{{ comment.content }}</p>
