@@ -12,7 +12,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class ArticleRepository extends EntityRepository
 {
-
     /**
      * @return array
      */
@@ -27,6 +26,7 @@ class ArticleRepository extends EntityRepository
 
     /**
      * @param $param
+     *
      * @return mixed
      */
     public function search($param)
@@ -44,7 +44,7 @@ class ArticleRepository extends EntityRepository
         $qb = $this->createQueryBuilder('article')
             ->addOrderBy('article.createdAt', 'DESC');
         $query = $qb->getQuery();
-        return $query->execute();
 
+        return $query->execute();
     }
 }

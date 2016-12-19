@@ -29,16 +29,15 @@ class Tag
      */
     private $title;
 
-
     /**
      * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Article", mappedBy="tags")
      */
     private $articles;
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -46,7 +45,7 @@ class Tag
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -60,7 +59,7 @@ class Tag
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -69,7 +68,7 @@ class Tag
         return $this->title;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -77,7 +76,7 @@ class Tag
     }
 
     /**
-     * Add article
+     * Add article.
      *
      * @param \AppBundle\Entity\Article $article
      *
@@ -91,7 +90,7 @@ class Tag
     }
 
     /**
-     * Remove article
+     * Remove article.
      *
      * @param \AppBundle\Entity\Article $article
      */
@@ -101,7 +100,7 @@ class Tag
     }
 
     /**
-     * Get articles
+     * Get articles.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

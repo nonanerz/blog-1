@@ -51,11 +51,10 @@ class Author
      */
     private $article;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -63,7 +62,7 @@ class Author
     }
 
     /**
-     * Set firstName
+     * Set firstName.
      *
      * @param string $firstName
      *
@@ -77,7 +76,7 @@ class Author
     }
 
     /**
-     * Get firstName
+     * Get firstName.
      *
      * @return string
      */
@@ -87,7 +86,7 @@ class Author
     }
 
     /**
-     * Set lastName
+     * Set lastName.
      *
      * @param string $lastName
      *
@@ -101,7 +100,7 @@ class Author
     }
 
     /**
-     * Get lastName
+     * Get lastName.
      *
      * @return string
      */
@@ -111,7 +110,7 @@ class Author
     }
 
     /**
-     * Set avatar
+     * Set avatar.
      *
      * @param string $avatar
      *
@@ -125,7 +124,7 @@ class Author
     }
 
     /**
-     * Get avatar
+     * Get avatar.
      *
      * @return string
      */
@@ -135,7 +134,7 @@ class Author
     }
 
     /**
-     * Set article
+     * Set article.
      *
      * @param string $article
      *
@@ -149,7 +148,7 @@ class Author
     }
 
     /**
-     * Get article
+     * Get article.
      *
      * @return string
      */
@@ -159,7 +158,7 @@ class Author
     }
 
     /**
-     * Set user
+     * Set user.
      *
      * @param \AppBundle\Entity\User $user
      *
@@ -173,7 +172,7 @@ class Author
     }
 
     /**
-     * Get user
+     * Get user.
      *
      * @return \AppBundle\Entity\User
      */

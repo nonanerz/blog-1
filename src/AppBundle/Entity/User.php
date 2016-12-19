@@ -42,11 +42,10 @@ class User
      */
     private $password;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -54,7 +53,7 @@ class User
     }
 
     /**
-     * Set username
+     * Set username.
      *
      * @param string $username
      *
@@ -68,7 +67,7 @@ class User
     }
 
     /**
-     * Get username
+     * Get username.
      *
      * @return string
      */
@@ -78,7 +77,7 @@ class User
     }
 
     /**
-     * Set email
+     * Set email.
      *
      * @param string $email
      *
@@ -92,7 +91,7 @@ class User
     }
 
     /**
-     * Get email
+     * Get email.
      *
      * @return string
      */
@@ -102,7 +101,7 @@ class User
     }
 
     /**
-     * Set password
+     * Set password.
      *
      * @param string $password
      *
@@ -116,7 +115,7 @@ class User
     }
 
     /**
-     * Get password
+     * Get password.
      *
      * @return string
      */

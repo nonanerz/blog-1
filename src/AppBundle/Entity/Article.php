@@ -50,7 +50,7 @@ class Article extends Paragraph
     private $tags;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -59,9 +59,9 @@ class Article extends Paragraph
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -69,7 +69,7 @@ class Article extends Paragraph
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -83,7 +83,7 @@ class Article extends Paragraph
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -93,7 +93,7 @@ class Article extends Paragraph
     }
 
     /**
-     * Set content
+     * Set content.
      *
      * @param string $content
      *
@@ -107,7 +107,7 @@ class Article extends Paragraph
     }
 
     /**
-     * Get content
+     * Get content.
      *
      * @return string
      */
@@ -117,7 +117,7 @@ class Article extends Paragraph
     }
 
     /**
-     * Set image
+     * Set image.
      *
      * @param string $image
      *
@@ -131,7 +131,7 @@ class Article extends Paragraph
     }
 
     /**
-     * Get image
+     * Get image.
      *
      * @return string
      */
@@ -141,7 +141,7 @@ class Article extends Paragraph
     }
 
     /**
-     * Add comment
+     * Add comment.
      *
      * @param \AppBundle\Entity\Comment $comment
      *
@@ -155,7 +155,7 @@ class Article extends Paragraph
     }
 
     /**
-     * Remove comment
+     * Remove comment.
      *
      * @param \AppBundle\Entity\Comment $comment
      */
@@ -165,7 +165,7 @@ class Article extends Paragraph
     }
 
     /**
-     * Get comments
+     * Get comments.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -175,7 +175,7 @@ class Article extends Paragraph
     }
 
     /**
-     * Add tag
+     * Add tag.
      *
      * @param \AppBundle\Entity\Tag $tag
      *
@@ -189,7 +189,7 @@ class Article extends Paragraph
     }
 
     /**
-     * Remove tag
+     * Remove tag.
      *
      * @param \AppBundle\Entity\Tag $tag
      */
@@ -199,7 +199,7 @@ class Article extends Paragraph
     }
 
     /**
-     * Get tags
+     * Get tags.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -209,7 +209,7 @@ class Article extends Paragraph
     }
 
     /**
-     * Set author
+     * Set author.
      *
      * @param \AppBundle\Entity\Author $author
      *
@@ -223,7 +223,7 @@ class Article extends Paragraph
     }
 
     /**
-     * Get author
+     * Get author.
      *
      * @return \AppBundle\Entity\Author
      */

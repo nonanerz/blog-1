@@ -17,7 +17,7 @@ class CommentRepository extends EntityRepository
         $qb = $this->createQueryBuilder('article')
             ->addOrderBy('article.createdAt', 'DESC');
         $query = $qb->getQuery();
-        return $query->execute();
 
+        return $query->execute();
     }
 }

@@ -29,11 +29,10 @@ class Comment extends Paragraph
      */
     private $article;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -41,7 +40,7 @@ class Comment extends Paragraph
     }
 
     /**
-     * Set content
+     * Set content.
      *
      * @param string $content
      *
@@ -55,7 +54,7 @@ class Comment extends Paragraph
     }
 
     /**
-     * Get content
+     * Get content.
      *
      * @return string
      */
@@ -65,7 +64,7 @@ class Comment extends Paragraph
     }
 
     /**
-     * Set author
+     * Set author.
      *
      * @param \AppBundle\Entity\Author $author
      *
@@ -79,7 +78,7 @@ class Comment extends Paragraph
     }
 
     /**
-     * Get author
+     * Get author.
      *
      * @return \AppBundle\Entity\Author
      */
@@ -89,7 +88,7 @@ class Comment extends Paragraph
     }
 
     /**
-     * Set article
+     * Set article.
      *
      * @param \AppBundle\Entity\Article $article
      *
@@ -103,7 +102,7 @@ class Comment extends Paragraph
     }
 
     /**
-     * Get article
+     * Get article.
      *
      * @return \AppBundle\Entity\Article
      */

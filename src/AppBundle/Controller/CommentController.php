@@ -49,30 +49,30 @@ class CommentController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function addNewAction(Request $request)
     {
 
-        $em = $this->getDoctrine()->getManager();
+//        $em = $this->getDoctrine()->getManager();
 
-        $article = $em->find('AppBundle:Article', 1);
+//        $article = $em->find('AppBundle:Article', 1);
 
-        $author = $em->find('AppBundle:Author', 1);
+//        $author = $em->find('AppBundle:Author', 1);
 
-        $comment = new Comment();
+//        $comment = new Comment();
 
-        $comment->setArticle($article)
-            ->setAuthor($author)
-            ->setContent('123');
-        $em->persist($comment);
-        $em->flush();
+//        $comment->setArticle($article)
+//            ->setAuthor($author)
+//            ->setContent('123');
+//        $em->persist($comment);
+//        $em->flush();
 
-        return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
+//        return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
     }
 
     public function removeAction()
     {
-
     }
 }

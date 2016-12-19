@@ -46,8 +46,10 @@ class ArticleController extends Controller
 
     /**
      * @Route("/{page}", name="homepage", requirements={"page": "\d+"})
+     *
      * @param $request
      * @param $page
+     *
      * @return Response
      */
     public function listAction(Request $request, $page = 1)
@@ -61,7 +63,7 @@ class ArticleController extends Controller
         $pagination = $paginator->paginate($articleRepository->findAllOrdered(),
             $request->query->getInt('page', $page), 5
             );
-        if (!$articleRepository->findAll()){
+        if (!$articleRepository->findAll()) {
             throw new NotFoundHttpException('Noooo!');
         }
 
@@ -117,9 +119,7 @@ class ArticleController extends Controller
 
     /**
      * @param $article
-     *
      * @param $page
-     *
      * @param $request Request
      *
      * @Route("/article/{id}/{page}", name="show_article", requirements={"id": "\d+", "page": "\d+"})
@@ -167,8 +167,10 @@ class ArticleController extends Controller
 
     /**
      * @Route("/search", name="search")
+     *
      * @param Request $request
-     * @param int $page
+     * @param int     $page
+     *
      * @return Response
      */
     public function searchAction(Request $request, $page = 1)
@@ -177,14 +179,12 @@ class ArticleController extends Controller
 
         $paginator = $this->get('knp_paginator');
 
-        $articleRepository = $em->getRepository('AppBundle:Article');
-
         $search = $request->query->get('q');
 
-        $result = $articleRepository->search($search);
-        if (!$result){
+        $result = $em->getRepository('AppBundle:Article')->search($search);
+        if (!$result) {
             throw new NotFoundHttpException('Nothing to show');
-        }else{
+        } else {
             $pagination = $paginator->paginate($result,
                 $request->query->getInt('page', $page),
                 5
