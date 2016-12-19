@@ -24,8 +24,9 @@ class Comment extends Paragraph
     private $id;
 
     /**
-     * @var string
+     * @var Article|null
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Article", inversedBy="comments")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $article;
 
@@ -94,7 +95,7 @@ class Comment extends Paragraph
      *
      * @return Comment
      */
-    public function setArticle(\AppBundle\Entity\Article $article)
+    public function setArticle(\AppBundle\Entity\Article $article = null)
     {
         $this->article = $article;
 

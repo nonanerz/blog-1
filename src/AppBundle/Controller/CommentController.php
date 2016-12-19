@@ -49,44 +49,38 @@ class CommentController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-//    public function addNewAction(Request $request)
-//    {
-
-//        $em = $this->getDoctrine()->getManager();
-
-//        $article = $em->find('AppBundle:Article', 1);
-
-//        $author = $em->find('AppBundle:Author', 1);
-
-//        $comment = new Comment();
-
-//        $comment->setArticle($article)
-//            ->setAuthor($author)
-//            ->setContent('123');
-//        $em->persist($comment);
-//        $em->flush();
-
-//        return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
-//    }
-
-    /**
      * @param Article $article
      * @param Comment $comment
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("/remove_comment/{article}/{comment}", name="remove_comment")
      */
     public function removeAction(Article $article, Comment $comment)
     {
-        // Do not working. How should i solve it?
         $article->getComments()->removeElement($comment);
-
+        $comment->setArticle(null);
         $em = $this->getDoctrine()->getManager();
         $em->persist($article);
+        $em->persist($comment);
         $em->flush();
+
+        return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
+    }
+
+    public function newAction(Request $request, Article $article)
+    {
+        $newComment = new Comment();
+
+        $article->addComment($newComment);
+
+        $newComment->setArticle($article);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($article);
+        $em->persist($newComment);
+        $em->flush();
+
         return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
     }
 }
