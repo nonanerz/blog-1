@@ -12,4 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class AuthorRepository extends EntityRepository
 {
+    public function findAllWithUsers()
+    {
+        return $this->createQueryBuilder('author')
+            ->leftJoin('author.user', 'user')
+            ->addSelect('user')
+            ->getQuery()
+            ->execute();
+    }
 }

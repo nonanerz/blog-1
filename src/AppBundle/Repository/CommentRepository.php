@@ -14,19 +14,24 @@ class CommentRepository extends EntityRepository
 {
     public function findAllOrdered()
     {
-        $qb = $this->createQueryBuilder('article')
-            ->addOrderBy('article.createdAt', 'DESC');
-        $query = $qb->getQuery();
-
-        return $query->execute();
+        return $this->createQueryBuilder('comment')
+            ->leftJoin('comment.author', 'author')
+            ->addSelect('author')
+            ->leftJoin('comment.article', 'article')
+            ->addSelect('article')
+            ->addOrderBy('article.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
     public function findByAuthor($author)
     {
-        $qb = $this->createQueryBuilder('comment')
+        return $this->createQueryBuilder('comment')
             ->andWhere('comment.author = :author')
-            ->setParameter('author', $author);
-
-        return $qb->getQuery()->execute();
+            ->setParameter('author', $author)
+            ->leftJoin('comment.article', 'article')
+            ->addSelect('article')
+            ->getQuery()
+            ->getResult();
     }
 }

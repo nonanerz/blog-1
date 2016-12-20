@@ -32,18 +32,18 @@ class CommentController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @param int     $page
      * @Route("/admin/comments/{page}", name="check_comments")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function checkCommentsAction(Request $request, $page = 1)
     {
-        $page = $request->query->getInt('page', $page);
-
         $em = $this->getDoctrine()->getManager();
 
         $pagination = $this->pagination($em->getRepository('AppBundle:Comment')
-            ->findAll(), $page, 10);
+            ->findAllOrdered(), $request->query->getInt('page', $page), 10);
 
         return $this->render('Admin/comments.html.twig', [
             'comments' => $pagination,

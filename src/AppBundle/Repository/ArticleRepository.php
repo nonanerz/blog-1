@@ -18,10 +18,28 @@ class ArticleRepository extends EntityRepository
     public function findLastFive()
     {
         return $this->createQueryBuilder('article')
+            ->leftJoin('article.author', 'author')
+            ->addSelect('author')
             ->setMaxResults(5)
             ->orderBy('article.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function findById($id)
+    {
+        return $this->createQueryBuilder('article')
+            ->andWhere('article.id = :id')
+            ->setParameter(':id', $id)
+            ->leftJoin('article.comments', 'comments')
+            ->addSelect('comments')
+            ->leftJoin('comments.author', 'author')
+            ->addSelect('author')
+            ->leftJoin('article.tags', 'tags')
+            ->addSelect('tags')
+            ->addOrderBy('comments.createdAt', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     /**
@@ -34,6 +52,8 @@ class ArticleRepository extends EntityRepository
         return $this->createQueryBuilder('article')
             ->andWhere('article.title LIKE :param')
             ->orWhere('article.content LIKE :param')
+            ->leftJoin('article.author', 'author')
+            ->addSelect('author')
             ->setParameter(':param', '%'.$param.'%')
             ->getQuery()
             ->getResult();
@@ -41,10 +61,11 @@ class ArticleRepository extends EntityRepository
 
     public function findAllOrdered()
     {
-        $qb = $this->createQueryBuilder('article')
-            ->addOrderBy('article.createdAt', 'DESC');
-        $query = $qb->getQuery();
-
-        return $query->execute();
+        return $this->createQueryBuilder('article')
+            ->leftJoin('article.author', 'author')
+            ->addSelect('author')
+            ->addOrderBy('article.createdAt', 'DESC')
+            ->getQuery()
+            ->execute();
     }
 }

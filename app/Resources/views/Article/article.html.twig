@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-    <div class="col-lg-12 main">
+
         <div id="myModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -13,6 +13,7 @@
                 </div>
             </div>
         </div>
+    <div id="article" class="col-lg-9 main">
                <h1>{{ article.title }}</h1>
                <p><span class="glyphicon glyphicon-time" data-scrollflow-start="0" data-scrollflow-distance="30" data-scrollflow-amount="200"></span>
                    Posted on {{ article.createdAt|date('Y-m-d H:i') }} by {{ article.author.firstName }} {{ article.author.lastName }}</p>
@@ -26,7 +27,7 @@
         </div>
                 <hr>
         <a href="{{ path('edit_article', {'id':article.id}) }}"> <p class="glyphicon glyphicon-pencil">edit</p></a>
-        <a href="#modal" role="button" data-toggle="modal" data-target="#myModal"><p class="glyphicon glyphicon-remove-circle">remove</p></a>
+        <a href="#modal" role="button" data-toggle="modal" data-target="#myModal"><p class="glyphicon glyphicon-remove-circle icon-danger">remove</p></a>
         <p class="lead">{{ article.content }}</p>
 
                          <p>Sing in to leave a comment</p>
@@ -35,16 +36,16 @@
             {{ render(controller('AppBundle:Article:topArticles')) }}
         {% endblock %}
 
-    <div class="col-lg-8  scrollflow -slide-right" data-scrollflow-start="0" data-scrollflow-distance="100" data-scrollflow-amount="30">
+    <div id="comments" class="col-lg-8  scrollflow -slide-right" data-scrollflow-start="0" data-scrollflow-distance="100" data-scrollflow-amount="30">
         <h2>Comments:</h2>
         {% for comment in comments %}
             <div class="comment main">
-                <a href="{{ path('remove_comment', {'article':article.id, 'comment':comment.id}) }}">remove</a>
                 <img src="{{ asset('includes/img/') }}{{ comment.author.avatar }} ">
                 <blockquote>
                     <p>{{ comment.content }}</p>
                     <small><cite>{{ comment.author.firstName }} {{ comment.author.lastName }}</cite></small>
                 </blockquote>
+                <a href="{{ path('remove_comment', {'article':article.id, 'comment':comment.id}) }}"><p class="glyphicon glyphicon-remove-circle icon-danger">remove</p></a>
                 <p style="border-bottom: 2px solid gainsboro" class="small text-right"><span class="glyphicon glyphicon-time"></span> Posted on {{ comment.createdAt|date('Y-m-d H:i') }}</p>
             </div>
         {% endfor %}

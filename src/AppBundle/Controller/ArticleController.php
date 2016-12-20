@@ -50,8 +50,10 @@ class ArticleController extends Controller
 
     /**
      * @Route("/{page}", name="homepage", requirements={"page": "\d+"})
+     *
      * @param $request
      * @param $page
+     *
      * @return Response
      */
     public function listAction(Request $request, $page = 1)
@@ -77,6 +79,7 @@ class ArticleController extends Controller
      * @param $request
      * @param $article
      * @Route("/article/{id}/edit", name="edit_article")
+     *
      * @return Response
      */
     public function editAction(Request $request, Article $article)
@@ -105,6 +108,7 @@ class ArticleController extends Controller
     /**
      * @param $article
      * @Route("article/{id}/remove", name="remove_article", requirements={"id": "\d+"})
+     *
      * @return Response
      */
     public function removeAction(Article $article)
@@ -117,10 +121,11 @@ class ArticleController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param Request      $request
      * @param Article|null $article
-     * @param int $page
+     * @param int          $page
      * @Route("/article/{id}/{page}", name="show_article", requirements={"id": "\d+", "page": "\d+"})
+     *
      * @return Response
      */
     public function showAction(Request $request, Article $article = null, $page = 1)
@@ -128,13 +133,15 @@ class ArticleController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $article = $em->getRepository('AppBundle:Article')
-            ->findOneBy(['id' => $article]);
+            ->findById($article);
+
+        $comments = $article->getComments();
 
         if (!$article) {
             throw new NotFoundHttpException('Article is not exist!');
         }
 
-        $pagination = $this->pagination($article->getComments(), $request->query->getInt('page', $page), 5);
+        $pagination = $this->pagination($comments, $request->query->getInt('page', $page), 5);
 
         return $this->render('Article/article.html.twig', [
             'article' => $article,

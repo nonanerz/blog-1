@@ -26,7 +26,7 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $authors = $em->getRepository('AppBundle:Author')
-            ->findAll();
+            ->findAllWithUsers();
 
         return $this->render(':Admin:users.html.twig', [
             'authors' => $authors,
