@@ -20,4 +20,13 @@ class CommentRepository extends EntityRepository
 
         return $query->execute();
     }
+
+    public function findByAuthor($author)
+    {
+        $qb = $this->createQueryBuilder('comment')
+            ->andWhere('comment.author = :author')
+            ->setParameter('author', $author);
+
+        return $qb->getQuery()->execute();
+    }
 }

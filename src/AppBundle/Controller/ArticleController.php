@@ -30,7 +30,11 @@ class ArticleController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $em->persist($form->getData());
+            $article = $form->getData();
+
+            $article->setAuthor($this->getUser());
+
+            $em->persist($article);
 
             $em->flush();
 
@@ -46,26 +50,23 @@ class ArticleController extends Controller
 
     /**
      * @Route("/{page}", name="homepage", requirements={"page": "\d+"})
-     *
      * @param $request
      * @param $page
-     *
      * @return Response
      */
     public function listAction(Request $request, $page = 1)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articleRepository = $em->getRepository('AppBundle:Article');
+        $articles = $em->getRepository('AppBundle:Article')
+            ->findAllOrdered();
 
-        $paginator = $this->get('knp_paginator');
-
-        $pagination = $paginator->paginate($articleRepository->findAllOrdered(),
-            $request->query->getInt('page', $page), 5
-            );
-        if (!$articleRepository->findAll()) {
+        if (!$articles) {
             throw new NotFoundHttpException('Noooo!');
         }
+
+        $pagination = $this->pagination($articles,
+            $request->query->getInt('page', $page), 5);
 
         return $this->render('Article/list.html.twig', [
         'articles' => $pagination,
@@ -76,7 +77,6 @@ class ArticleController extends Controller
      * @param $request
      * @param $article
      * @Route("/article/{id}/edit", name="edit_article")
-     *
      * @return Response
      */
     public function editAction(Request $request, Article $article)
@@ -105,7 +105,6 @@ class ArticleController extends Controller
     /**
      * @param $article
      * @Route("article/{id}/remove", name="remove_article", requirements={"id": "\d+"})
-     *
      * @return Response
      */
     public function removeAction(Article $article)
@@ -118,31 +117,24 @@ class ArticleController extends Controller
     }
 
     /**
-     * @param $article
-     * @param $page
-     * @param $request Request
-     *
+     * @param Request $request
+     * @param Article|null $article
+     * @param int $page
      * @Route("/article/{id}/{page}", name="show_article", requirements={"id": "\d+", "page": "\d+"})
-     *
      * @return Response
      */
     public function showAction(Request $request, Article $article = null, $page = 1)
     {
-        if (!$article) {
-            throw $this->createNotFoundException('Article is not exist!');
-        }
-
         $em = $this->getDoctrine()->getManager();
-
-        $paginator = $this->get('knp_paginator');
 
         $article = $em->getRepository('AppBundle:Article')
             ->findOneBy(['id' => $article]);
 
-        $pagination = $paginator->paginate($article->getComments(),
-            $request->query->getInt('page', $page), 5
+        if (!$article) {
+            throw new NotFoundHttpException('Article is not exist!');
+        }
 
-            );
+        $pagination = $this->pagination($article->getComments(), $request->query->getInt('page', $page), 5);
 
         return $this->render('Article/article.html.twig', [
             'article' => $article,
@@ -180,10 +172,7 @@ class ArticleController extends Controller
         if (!$result) {
             throw new NotFoundHttpException('Nothing to show');
         } else {
-            $pagination = $this->get('knp_paginator')->paginate($result,
-                $request->query->getInt('page', $page),
-                5
-            );
+            $pagination = $this->pagination($result, $request->query->getInt('page', $page), 5);
         }
 
         return $this->render('Article/list.html.twig', [
@@ -202,16 +191,25 @@ class ArticleController extends Controller
      */
     public function tagAction(Request $request, $tag, $page = 1)
     {
-        $paginator = $this->get('knp_paginator');
-
         $em = $this->getDoctrine()->getManager();
         $tag = $em->getRepository('AppBundle:Tag')
             ->findOneBy(['title' => $tag]);
-        $pagination = $paginator->paginate($tag->getArticles(),
-            $request->query->getInt('page', $page), 5);
+
+        if (!$tag) {
+            throw new NotFoundHttpException();
+        }
+
+        $pagination = $this->pagination($tag->getArticles(), $request->query->getInt('page', $page), 5);
 
         return $this->render('Article/list.html.twig', [
             'articles' => $pagination,
         ]);
+    }
+
+    private function pagination($query, $currentPage, $perPage)
+    {
+        $paginator = $this->get('knp_paginator');
+
+        return $paginator->paginate($query, $currentPage, $perPage);
     }
 }

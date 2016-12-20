@@ -32,7 +32,7 @@ class Article extends Paragraph
     private $title;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $image;
 

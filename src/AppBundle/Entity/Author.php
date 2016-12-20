@@ -20,36 +20,27 @@ class Author
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
     /**
      * @var string
      *
      * @ORM\Column(name="firstName", type="string", length=100)
      */
     private $firstName;
-
     /**
      * @var string
      *
      * @ORM\Column(name="lastName", type="string", length=100)
      */
     private $lastName;
-
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
      */
     private $avatar;
-
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\User")
      */
     private $user;
-
-    /**
-     * @ORM\Column(nullable=true)
-     */
-    private $article;
 
     /**
      * Get id.
@@ -60,7 +51,6 @@ class Author
     {
         return $this->id;
     }
-
     /**
      * Set firstName.
      *
@@ -74,7 +64,6 @@ class Author
 
         return $this;
     }
-
     /**
      * Get firstName.
      *
@@ -84,7 +73,6 @@ class Author
     {
         return $this->firstName;
     }
-
     /**
      * Set lastName.
      *
@@ -98,7 +86,6 @@ class Author
 
         return $this;
     }
-
     /**
      * Get lastName.
      *
@@ -108,7 +95,6 @@ class Author
     {
         return $this->lastName;
     }
-
     /**
      * Set avatar.
      *
@@ -122,7 +108,6 @@ class Author
 
         return $this;
     }
-
     /**
      * Get avatar.
      *
@@ -132,7 +117,6 @@ class Author
     {
         return $this->avatar;
     }
-
     /**
      * Set article.
      *
@@ -146,7 +130,6 @@ class Author
 
         return $this;
     }
-
     /**
      * Get article.
      *
@@ -156,7 +139,6 @@ class Author
     {
         return $this->article;
     }
-
     /**
      * Set user.
      *
@@ -170,7 +152,6 @@ class Author
 
         return $this;
     }
-
     /**
      * Get user.
      *
