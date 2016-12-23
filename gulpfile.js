@@ -14,7 +14,7 @@ var
     web = 'web/includes/';
 
 gulp.task('images', function () {
-    return gulp.src(src + 'img/*.*')
+    return gulp.src(src + 'img/**')
         .pipe(newer(web + 'img/'))
         .pipe(imagemin())
         .pipe(gulp.dest(web + 'img/'))

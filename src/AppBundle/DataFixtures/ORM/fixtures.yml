@@ -9,7 +9,7 @@ AppBundle\Entity\Author:
     firstName: <firstName()>
     lastName: <lastName()>
     user: '@user<current()>'
-    avatar: 'avatar.png'
+    imageName: 'avatar.png'
 
 AppBundle\Entity\Article:
   article{1..20}:

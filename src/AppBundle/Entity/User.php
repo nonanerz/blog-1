@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,6 +26,8 @@ class User
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=100, unique=true)
+     * @Assert\Length(min="5", max="200")
+     * @Assert\NotBlank()
      */
     private $username;
 
@@ -32,6 +35,8 @@ class User
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=150)
+     * @Assert\Email()
+     * @Assert\NotBlank()
      */
     private $email;
 
@@ -39,6 +44,8 @@ class User
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=100)
+     * @Assert\Regex(pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/", message="Sorry but your password must contain an uppercase letter, a number, a haiku, a gang sign, a hieroglyph, and the blood of a virgin.")
+     * @Assert\NotBlank()
      */
     private $password;
 

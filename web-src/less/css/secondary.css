@@ -5,13 +5,6 @@ body{
 .articles{
     margin-top: 100px;
 }
-#article{
-    float: right;
-}
-#topArticles #comments{
-    float: left;
-}
-
 .icon-danger{
     color: #9c0612;
 }
@@ -40,7 +33,7 @@ body{
 
 #topo {
     z-index: 15;
-    background-color: #FFF;
+    background-color: white;
     width: 100%;
     position: fixed;
     border-bottom: 1px solid black;

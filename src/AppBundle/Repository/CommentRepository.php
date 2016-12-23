@@ -19,6 +19,7 @@ class CommentRepository extends EntityRepository
             ->addSelect('author')
             ->leftJoin('comment.article', 'article')
             ->addSelect('article')
+            ->andWhere('comment.article IS NOT NULL')
             ->addOrderBy('article.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
@@ -28,9 +29,21 @@ class CommentRepository extends EntityRepository
     {
         return $this->createQueryBuilder('comment')
             ->andWhere('comment.author = :author')
+            ->andWhere('comment.article IS NOT NULL')
             ->setParameter('author', $author)
             ->leftJoin('comment.article', 'article')
             ->addSelect('article')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByArticle($article)
+    {
+        return $this->createQueryBuilder('comment')
+            ->andWhere('comment.article = :article')
+            ->setParameter(':article', $article)
+            ->leftJoin('comment.author', 'author')
+            ->addSelect('author')
             ->getQuery()
             ->getResult();
     }

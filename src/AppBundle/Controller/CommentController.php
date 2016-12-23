@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Author;
 use AppBundle\Entity\Comment;
+use AppBundle\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -69,33 +70,6 @@ class CommentController extends Controller
         return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
     }
 
-    /**
-     * @Route("/article/{id}/newComment", name="new_comment")
-     *
-     * @param Request $request
-     * @param Article $article
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function newAction(Request $request, Article $article)
-    {
-        $newComment = new Comment();
-
-        $newComment->setAuthor($this->getUser());
-
-        $newComment->setContent('fdf');
-
-        $newComment->setArticle($article);
-        $article->addComment($newComment);
-
-        $em = $this->getDoctrine()->getManager();
-
-        $em->persist($article);
-        $em->persist($newComment);
-        $em->flush();
-
-        return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
-    }
 
     /**
      * @param Request $request
@@ -132,10 +106,50 @@ class CommentController extends Controller
      *
      * @return \Knp\Component\Pager\Pagination\PaginationInterface
      */
-    private function pagination($query, $currentPage, $perPage)
+    public function pagination($query, $currentPage, $perPage)
     {
         $paginator = $this->get('knp_paginator');
 
         return $paginator->paginate($query, $currentPage, $perPage);
+    }
+
+    /**
+     * @param Request $request
+     * @param Article $article
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Route("/article/{id}/newComment", name="new_comment")
+     */
+    public function newAction(Request $request, Article $article)
+    {
+        $form = $this->createForm(CommentType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $comment = $form->getData();
+
+            $author = $em->getRepository('AppBundle:Author')
+                ->find(13);
+
+            $comment->setAuthor($author);
+
+            $comment->setArticle($article);
+
+            $article->addComment($comment);
+
+            $em->persist($article);
+            $em->persist($comment);
+
+            $em->flush();
+
+            return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
+        }
+
+        return $this->render(':Forms:newComment.html.twig', [
+            'commentType' => $form->createView(),
+        ]);
+
     }
 }

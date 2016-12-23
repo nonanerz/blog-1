@@ -26,7 +26,7 @@ class ArticleRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findById($id)
+    public function findByIdOrderedWithJoins($id)
     {
         return $this->createQueryBuilder('article')
             ->andWhere('article.id = :id')
@@ -66,6 +66,6 @@ class ArticleRepository extends EntityRepository
             ->addSelect('author')
             ->addOrderBy('article.createdAt', 'DESC')
             ->getQuery()
-            ->execute();
+            ->getResult();
     }
 }

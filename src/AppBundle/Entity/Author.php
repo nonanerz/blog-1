@@ -2,13 +2,18 @@
 
 namespace AppBundle\Entity;
 
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 
 /**
  * Author.
  *
  * @ORM\Table(name="author")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AuthorRepository")
+ * @Vich\Uploadable()
  */
 class Author
 {
@@ -23,20 +28,61 @@ class Author
     /**
      * @var string
      *
-     * @ORM\Column(name="firstName", type="string", length=100)
+     * @ORM\Column(name="firstName", type="string", length=100, nullable=true)
+     * @Assert\Regex("/^[a-zA-Z]+$/")
      */
     private $firstName;
     /**
      * @var string
      *
-     * @ORM\Column(name="lastName", type="string", length=100)
+     * @ORM\Column(name="lastName", type="string", length=100, nullable=true)
+     * @Assert\Regex("/^[a-zA-Z]+$/")
      */
     private $lastName;
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
      */
-    private $avatar;
+    private $imageName;
+
+    /**
+     * @var
+     * @Vich\UploadableField(mapping="avatars_image", fileNameProperty="imageName")
+     *
+     * @Assert\Image(
+     *     minWidth = 200,
+     *     maxWidth = 400,
+     *     minHeight = 200,
+     *     maxHeight = 400
+     * )
+     */
+    private $imageFile;
+
+    /**
+     * @return mixed
+     */
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param File|null $image
+     * @return $this
+     */
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        if ($image) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+
+        return $this;
+    }
+
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\User")
      */
@@ -96,49 +142,28 @@ class Author
         return $this->lastName;
     }
     /**
-     * Set avatar.
+     * Set imageName.
      *
-     * @param string $avatar
+     * @param string $imageName
      *
      * @return Author
      */
-    public function setAvatar($avatar)
+    public function setImageName($imageName)
     {
-        $this->avatar = $avatar;
+        $this->imageName = $imageName;
 
         return $this;
     }
     /**
-     * Get avatar.
+     * Get imageName.
      *
      * @return string
      */
-    public function getAvatar()
+    public function getImageName()
     {
-        return $this->avatar;
+        return $this->imageName;
     }
-    /**
-     * Set article.
-     *
-     * @param string $article
-     *
-     * @return Author
-     */
-    public function setArticle($article)
-    {
-        $this->article = $article;
 
-        return $this;
-    }
-    /**
-     * Get article.
-     *
-     * @return string
-     */
-    public function getArticle()
-    {
-        return $this->article;
-    }
     /**
      * Set user.
      *

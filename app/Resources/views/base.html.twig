@@ -17,13 +17,12 @@
     {% include 'nav.html.twig' %}
 </header>
     <div class="container">
-
         <!--flash msg-->
              {% block message %}
                 {% for msg in app.session.flashBag.get('success') %}
 
                     <div class="row">
-                        <div style="margin-top: 50px" class="alert alert-success col-md-2 col-md-offset-5 text-center">{{ msg }}</div>
+                        <div style="margin-top: 100px" class="alert alert-success col-md-2 col-md-offset-5 text-center">{{ msg }}</div>
                     </div>
 
                 {% endfor %}

@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-    <div id="article" class="col-lg-9 main">
+    <div id="article" class="col-lg-offset-1 main">
                <h1>{{ article.title }}</h1>
                <p><span class="glyphicon glyphicon-time" data-scrollflow-start="0" data-scrollflow-distance="30" data-scrollflow-amount="200"></span>
                    Posted on {{ article.createdAt|date('Y-m-d H:i') }} by {{ article.author.firstName }} {{ article.author.lastName }}</p>
@@ -29,21 +29,21 @@
         <a href="{{ path('edit_article', {'id':article.id}) }}"> <p class="glyphicon glyphicon-pencil">edit</p></a>
         <a href="#modal" role="button" data-toggle="modal" data-target="#myModal"><p class="glyphicon glyphicon-remove-circle icon-danger">remove</p></a>
         <p class="lead">{{ article.content }}</p>
-
                          <p>Sing in to leave a comment</p>
+        <a href="{{ path('new_comment', {'id':article.id}) }}"><button class="btn btn-success">add a comment </button></a>
     </div>
         {% block topnews %}
-            {{ render(controller('AppBundle:Article:topArticles')) }}
+            {{ render(controller('AppBundle:User:authorization')) }}
         {% endblock %}
 
     <div id="comments" class="col-lg-8  scrollflow -slide-right" data-scrollflow-start="0" data-scrollflow-distance="100" data-scrollflow-amount="30">
         <h2>Comments:</h2>
         {% for comment in comments %}
             <div class="comment main">
-                <img src="{{ asset('includes/img/') }}{{ comment.author.avatar }} ">
+                <img src="{{ asset('includes/img/avatars/') }}{{ comment.author.imageName }} " height="128" width="128">
                 <blockquote>
                     <p>{{ comment.content }}</p>
-                    <small><cite>{{ comment.author.firstName }} {{ comment.author.lastName }}</cite></small>
+                    <small><cite>{{ comment.author.user.username }}</cite></small>
                 </blockquote>
                 <a href="{{ path('remove_comment', {'article':article.id, 'comment':comment.id}) }}"><p class="glyphicon glyphicon-remove-circle icon-danger">remove</p></a>
                 <p style="border-bottom: 2px solid gainsboro" class="small text-right"><span class="glyphicon glyphicon-time"></span> Posted on {{ comment.createdAt|date('Y-m-d H:i') }}</p>

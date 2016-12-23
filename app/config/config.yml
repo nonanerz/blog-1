@@ -86,3 +86,12 @@ knp_paginator:
 
 knp_doctrine_behaviors:
     timestampable:      true
+
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        product_image:
+            uri_prefix:         /images/avatars
+            upload_destination: '%kernel.root_dir%/../web/includes/img/avatars'
+            namer:              vich_uploader.namer_uniqid

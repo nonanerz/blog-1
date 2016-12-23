@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class TagRepository extends EntityRepository
 {
+    public function findByTag($tag)
+    {
+        return $this->createQueryBuilder('tag')
+            ->andWhere('tag.title = :tag')
+            ->setParameter(':tag', $tag)
+            ->leftJoin('tag.articles', 'articles')
+            ->addSelect('articles')
+            ->leftJoin('articles.author', 'author')
+            ->addSelect('author')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block main %}
+    <div class="col-lg-8 main form">
+        <h1>New Comment</h1>
+        {{ form_start(commentType) }}
+        {{ form_widget(commentType) }}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        {{ form_end(commentType) }}
+    </div>
+    {% block topnews %}
+        {{ render(controller('AppBundle:Article:topArticles')) }}
+    {% endblock %}
+{% endblock %}

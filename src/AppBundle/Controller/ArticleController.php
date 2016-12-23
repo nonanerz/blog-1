@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
-use AppBundle\Form\ArticleForm;
+use AppBundle\Form\ArticleType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,7 @@ class ArticleController extends Controller
      */
     public function newAction(Request $request)
     {
-        $form = $this->createForm(ArticleForm::class);
+        $form = $this->createForm(ArticleType::class);
 
         $form->handleRequest($request);
 
@@ -44,7 +44,7 @@ class ArticleController extends Controller
         }
 
         return $this->render(':Article:new.html.twig', [
-            'articleForm' => $form->createView(),
+            'articleType' => $form->createView(),
         ]);
     }
 
@@ -84,7 +84,7 @@ class ArticleController extends Controller
      */
     public function editAction(Request $request, Article $article)
     {
-        $form = $this->createForm(ArticleForm::class, $article);
+        $form = $this->createForm(ArticleType::class, $article);
 
         $form->handleRequest($request);
 
@@ -101,7 +101,7 @@ class ArticleController extends Controller
         }
 
         return $this->render(':Article:edit.html.twig', [
-            'articleForm' => $form->createView(),
+            'articleType' => $form->createView(),
         ]);
     }
 
@@ -133,7 +133,7 @@ class ArticleController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $article = $em->getRepository('AppBundle:Article')
-            ->findById($article);
+            ->findByIdOrderedWithJoins($article);
 
         $comments = $article->getComments();
 
@@ -200,7 +200,9 @@ class ArticleController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $tag = $em->getRepository('AppBundle:Tag')
-            ->findOneBy(['title' => $tag]);
+            ->findByTag($tag);
+
+
 
         if (!$tag) {
             throw new NotFoundHttpException();
@@ -219,4 +221,6 @@ class ArticleController extends Controller
 
         return $paginator->paginate($query, $currentPage, $perPage);
     }
+
+
 }
