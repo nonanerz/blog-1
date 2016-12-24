@@ -117,7 +117,7 @@ class CommentController extends Controller
      * @param Request $request
      * @param Article $article
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @Route("/article/{id}/newComment", name="new_comment")
+     * @Route("/articles/{id}/newComment", name="new_comment")
      */
     public function newAction(Request $request, Article $article)
     {
@@ -131,7 +131,7 @@ class CommentController extends Controller
             $comment = $form->getData();
 
             $author = $em->getRepository('AppBundle:Author')
-                ->find(13);
+                ->find(1);
 
             $comment->setAuthor($author);
 

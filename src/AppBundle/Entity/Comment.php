@@ -89,7 +89,7 @@ class Comment extends Paragraph
     }
 
     /**
-     * Set article.
+     * Set articles.
      *
      * @param \AppBundle\Entity\Article $article
      *
@@ -103,7 +103,7 @@ class Comment extends Paragraph
     }
 
     /**
-     * Get article.
+     * Get articles.
      *
      * @return \AppBundle\Entity\Article
      */

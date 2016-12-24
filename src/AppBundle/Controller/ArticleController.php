@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
 use AppBundle\Form\ArticleType;
+use AppBundle\Repository\AuthorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +33,8 @@ class ArticleController extends Controller
 
             $article = $form->getData();
 
-            $article->setAuthor($this->getUser());
+            $article->setAuthor($em->getRepository('AppBundle:Author')
+                ->find(10));
 
             $em->persist($article);
 

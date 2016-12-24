@@ -5,12 +5,16 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Knp\DoctrineBehaviors\Model as ORMBehaviors;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Article.
  *
  * @ORM\Table(name="article")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
+ * @Vich\Uploadable()
  */
 class Article extends Paragraph
 {
@@ -28,13 +32,29 @@ class Article extends Paragraph
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @var string
+     * @ORM\Column(type="string", length=255)
      */
     private $image;
+
+    /**
+     * @var
+     * @Vich\UploadableField(mapping="article_image", fileNameProperty="image")
+     * @Assert\NotBlank()
+     * @Assert\Image(
+     *     minWidth = 100,
+     *     maxWidth = 500,
+     *     minHeight = 100,
+     *     maxHeight = 500
+     * )
+     */
+    private $imageFile;
+
 
     /**
      * @var ArrayCollection
@@ -114,30 +134,6 @@ class Article extends Paragraph
     public function getContent()
     {
         return $this->content;
-    }
-
-    /**
-     * Set image.
-     *
-     * @param string $image
-     *
-     * @return Article
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    /**
-     * Get image.
-     *
-     * @return string
-     */
-    public function getImage()
-    {
-        return $this->image;
     }
 
     /**
@@ -231,4 +227,46 @@ class Article extends Paragraph
     {
         return $this->author;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param File|null $image
+     * @return $this
+     */
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        if ($image) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
 }

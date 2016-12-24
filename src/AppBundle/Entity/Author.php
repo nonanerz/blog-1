@@ -39,36 +39,46 @@ class Author
      * @Assert\Regex("/^[a-zA-Z]+$/")
      */
     private $lastName;
-    /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $imageName;
 
     /**
-     * @var
+     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     *
      * @Vich\UploadableField(mapping="avatars_image", fileNameProperty="imageName")
      *
-     * @Assert\Image(
-     *     minWidth = 200,
-     *     maxWidth = 400,
-     *     minHeight = 200,
-     *     maxHeight = 400
-     * )
+     * @var File
      */
     private $imageFile;
 
     /**
-     * @return mixed
+     * @ORM\Column(type="string", length=255)
+     *
+     * @var string
      */
-    public function getImageFile()
-    {
-        return $this->imageFile;
-    }
+    private $imageName;
+
 
     /**
-     * @param File|null $image
-     * @return $this
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User")
+     */
+    private $user;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime
+     */
+    private $updatedAt;
+
+    /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the  update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+     *
+     * @return Author
      */
     public function setImageFile(File $image = null)
     {
@@ -84,9 +94,32 @@ class Author
     }
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User")
+     * @return File|null
      */
-    private $user;
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param string $imageName
+     *
+     * @return Author
+     */
+    public function setImageName($imageName)
+    {
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getImageName()
+    {
+        return $this->imageName;
+    }
 
     /**
      * Get id.
@@ -148,21 +181,6 @@ class Author
      *
      * @return Author
      */
-    public function setImageName($imageName)
-    {
-        $this->imageName = $imageName;
-
-        return $this;
-    }
-    /**
-     * Get imageName.
-     *
-     * @return string
-     */
-    public function getImageName()
-    {
-        return $this->imageName;
-    }
 
     /**
      * Set user.

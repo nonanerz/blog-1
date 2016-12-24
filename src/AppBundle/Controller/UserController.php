@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Form\AuthorizationType;
 use AppBundle\Form\AuthorRegistrationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,7 +18,6 @@ class UserController extends Controller
      */
     public function newAction(Request $request)
     {
-        dump($request);
 
         $form = $this->createForm(AuthorRegistrationType::class);
 

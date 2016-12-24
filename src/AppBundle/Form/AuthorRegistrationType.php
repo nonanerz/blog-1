@@ -17,7 +17,7 @@ class AuthorRegistrationType extends AbstractType
     {
         $builder->add('user', UserRegistrationType::class, [
             'label' => '* - Required fields',
-            'constraints' => array(new Valid())
+            'constraints' => [new Valid()]
         ])
             ->add('firstName', TextType::class, [
             'label' => 'Name'

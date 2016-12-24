@@ -91,7 +91,11 @@ vich_uploader:
     db_driver: orm
 
     mappings:
-        product_image:
+        avatars_image:
             uri_prefix:         /images/avatars
             upload_destination: '%kernel.root_dir%/../web/includes/img/avatars'
+            namer:              vich_uploader.namer_uniqid
+        article_image:
+            uri_prefix:         /images/articles
+            upload_destination: '%kernel.root_dir%/../web/includes/img/articles'
             namer:              vich_uploader.namer_uniqid
