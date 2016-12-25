@@ -12,13 +12,11 @@ class UserController extends Controller
 {
 
     /**
-     * @param Request $request
      * @Route("/registration", name="registration")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
     {
-
         $form = $this->createForm(AuthorRegistrationType::class);
 
         $form->handleRequest($request);
@@ -28,6 +26,10 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             $author = $form->getData();
+
+            if (!$author->getImageName()){
+                $author->setImageName('avatar.png');
+            }
 
             $em->persist($author);
 

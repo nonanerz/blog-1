@@ -31,7 +31,7 @@ class Tag
 
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Article", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Article", mappedBy="tags", cascade={"persist", "remove"})
      */
     private $articles;
     /**

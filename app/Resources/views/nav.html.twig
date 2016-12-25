@@ -13,7 +13,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header"><button class="close" type="button" data-dismiss="modal">×</button>
-                    <h4 class="modal-title">Sign-in</h4>
+                    <h4 class="modal-title">Sign-Up</h4>
                     {{ render(controller('AppBundle:User:new')) }}
                 </div>
             </div>
@@ -41,14 +41,12 @@
                         <div class="lista-collapse"></div>
                         <div class="lista-collapse"></div>
                     </a>
+                    <a style="margin-top: 20px" class="pull-right" href="#modal" role="button" data-toggle="modal" data-target="#myModal"><button class="btn btn-primary">Sign In</button></a>
+                    <a style="margin-top: 20px" class="pull-right" href="#modal2" role="button" data-toggle="modal" data-target="#myModal2"><button class="btn btn-success">Sign Up</button></a>
                 </div>
             </div>
             <div class="row">
                 <ul id="menu-topo">
-                    <div style="display: inline-block">
-                        <a href="#modal" role="button" data-toggle="modal" data-target="#myModal"><button class="btn btn-primary">Sign In</button></a>
-                        <a href="#modal2" role="button" data-toggle="modal" data-target="#myModal2"><button class="btn btn-success">Sign Up</button></a>
-                    </div>
                     <li><a href="{{ path("homepage") }}">Home</a></li>
                     <li><a href="{{ path("about_me") }}">About me</a></li>
                     <li class="dropdown">

@@ -10,7 +10,6 @@ AppBundle\Entity\Author:
     lastName: <lastName()>
     user: '@user<current()>'
     imageName: 'avatar.png'
-    updatedAt: '<dateTime()>'
 
 AppBundle\Entity\Article:
   article{1..20}:

@@ -33,6 +33,10 @@ class ArticleController extends Controller
 
             $article = $form->getData();
 
+            if (!$article->getImage()){
+                $article->setImage('50708_1280x720-318x180.jpg');
+            }
+
             $article->setAuthor($em->getRepository('AppBundle:Author')
                 ->find(10));
 
@@ -99,7 +103,7 @@ class ArticleController extends Controller
 
             $this->addFlash('success', 'Changes saved!');
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
         }
 
         return $this->render(':Article:edit.html.twig', [

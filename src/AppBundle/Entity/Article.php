@@ -38,14 +38,13 @@ class Article extends Paragraph
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $image;
 
     /**
      * @var
      * @Vich\UploadableField(mapping="article_image", fileNameProperty="image")
-     * @Assert\NotBlank()
      * @Assert\Image(
      *     minWidth = 100,
      *     maxWidth = 500,
@@ -64,7 +63,7 @@ class Article extends Paragraph
     private $comments;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|$tags[]
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag", inversedBy="articles")
      */
     private $tags;

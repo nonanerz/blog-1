@@ -131,7 +131,7 @@ class CommentController extends Controller
             $comment = $form->getData();
 
             $author = $em->getRepository('AppBundle:Author')
-                ->find(1);
+                ->find(11);
 
             $comment->setAuthor($author);
 
