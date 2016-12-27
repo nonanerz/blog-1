@@ -21,8 +21,8 @@
              {% block message %}
                 {% for msg in app.session.flashBag.get('success') %}
 
-                    <div class="row">
-                        <div style="margin-top: 100px" class="alert alert-success col-md-2 col-md-offset-5 text-center">{{ msg }}</div>
+                    <div style="position: relative; top: 100px;" class="row">
+                        <div class="alert alert-success col-md-2 col-md-offset-5 text-center alert-msg">{{ msg }}</div>
                     </div>
 
                 {% endfor %}

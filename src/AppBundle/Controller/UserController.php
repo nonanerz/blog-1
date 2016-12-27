@@ -10,9 +10,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends Controller
 {
-
     /**
      * @Route("/registration", name="registration")
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
@@ -22,12 +22,11 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $em = $this->getDoctrine()->getManager();
 
             $author = $form->getData();
 
-            if (!$author->getImageName()){
+            if (!$author->getImageName()) {
                 $author->setImageName('avatar.png');
             }
 
@@ -39,8 +38,7 @@ class UserController extends Controller
 
             $this->addFlash('success', 'Registration completed');
 
-
-            return $this->redirectToRoute('homepage',[], 201);
+            return $this->redirectToRoute('homepage', [], 201);
         }
 
         return $this->render('Forms/Registration.html.twig', [
@@ -51,6 +49,7 @@ class UserController extends Controller
     /**
      * @param Request $request
      * @Route("/sign-in", name="login")
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function authorizationAction(Request $request)
@@ -60,8 +59,6 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-
         }
 
         return $this->render(':Forms:authorization.html.twig', [

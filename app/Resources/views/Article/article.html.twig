@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-        <div id="myModal" class="modal fade">
+        <div id="remove-modal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header"><button class="close" type="button" data-dismiss="modal">×</button>
@@ -26,10 +26,9 @@
         </div>
                 <hr>
         <a href="{{ path('edit_article', {'id':article.id}) }}"> <p class="glyphicon glyphicon-pencil">edit</p></a>
-        <a href="#modal" role="button" data-toggle="modal" data-target="#myModal"><p class="glyphicon glyphicon-remove-circle icon-danger">remove</p></a>
+        <a href="#modal" role="button" data-toggle="modal" data-target="#remove-modal"><p class="glyphicon glyphicon-remove-circle icon-danger">remove</p></a>
         <p class="lead">{{ article.content }}</p>
                          <p>Sing in to leave a comment</p>
-        <a href="{{ path('new_comment', {'id':article.id}) }}"><button class="btn btn-success">add a comment </button></a>
     </div>
         {% block topnews %}
             {{ render(controller('AppBundle:Article:topArticles')) }}
@@ -48,6 +47,7 @@
                 <p style="border-bottom: 2px solid gainsboro" class="small text-right"><span class="glyphicon glyphicon-time"></span> Posted on {{ comment.createdAt|date('Y-m-d H:i') }}</p>
             </div>
         {% endfor %}
+        {{ render(controller('AppBundle:Comment:new' , { 'id' : article.id })) }}
         <div class="navigation col-md-offset-4">
             {{ knp_pagination_render(comments) }}
         </div>

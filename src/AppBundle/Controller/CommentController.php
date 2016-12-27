@@ -70,7 +70,6 @@ class CommentController extends Controller
         return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
     }
 
-
     /**
      * @param Request $request
      * @param Author  $author
@@ -116,10 +115,11 @@ class CommentController extends Controller
     /**
      * @param Request $request
      * @param Article $article
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @Route("/articles/{id}/newComment", name="new_comment")
      */
-    public function newAction(Request $request, Article $article)
+    public function newAction(Request $request, Article $article = null)
     {
         $form = $this->createForm(CommentType::class);
 
@@ -131,7 +131,7 @@ class CommentController extends Controller
             $comment = $form->getData();
 
             $author = $em->getRepository('AppBundle:Author')
-                ->find(11);
+                ->find(15);
 
             $comment->setAuthor($author);
 
@@ -144,12 +144,14 @@ class CommentController extends Controller
 
             $em->flush();
 
+            $this->addFlash('success', 'New comment created');
+
             return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
         }
 
         return $this->render(':Forms:newComment.html.twig', [
             'commentType' => $form->createView(),
+            'id' => $article->getId(),
         ]);
-
     }
 }

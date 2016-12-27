@@ -17,14 +17,14 @@ class AuthorRegistrationType extends AbstractType
     {
         $builder->add('user', UserRegistrationType::class, [
             'label' => '* - Required fields',
-            'constraints' => [new Valid()]
+            'constraints' => [new Valid()],
         ])
             ->add('firstName', TextType::class, [
-            'label' => 'Name'
+            'label' => 'Name',
         ])
             ->add('lastName', TextType::class)
             ->add('imageFile', FileType::class, [
-                'label' => 'Your avatar'
+                'label' => 'Your avatar',
             ])
             ;
     }

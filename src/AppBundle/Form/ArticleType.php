@@ -3,10 +3,8 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Tag;
-use AppBundle\Repository\TagRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -22,18 +20,18 @@ class ArticleType extends AbstractType
         $builder
             ->add('title')
             ->add('content', TextareaType::class, array(
-                'attr' => array('cols' => '5', 'rows' => '10')))
-//            ->add('tagfsdfsdfs', CollectionType::class, array(
-//                'entry_type'   => TagType::class,
-//                'allow_add'    => true,
-//                'by_reference' => false,
-//            ))
-            ->add('tags', EntityType::class,[
+                'attr' => array('cols' => '5', 'rows' => '10'), ))
+            ->add('tags', CollectionType::class, array(
+                'entry_type' => TagType::class,
+                'allow_add' => true,
+                'by_reference' => false,
+            ))
+            ->add('tags', EntityType::class, [
                 'class' => Tag::class,
                 'multiple' => true,
                 'expanded' => true,
                 'label_attr' => [
-                        'class' => 'checkbox-inline']
+                        'class' => 'checkbox-inline', ],
                 ]
             )
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {

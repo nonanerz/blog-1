@@ -23,11 +23,11 @@ class UserRegistrationType extends AbstractType
                 'invalid_message' => 'The password fields must match.',
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
-                'first_options'  => ['label' => 'Password*'],
+                'first_options' => ['label' => 'Password*'],
                 'second_options' => ['label' => 'Repeat Password*'],
             ])
-            ->add('email', EmailType::class,[
-                'label' => 'E-mail*'
+            ->add('email', EmailType::class, [
+                'label' => 'E-mail*',
             ])
             ;
     }

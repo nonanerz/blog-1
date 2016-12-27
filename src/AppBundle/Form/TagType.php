@@ -17,7 +17,7 @@ class TagType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Tag::class
+            'data_class' => Tag::class,
         ]);
     }
 }

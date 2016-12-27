@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
 use AppBundle\Form\ArticleType;
-use AppBundle\Repository\AuthorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +32,7 @@ class ArticleController extends Controller
 
             $article = $form->getData();
 
-            if (!$article->getImage()){
+            if (!$article->getImage()) {
                 $article->setImage('50708_1280x720-318x180.jpg');
             }
 
@@ -208,8 +207,6 @@ class ArticleController extends Controller
         $tag = $em->getRepository('AppBundle:Tag')
             ->findByTag($tag);
 
-
-
         if (!$tag) {
             throw new NotFoundHttpException();
         }
@@ -227,6 +224,4 @@ class ArticleController extends Controller
 
         return $paginator->paginate($query, $currentPage, $perPage);
     }
-
-
 }

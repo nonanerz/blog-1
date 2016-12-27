@@ -7,7 +7,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-
 /**
  * Author.
  *
@@ -41,7 +40,6 @@ class Author
     private $lastName;
 
     /**
-     *
      * @Vich\UploadableField(mapping="avatars_image", fileNameProperty="imageName")
      * @Assert\Image(
      *     minWidth = 100,
@@ -57,6 +55,7 @@ class Author
      *          "image/jpg",
      *      }
      * )
+     *
      * @var File
      */
     private $imageFile;
@@ -67,7 +66,6 @@ class Author
      * @var string
      */
     private $imageName;
-
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\User")

@@ -109,7 +109,7 @@ class Tag
         return $this->articles;
     }
 
-    function __toString()
+    public function __toString()
     {
         return $this->title;
     }

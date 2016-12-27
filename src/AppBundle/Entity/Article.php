@@ -54,7 +54,6 @@ class Article extends Paragraph
      */
     private $imageFile;
 
-
     /**
      * @var ArrayCollection
      * @ORM\OrderBy({"createdAt" = "DESC"})
@@ -73,8 +72,8 @@ class Article extends Paragraph
      */
     public function __construct()
     {
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -237,6 +236,7 @@ class Article extends Paragraph
 
     /**
      * @param File|null $image
+     *
      * @return $this
      */
     public function setImageFile(File $image = null)
@@ -267,5 +267,4 @@ class Article extends Paragraph
     {
         $this->image = $image;
     }
-
 }
