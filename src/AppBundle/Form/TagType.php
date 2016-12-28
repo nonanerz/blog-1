@@ -18,6 +18,7 @@ class TagType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Tag::class,
+            'attr' => ['novalidate' => 'novalidate'],
         ]);
     }
 }

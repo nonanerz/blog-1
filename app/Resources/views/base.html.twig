@@ -19,6 +19,15 @@
     <div class="container">
         <!--flash msg-->
              {% block message %}
+
+                 {% for msg in app.session.flashBag.get('failure') %}
+
+                     <div style="position: relative; top: 100px;" class="row">
+                         <div class="alert alert-danger col-md-2 col-md-offset-5 text-center alert-msg">{{ msg }}</div>
+                     </div>
+
+                 {% endfor %}
+
                 {% for msg in app.session.flashBag.get('success') %}
 
                     <div style="position: relative; top: 100px;" class="row">

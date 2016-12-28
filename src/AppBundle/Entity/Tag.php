@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Tag.
@@ -26,6 +27,10 @@ class Tag
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=50)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min="3",max="15")
+     * @Assert\Regex(pattern="/^[a-zA-Z\-_]{0,15}$/")
      */
     private $title;
 

@@ -14,7 +14,7 @@
             <div class="modal-content">
                 <div class="modal-header"><button class="close" type="button" data-dismiss="modal">×</button>
                     <h4 class="modal-title">Sign-Up</h4>
-                    {{ render(controller('AppBundle:User:new')) }}
+                    {{ render(controller('AppBundle:User:new', {'action': path('registration')})) }}
                 </div>
             </div>
         </div>

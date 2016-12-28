@@ -3,14 +3,15 @@
 
 {% block main %}
     <div class="col-lg-8 main form">
-        <h1>New article</h1>
-        {{ form_start(articleType) }}
-        {{ form_widget(articleType) }}
-        <div>
-            <a class="glyphicon glyphicon-tag" href="{{ path('new_tag') }}">+</a>
-        </div>
+        <h2>Tags already exists</h2>
+        {% for tag in tags %}
+            <span class="label label-info ">{{ tag }}</span>
+        {% endfor %}
+        <h2>New tag</h2>
+        {{ form_start(Form) }}
+        {{ form_widget(Form) }}
         <button type="submit" class="btn btn-primary">Сохранить</button>
-        {{ form_end(articleType) }}
+        {{ form_end(Form) }}
     </div>
         {% block topnews %}
             {{ render(controller('AppBundle:Article:topArticles')) }}

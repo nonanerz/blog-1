@@ -37,7 +37,7 @@ class ArticleController extends Controller
             }
 
             $article->setAuthor($em->getRepository('AppBundle:Author')
-                ->find(10));
+                ->find(16));
 
             $em->persist($article);
 
@@ -182,7 +182,9 @@ class ArticleController extends Controller
         $result = $this->getDoctrine()->getManager()->getRepository('AppBundle:Article')
             ->search($request->query->get('q'));
         if (!$result) {
-            throw new NotFoundHttpException('Nothing to show');
+            $this->addFlash('failure', 'Nothing found');
+
+            return $this->listAction($request);
         } else {
             $pagination = $this->pagination($result, $request->query->getInt('page', $page), 5);
         }
@@ -218,6 +220,12 @@ class ArticleController extends Controller
         ]);
     }
 
+    /**
+     * @param $query
+     * @param $currentPage
+     * @param $perPage
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
     private function pagination($query, $currentPage, $perPage)
     {
         $paginator = $this->get('knp_paginator');
