@@ -5,10 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Author;
 use AppBundle\Entity\Comment;
-use AppBundle\Form\CommentType;
-use AppBundle\Form\DeleteCommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,30 +36,31 @@ class CommentController extends Controller
         ]);
     }
 
-
     /**
      * @param Request $request
      * @param Comment $comment
      * @param Article $article
      * @Route("/remove_comment/{article}/{comment}", name="remove_comment")
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function deleteAction(Request $request, Comment $comment, Article $article)
     {
         $form = $this->get('app.form_manager')
-            ->removeComment($request, $comment, $article);
+            ->removeCommentForm($request, $comment, $article);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($comment);
             $em->flush();
+
             return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
         }
+
         return $this->render(':Forms:deleteComment.html.twig', [
-            'deleteCommentForm' => $form->createView()
+            'deleteCommentForm' => $form->createView(),
         ]);
     }
-
 
     /**
      * @param Request $request
@@ -92,6 +90,4 @@ class CommentController extends Controller
             'comments' => $pagination,
         ]);
     }
-
-
 }

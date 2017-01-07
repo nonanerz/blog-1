@@ -2,7 +2,6 @@
 
 namespace AppBundle\Twig;
 
-
 use AppBundle\Entity\Author;
 
 class AppExtension extends \Twig_Extension
@@ -15,17 +14,16 @@ class AppExtension extends \Twig_Extension
         );
     }
 
-
     public function fullname(Author $author)
     {
-        return $author->getFirstName() . ' ' . $author->getLastName();
+        return $author->getFirstName().' '.$author->getLastName();
     }
 
     public function preview($str)
     {
         $str = substr($str, 0, 255);
 
-        return $str . '...';
+        return trim($str).'...';
     }
 
     public function getName()

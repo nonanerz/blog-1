@@ -13,6 +13,7 @@ class TagController extends Controller
     /**
      * @param Request $request
      * @Route("/article/new/tag", name="new_tag")
+     *
      * @return Response
      */
     public function createNewAction(Request $request)
@@ -40,7 +41,7 @@ class TagController extends Controller
 
         return $this->render(':Forms:Tag.html.twig', [
             'Form' => $form->createView(),
-            'tags' => $tags
+            'tags' => $tags,
         ]);
     }
 }

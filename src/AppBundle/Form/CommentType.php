@@ -14,7 +14,7 @@ class CommentType extends AbstractType
     {
         $builder->add('content', TextareaType::class, [
             'attr' => ['cols' => '5', 'rows' => '10'],
-            'label' => 'leave your comment below'
+            'label' => 'leave your comment below',
         ])
         ;
     }

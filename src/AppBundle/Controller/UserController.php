@@ -15,6 +15,7 @@ class UserController extends Controller
     /**
      * @param Request $request
      * @Route("/registration", name="registration")
+     *
      * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
@@ -51,6 +52,7 @@ class UserController extends Controller
     /**
      * @param Request $request
      * @Route("/sign-in", name="login")
+     *
      * @return Response
      */
     public function authorizationAction(Request $request)

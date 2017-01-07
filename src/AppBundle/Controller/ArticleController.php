@@ -24,34 +24,14 @@ class ArticleController extends Controller
      */
     public function newAction(Request $request)
     {
-        $form = $this->createForm(ArticleType::class);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $article = $form->getData();
-
-            if (!$article->getImage()) {
-                $article->setImage('50708_1280x720-318x180.jpg');
-            }
-
-            $article->setAuthor($em->getRepository('AppBundle:Author')
-                ->find(11));
-
-            $em->persist($article);
-
-            $em->flush();
-
-            $this->get('app.notifier')
-                ->newArticleNotify($article, $article->getAuthor());
-
-            return $this->redirectToRoute('homepage');
+        $result = $this->get('app.form_manager')
+            ->createArticleForm($request);
+        if (!$result instanceof Form) {
+            return $this->redirect($result);
         }
 
         return $this->render(':Article:new.html.twig', [
-            'articleType' => $form->createView(),
+            'articleType' => $result->createView(),
         ]);
     }
 
@@ -92,27 +72,14 @@ class ArticleController extends Controller
      */
     public function editAction(Request $request, Article $article)
     {
-        $form = $this->createForm(ArticleType::class, $article);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $article = $form->getData();
-
-            $em = $this->getDoctrine()->getManager();
-
-            $em->persist($article);
-
-            $em->flush();
-
-            $this->get('app.notifier')
-                ->editArticleNotify();
-
-            return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
+        $result = $this->get('app.form_manager')
+            ->createArticleForm($request, $article);
+        if (!$result instanceof Form) {
+            return $this->redirect($result);
         }
 
-        return $this->render(':Article:edit.html.twig', [
-            'articleType' => $form->createView(),
+        return $this->render(':Article:new.html.twig', [
+            'articleType' => $result->createView(),
         ]);
     }
 
@@ -134,18 +101,19 @@ class ArticleController extends Controller
             throw new NotFoundHttpException('Article is not exist!');
         }
 
-        $newCommentForm = $this->get('app.form_manager')
+        $result = $this->get('app.form_manager')
             ->newCommentForm($request, $article);
 
         $removeArticleForm = $this->get('app.form_manager')
-            ->removeArticle($request, $article);
+            ->removeArticleForm($request);
 
         if ($removeArticleForm->isSubmitted() && $removeArticleForm->isValid()) {
             $em->remove($article);
             $em->flush();
+
             return $this->redirectToRoute('homepage');
-        }elseif (!$newCommentForm instanceof Form){
-            return $this->redirect($newCommentForm);
+        } elseif (!$result instanceof Form) {
+            return $this->redirect($result);
         }
 
         $comments = $article->getComments();
@@ -156,8 +124,8 @@ class ArticleController extends Controller
         return $this->render('Article/article.html.twig', [
             'article' => $article,
             'comments' => $pagination,
-            'commentType' => $newCommentForm->createView(),
-            'removeArticleType' => $removeArticleForm->createView()
+            'commentType' => $result->createView(),
+            'removeArticleType' => $removeArticleForm->createView(),
         ]);
     }
 
@@ -178,8 +146,10 @@ class ArticleController extends Controller
 
     /**
      * @Route("/search", name="search")
+     *
      * @param Request $request
      * @param int     $page
+     *
      * @return Response
      */
     public function searchAction(Request $request, $page = 1)
@@ -229,6 +199,7 @@ class ArticleController extends Controller
     /**
      * @param Article $article
      * @Route("/article/{id}/like", name="article_like")
+     *
      * @return Response
      */
     public function likeAction(Article $article)
@@ -238,6 +209,7 @@ class ArticleController extends Controller
         $article->setVoices($voices + 1);
         $em->persist($article);
         $em->flush();
+
         return new Response($article->getVoices());
     }
 }
