@@ -28,6 +28,7 @@ class Author
      * @var string
      *
      * @ORM\Column(name="firstName", type="string", length=100, nullable=true)
+     * @Assert\NotBlank()
      * @Assert\Regex("/^[a-zA-Z]+$/")
      */
     private $firstName;
@@ -35,6 +36,7 @@ class Author
      * @var string
      *
      * @ORM\Column(name="lastName", type="string", length=100, nullable=true)
+     * @Assert\NotBlank()
      * @Assert\Regex("/^[a-zA-Z]+$/")
      */
     private $lastName;

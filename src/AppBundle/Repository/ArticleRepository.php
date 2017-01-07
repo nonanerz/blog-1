@@ -26,7 +26,18 @@ class ArticleRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findByIdOrderedWithJoins($id)
+    public function findTopFive()
+    {
+        return $this->createQueryBuilder('article')
+            ->leftJoin('article.author', 'author')
+            ->addSelect('author')
+            ->setMaxResults(5)
+            ->orderBy('article.voices', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByIdWithJoins($id)
     {
         return $this->createQueryBuilder('article')
             ->andWhere('article.id = :id')

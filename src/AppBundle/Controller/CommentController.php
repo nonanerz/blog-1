@@ -6,7 +6,9 @@ use AppBundle\Entity\Article;
 use AppBundle\Entity\Author;
 use AppBundle\Entity\Comment;
 use AppBundle\Form\CommentType;
+use AppBundle\Form\DeleteCommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,21 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 class CommentController extends Controller
 {
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showAllAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $comments = $em->getRepository('AppBundle:Comment')
-            ->findAll();
-
-        return $this->render('Comment/comment.html.twig', [
-            'comments' => $comments,
-        ]);
-    }
-
-    /**
      * @param Request $request
      * @param int     $page
      * @Route("/admin/comments/{page}", name="check_comments")
@@ -43,32 +30,39 @@ class CommentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $pagination = $this->pagination($em->getRepository('AppBundle:Comment')
-            ->findAllOrdered(), $request->query->getInt('page', $page), 10);
+        $pagination = $this->get('knp_paginator')
+            ->paginate($em->getRepository('AppBundle:Comment')
+                ->findAllOrdered(), $request->query->getInt('page', $page), 10);
 
         return $this->render('Admin/comments.html.twig', [
             'comments' => $pagination,
         ]);
     }
 
-    /**
-     * @param Article $article
-     * @param Comment $comment
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @Route("/remove_comment/{article}/{comment}", name="remove_comment")
-     */
-    public function removeAction(Article $article, Comment $comment)
-    {
-        $article->getComments()->removeElement($comment);
-        $comment->setArticle(null);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($article);
-        $em->persist($comment);
-        $em->flush();
 
-        return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
+    /**
+     * @param Request $request
+     * @param Comment $comment
+     * @param Article $article
+     * @Route("/remove_comment/{article}/{comment}", name="remove_comment")
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function deleteAction(Request $request, Comment $comment, Article $article)
+    {
+        $form = $this->get('app.form_manager')
+            ->removeComment($request, $comment, $article);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($comment);
+            $em->flush();
+            return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
+        }
+        return $this->render(':Forms:deleteComment.html.twig', [
+            'deleteCommentForm' => $form->createView()
+        ]);
     }
+
 
     /**
      * @param Request $request
@@ -91,67 +85,13 @@ class CommentController extends Controller
 
         $page = $request->query->getInt('page', $page);
 
-        $pagination = $this->pagination($comments, $page, 10);
+        $pagination = $this->get('knp_paginator')
+            ->paginate($comments, $page, 10);
 
         return $this->render('Admin/comments.html.twig', [
             'comments' => $pagination,
         ]);
     }
 
-    /**
-     * @param $query
-     * @param $currentPage
-     * @param $perPage
-     *
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface
-     */
-    public function pagination($query, $currentPage, $perPage)
-    {
-        $paginator = $this->get('knp_paginator');
 
-        return $paginator->paginate($query, $currentPage, $perPage);
-    }
-
-    /**
-     * @param Request $request
-     * @param Article $article
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @Route("/articles/{id}/newComment", name="new_comment")
-     */
-    public function newAction(Request $request, Article $article = null)
-    {
-        $form = $this->createForm(CommentType::class);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $comment = $form->getData();
-
-            $author = $em->getRepository('AppBundle:Author')
-                ->find(1);
-
-            $comment->setAuthor($author);
-
-            $comment->setArticle($article);
-
-            $article->addComment($comment);
-
-            $em->persist($article);
-            $em->persist($comment);
-
-            $em->flush();
-
-            $this->addFlash('success', 'New comment created');
-
-            return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
-        }
-
-        return $this->render(':Forms:newComment.html.twig', [
-            'commentType' => $form->createView(),
-            'id' => $article->getId(),
-        ]);
-    }
 }

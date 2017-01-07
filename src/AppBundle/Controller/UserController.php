@@ -7,13 +7,15 @@ use AppBundle\Form\AuthorRegistrationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
     /**
+     * @param Request $request
      * @Route("/registration", name="registration")
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
@@ -49,8 +51,7 @@ class UserController extends Controller
     /**
      * @param Request $request
      * @Route("/sign-in", name="login")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function authorizationAction(Request $request)
     {
@@ -68,7 +69,7 @@ class UserController extends Controller
     /**
      * @Route("/about", name="about_me")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function aboutMeAction()
     {
@@ -76,7 +77,7 @@ class UserController extends Controller
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @Route("/admin/checkUsers", name="check_users")
      */
     public function usersListAction()

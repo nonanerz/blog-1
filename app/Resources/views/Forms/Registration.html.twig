@@ -1,5 +1,10 @@
+{% extends 'base.html.twig' %}
 
-{{ form_start(userType) }}
-        {{ form_widget(userType) }}
-        <button type="submit" class="btn btn-primary">Сохранить</button>
-{{ form_end(userType) }}
+{% block main %}
+        <div class="col-lg-12 form">
+                {{ form_start(userType) }}
+                        {{ form_widget(userType) }}
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                {{ form_end(userType) }}
+        </div>
+{% endblock %}

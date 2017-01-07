@@ -1,24 +1,4 @@
 {% block nav %}
-    <div id="myModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header"><button class="close" type="button" data-dismiss="modal">×</button>
-                    <h4 class="modal-title">Sign-in</h4>
-                    {{ render(controller('AppBundle:User:authorization')) }}
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="myModal2" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header"><button class="close" type="button" data-dismiss="modal">×</button>
-                    <h4 class="modal-title">Sign-Up</h4>
-                    {{ render(controller('AppBundle:User:new', {'action': path('registration')})) }}
-                </div>
-            </div>
-        </div>
-    </div>
     <div id="topo">
         <div class="container">
             <div class="row">
@@ -41,8 +21,8 @@
                         <div class="lista-collapse"></div>
                         <div class="lista-collapse"></div>
                     </a>
-                    <a style="margin-top: 20px" class="pull-right" href="#modal" role="button" data-toggle="modal" data-target="#myModal"><button class="btn btn-primary">Sign In</button></a>
-                    <a style="margin-top: 20px" class="pull-right" href="#modal2" role="button" data-toggle="modal" data-target="#myModal2"><button class="btn btn-success">Sign Up</button></a>
+                    <a style="margin-top: 20px" href="{{ path('registration') }}"><button class="btn btn-primary">Sign Up</button></a>
+                    <a style="margin-top: 20px" href="{{ path('login') }}"><button class="btn btn-success">Sign In</button></a>
                 </div>
             </div>
             <div class="row">

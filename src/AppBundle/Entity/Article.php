@@ -68,6 +68,27 @@ class Article extends Paragraph
     private $tags;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $voices = 0;
+
+    /**
+     * @return mixed
+     */
+    public function getVoices()
+    {
+        return $this->voices;
+    }
+
+    /**
+     * @param mixed $voices
+     */
+    public function setVoices($voices)
+    {
+        $this->voices = $voices;
+    }
+
+    /**
      * Constructor.
      */
     public function __construct()

@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Article;
 use AppBundle\Form\ArticleType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -37,13 +38,14 @@ class ArticleController extends Controller
             }
 
             $article->setAuthor($em->getRepository('AppBundle:Author')
-                ->find(16));
+                ->find(11));
 
             $em->persist($article);
 
             $em->flush();
 
-            $this->addFlash('success', 'New article was created!');
+            $this->get('app.notifier')
+                ->newArticleNotify($article, $article->getAuthor());
 
             return $this->redirectToRoute('homepage');
         }
@@ -72,8 +74,9 @@ class ArticleController extends Controller
             throw new NotFoundHttpException('Noooo!');
         }
 
-        $pagination = $this->pagination($articles,
-            $request->query->getInt('page', $page), 5);
+        $pagination = $this->get('knp_paginator')
+            ->paginate($articles,
+                $request->query->getInt('page', $page), 5);
 
         return $this->render('Article/list.html.twig', [
         'articles' => $pagination,
@@ -94,13 +97,16 @@ class ArticleController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $article = $form->getData();
+
             $em = $this->getDoctrine()->getManager();
 
-            $em->persist($form->getData());
+            $em->persist($article);
 
             $em->flush();
 
-            $this->addFlash('success', 'Changes saved!');
+            $this->get('app.notifier')
+                ->editArticleNotify();
 
             return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
         }
@@ -108,21 +114,6 @@ class ArticleController extends Controller
         return $this->render(':Article:edit.html.twig', [
             'articleType' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @param $article
-     * @Route("article/{id}/remove", name="remove_article", requirements={"id": "\d+"})
-     *
-     * @return Response
-     */
-    public function removeAction(Article $article)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($article);
-        $em->flush();
-
-        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -138,19 +129,35 @@ class ArticleController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $article = $em->getRepository('AppBundle:Article')
-            ->findByIdOrderedWithJoins($article);
-
-        $comments = $article->getComments();
-
+            ->findByIdWithJoins($article);
         if (!$article) {
             throw new NotFoundHttpException('Article is not exist!');
         }
 
-        $pagination = $this->pagination($comments, $request->query->getInt('page', $page), 5);
+        $newCommentForm = $this->get('app.form_manager')
+            ->newCommentForm($request, $article);
+
+        $removeArticleForm = $this->get('app.form_manager')
+            ->removeArticle($request, $article);
+
+        if ($removeArticleForm->isSubmitted() && $removeArticleForm->isValid()) {
+            $em->remove($article);
+            $em->flush();
+            return $this->redirectToRoute('homepage');
+        }elseif (!$newCommentForm instanceof Form){
+            return $this->redirect($newCommentForm);
+        }
+
+        $comments = $article->getComments();
+
+        $pagination = $this->get('knp_paginator')
+            ->paginate($comments, $request->query->getInt('page', $page), 5);
 
         return $this->render('Article/article.html.twig', [
             'article' => $article,
             'comments' => $pagination,
+            'commentType' => $newCommentForm->createView(),
+            'removeArticleType' => $removeArticleForm->createView()
         ]);
     }
 
@@ -162,7 +169,7 @@ class ArticleController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $articles = $em->getRepository('AppBundle:Article')
-           ->findLastFive();
+           ->findTopFive();
 
         return $this->render(':Article:top.html.twig', [
             'articles' => $articles,
@@ -171,10 +178,8 @@ class ArticleController extends Controller
 
     /**
      * @Route("/search", name="search")
-     *
      * @param Request $request
      * @param int     $page
-     *
      * @return Response
      */
     public function searchAction(Request $request, $page = 1)
@@ -186,7 +191,8 @@ class ArticleController extends Controller
 
             return $this->listAction($request);
         } else {
-            $pagination = $this->pagination($result, $request->query->getInt('page', $page), 5);
+            $pagination = $this->get('knp_paginator')
+                ->paginate($result, $request->query->getInt('page', $page), 5);
         }
 
         return $this->render('Article/list.html.twig', [
@@ -212,8 +218,8 @@ class ArticleController extends Controller
         if (!$tag) {
             throw new NotFoundHttpException();
         }
-
-        $pagination = $this->pagination($tag->getArticles(), $request->query->getInt('page', $page), 5);
+        $pagination = $this->get('knp_paginator')
+            ->paginate($tag->getArticles(), $request->query->getInt('page', $page), 5);
 
         return $this->render('Article/list.html.twig', [
             'articles' => $pagination,
@@ -221,15 +227,17 @@ class ArticleController extends Controller
     }
 
     /**
-     * @param $query
-     * @param $currentPage
-     * @param $perPage
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     * @param Article $article
+     * @Route("/article/{id}/like", name="article_like")
+     * @return Response
      */
-    private function pagination($query, $currentPage, $perPage)
+    public function likeAction(Article $article)
     {
-        $paginator = $this->get('knp_paginator');
-
-        return $paginator->paginate($query, $currentPage, $perPage);
+        $em = $this->getDoctrine()->getManager();
+        $voices = $article->getVoices();
+        $article->setVoices($voices + 1);
+        $em->persist($article);
+        $em->flush();
+        return new Response($article->getVoices());
     }
 }

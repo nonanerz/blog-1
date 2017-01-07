@@ -17,7 +17,7 @@ AppBundle\Entity\Article:
     content: <realText(1000)>
     image: '50%? 50708_1280x720-318x180.jpg : om160617-133-318x160.jpg'
     createdAt: '<dateTimeBetween("-200 days", "now")>'
-    updatedAt: '30%? <dateTimeBetween("-200 days", "now")>'
+    updatedAt: '<dateTimeBetween("-200 days", "now")>'
     tags: '@tag{<numberBetween(1, 10)>..<numberBetween(1, 10)>}'
     author: '@author*'
 
