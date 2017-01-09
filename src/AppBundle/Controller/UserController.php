@@ -3,12 +3,12 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Form\AuthorizationType;
-use AppBundle\Form\AuthorRegistrationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Form;
 
 class UserController extends Controller
 {
@@ -20,32 +20,16 @@ class UserController extends Controller
      */
     public function newAction(Request $request)
     {
-        $form = $this->createForm(AuthorRegistrationType::class);
+        $newUserResult = $this->get('app.form_manager')
+            ->createNewUserForm($request);
 
-        $form->handleRequest($request);
+        if (!$newUserResult instanceof Form) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $author = $form->getData();
-
-            if (!$author->getImageName()) {
-                $author->setImageName('avatar.png');
-            }
-
-            $em->persist($author);
-
-            $em->persist($author->getUser());
-
-            $em->flush();
-
-            $this->addFlash('success', 'Registration completed');
-
-            return $this->redirectToRoute('homepage', [], 201);
+            return $this->redirect($newUserResult);
         }
 
         return $this->render('Forms/Registration.html.twig', [
-            'userType' => $form->createView(),
+            'userType' => $newUserResult->createView(),
         ]);
     }
 

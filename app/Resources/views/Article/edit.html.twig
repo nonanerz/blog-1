@@ -1,17 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends ':Article:new.html.twig' %}
+
+{% block header %} <h1>Edit article</h1> {% endblock %}
 
 
-{% block main %}
-    <div class="col-lg-9 main">
-        <h1>Edit article</h1>
-        {{ form_start(articleType) }}
-        {{ form_widget(articleType) }}
-        <button type="submit" class="btn btn-primary">Сохранить</button>
-        {{ form_end(articleType) }}
-    </div>
 
-        {% block topnews %}
-            {{ render(controller('AppBundle:Article:topArticles')) }}
-        {% endblock %}
 
-{% endblock %}
+

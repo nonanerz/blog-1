@@ -10,7 +10,13 @@ class AppExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter('fullname', array($this, 'fullname')),
-            new \Twig_SimpleFilter('preview', array($this, 'preview')),
+        );
+    }
+
+    public function getFunctions()
+    {
+        return array(
+            new \Twig_SimpleFunction('preview', array($this, 'preview'), array('is_safe' => array('html'))),
         );
     }
 
@@ -19,11 +25,13 @@ class AppExtension extends \Twig_Extension
         return $author->getFirstName().' '.$author->getLastName();
     }
 
-    public function preview($str)
+    public function preview($str, $length = 30)
     {
-        $str = substr($str, 0, 255);
+        $words = explode(' ', ($str));
+        return implode(' ', array_slice($words, 0, $length)) . '...';
 
-        return trim($str).'...';
+
+
     }
 
     public function getName()

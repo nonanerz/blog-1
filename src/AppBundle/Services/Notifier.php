@@ -69,4 +69,14 @@ class Notifier
     public function removeArticleNotify()
     {
     }
+
+    public function newTagNotify()
+    {
+        $this->flashBag->add('success', 'New tag has been created');
+    }
+
+    public function newUserNotify()
+    {
+        $this->flashBag->add('success', 'Registration completed');
+    }
 }

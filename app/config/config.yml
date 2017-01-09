@@ -101,3 +101,5 @@ vich_uploader:
             uri_prefix:         /images/articles
             upload_destination: '%kernel.root_dir%/../web/includes/img/articles'
             namer:              vich_uploader.namer_uniqid
+
+            delete_on_remove:   false

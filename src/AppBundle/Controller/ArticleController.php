@@ -78,7 +78,7 @@ class ArticleController extends Controller
             return $this->redirect($result);
         }
 
-        return $this->render(':Article:new.html.twig', [
+        return $this->render(':Article:edit.html.twig', [
             'articleType' => $result->createView(),
         ]);
     }
@@ -97,23 +97,21 @@ class ArticleController extends Controller
 
         $article = $em->getRepository('AppBundle:Article')
             ->findByIdWithJoins($article);
+
         if (!$article) {
             throw new NotFoundHttpException('Article is not exist!');
         }
 
-        $result = $this->get('app.form_manager')
+        $newCommentResult = $this->get('app.form_manager')
             ->newCommentForm($request, $article);
 
-        $removeArticleForm = $this->get('app.form_manager')
-            ->removeArticleForm($request);
+        $removeArticleResult = $this->get('app.form_manager')
+            ->removeArticleForm($request, $article);
 
-        if ($removeArticleForm->isSubmitted() && $removeArticleForm->isValid()) {
-            $em->remove($article);
-            $em->flush();
-
-            return $this->redirectToRoute('homepage');
-        } elseif (!$result instanceof Form) {
-            return $this->redirect($result);
+        if (!$removeArticleResult instanceof Form) {
+            return $this->redirect($removeArticleResult);
+        } elseif (!$newCommentResult instanceof Form) {
+            return $this->redirect($newCommentResult);
         }
 
         $comments = $article->getComments();
@@ -124,8 +122,8 @@ class ArticleController extends Controller
         return $this->render('Article/article.html.twig', [
             'article' => $article,
             'comments' => $pagination,
-            'commentType' => $result->createView(),
-            'removeArticleType' => $removeArticleForm->createView(),
+            'commentType' => $newCommentResult->createView(),
+            'removeArticleType' => $removeArticleResult->createView(),
         ]);
     }
 

@@ -3,7 +3,7 @@
 
 {% block main %}
     <div class="col-lg-8 main form">
-        <h1>New article</h1>
+        {% block header %}<h1>New article</h1>{% endblock %}
         {{ form_start(articleType) }}
         {{ form_widget(articleType) }}
         <div>
