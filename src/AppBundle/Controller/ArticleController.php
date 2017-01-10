@@ -110,7 +110,8 @@ class ArticleController extends Controller
 
         if (!$removeArticleResult instanceof Form) {
             return $this->redirect($removeArticleResult);
-        } elseif (!$newCommentResult instanceof Form) {
+        }
+        if (!$newCommentResult instanceof Form) {
             return $this->redirect($newCommentResult);
         }
 
