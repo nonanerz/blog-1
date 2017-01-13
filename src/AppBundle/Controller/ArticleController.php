@@ -18,8 +18,7 @@ class ArticleController extends Controller
 {
     /**
      * @param $request
-     * @Route("/article/new", name="new_article")
-     *
+     * @Route("/admin/article/new", name="new_article")
      * @return Response
      */
     public function newAction(Request $request)
@@ -66,7 +65,7 @@ class ArticleController extends Controller
     /**
      * @param $request
      * @param $article
-     * @Route("/article/{id}/edit", name="edit_article")
+     * @Route("/admin/article/{id}/edit", name="edit_article")
      *
      * @return Response
      */

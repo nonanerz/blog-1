@@ -13,7 +13,7 @@ class TagController extends Controller
 {
     /**
      * @param Request $request
-     * @Route("/article/new/tag", name="new_tag")
+     * @Route("/admin/article/new/tag", name="new_tag")
      *
      * @return Response
      */

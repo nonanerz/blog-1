@@ -5,7 +5,8 @@
         <h1>Sign in</h1>
         {{ form_start(authorizationType) }}
         {{ form_widget(authorizationType) }}
-        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <button type="submit" class="btn btn-success">Login</button>
+        <a href="{{ path('registration') }}"><small class="text-muted">Registration</small></a>
         {{ form_end(authorizationType) }}
 </div>
 {% endblock %}

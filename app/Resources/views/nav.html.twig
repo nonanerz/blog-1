@@ -3,6 +3,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-ms-6 col-xs-6" id="logo-topo">
+                    <a href="{{ path('homepage') }}"><img src="{{ asset('includes/img/logo.png') }}"></a>
+
                     <div class="col-sm-5 col-md-5">
                         <form class="navbar-form" role="search" action="{{ path('search') }}">
                             <div class="input-group">
@@ -13,7 +15,9 @@
                             </div>
                         </form>
                     </div>
-                    <a href="{{ path('homepage') }}"><img src="{{ asset('includes/img/logo.png') }}"></a>
+                    <a style="margin-top: 20px" class="btn btn-success" href="{{ path('login') }}">
+                        <span class="glyphicon glyphicon-user"></span>Login
+                    </a>
                 </div>
                 <div class="col-md-6 col-ms-6 col-xs-6" id="abre-menu-topo">
                     <a href="#" class="btn-collapse">
@@ -21,8 +25,6 @@
                         <div class="lista-collapse"></div>
                         <div class="lista-collapse"></div>
                     </a>
-                    <a style="margin-top: 20px" href="{{ path('registration') }}"><button class="btn btn-primary">Sign Up</button></a>
-                    <a style="margin-top: 20px" href="{{ path('login') }}"><button class="btn btn-success">Sign In</button></a>
                 </div>
             </div>
             <div class="row">
