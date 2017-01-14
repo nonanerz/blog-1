@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class Forms
 {
@@ -19,16 +20,20 @@ class Forms
     protected $doctrine;
     protected $router;
     protected $notifier;
+    private $tokenStorage;
 
     public function __construct(FormFactoryInterface $formFactory,
                                 RegistryInterface $doctrine,
                                 RouterInterface $router,
-                                Notifier $notifier)
+                                Notifier $notifier,
+                                TokenStorageInterface $tokenStorage
+    )
     {
         $this->formFactory = $formFactory;
         $this->doctrine = $doctrine;
         $this->router = $router;
         $this->notifier = $notifier;
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function createArticleForm(Request $request, Article $article = null)
@@ -46,8 +51,11 @@ class Forms
                 $article->setImage('50708_1280x720-318x180.jpg');
             }
 
-            $article->setAuthor($em->getRepository('AppBundle:Author')
-                ->find(1));
+            $article->setAuthor($this->tokenStorage
+                ->getToken()
+                ->getUser()
+                ->getAuthor()
+            );
 
             $em->persist($article);
 
@@ -73,8 +81,7 @@ class Forms
 
             $comment = $form->getData();
 
-            $author = $em->getRepository('AppBundle:Author')
-                ->find(1);
+            $author = $this->tokenStorage->getToken()->getUser()->getAuthor();
 
             $comment->setAuthor($author);
 
@@ -163,13 +170,9 @@ class Forms
 
             $author = $form->getData();
 
-            if (!$author->getImageName()) {
-                $author->setImageName('avatar.png');
-            }
-
             $em->persist($author);
 
-            $em->persist($author->getUser());
+            $em->persist($author->getUser()->setRoles('ROLE_USER'));
 
             $em->flush();
 

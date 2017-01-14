@@ -24,4 +24,10 @@ abstract class Paragraph
      * @Assert\NotBlank()
      */
     protected $content;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $isPublished = false;
+
 }

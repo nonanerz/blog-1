@@ -95,7 +95,7 @@ class Comment extends Paragraph
      *
      * @return Comment
      */
-    public function setArticle(\AppBundle\Entity\Article $article = null)
+    public function setArticle(Article $article = null)
     {
         $this->article = $article;
 
@@ -111,4 +111,21 @@ class Comment extends Paragraph
     {
         return $this->article;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIsPublished()
+    {
+        return $this->isPublished;
+    }
+
+    /**
+     * @param mixed $isPublished
+     */
+    public function setIsPublished($isPublished)
+    {
+        $this->isPublished = $isPublished;
+    }
+
 }

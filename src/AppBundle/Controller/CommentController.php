@@ -46,6 +46,7 @@ class CommentController extends Controller
      */
     public function deleteAction(Request $request, Comment $comment, Article $article)
     {
+
         $form = $this->get('app.form_manager')
             ->removeCommentForm($request, $comment, $article);
 
@@ -89,5 +90,43 @@ class CommentController extends Controller
         return $this->render('Admin/comments.html.twig', [
             'comments' => $pagination,
         ]);
+    }
+
+
+    /**
+     * @param Comment $comment
+     * @Route("/admin/comments/status/{id}", name="comment_allowed")
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function allowedAction(Comment $comment)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if ($comment->getIsPublished()){
+
+            $comment->setIsPublished(false);
+        }else{
+            $comment->setIsPublished(true);
+        }
+
+        $em->persist($comment);
+
+        $em->flush();
+
+        return $this->redirectToRoute('check_comments');
+    }
+
+    /**
+     *
+     * @return Response
+     */
+    public function countUnpublishedAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $result = $em->getRepository('AppBundle:Comment')
+            ->countUnpublished();
+
+        return new Response($result[1]);
     }
 }

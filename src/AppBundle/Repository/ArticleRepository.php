@@ -79,4 +79,35 @@ class ArticleRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllPublished()
+    {
+        return $this->createQueryBuilder('article')
+            ->andWhere('article.isPublished = true')
+            ->leftJoin('article.author', 'author')
+            ->addSelect('author')
+            ->addOrderBy('article.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllUnpublished()
+    {
+        return $this->createQueryBuilder('article')
+            ->andWhere('article.isPublished = false')
+            ->leftJoin('article.author', 'author')
+            ->addSelect('author')
+            ->addOrderBy('article.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countUnpublished()
+    {
+        return $this->createQueryBuilder('article')
+            ->andWhere('article.isPublished = false')
+            ->select('COUNT(article)')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

@@ -2,14 +2,13 @@ AppBundle\Entity\User:
   user{1..10}:
          username: <username()>
          email: <email()>
-         password: <password()>
+         plainPassword: Qwer1234
 
 AppBundle\Entity\Author:
   author{1..10}:
     firstName: <firstName()>
     lastName: <lastName()>
     user: '@user<current()>'
-    imageName: 'avatar.png'
 
 AppBundle\Entity\Article:
   article{1..20}:
@@ -20,6 +19,7 @@ AppBundle\Entity\Article:
     updatedAt: '<dateTimeBetween("-200 days", "now")>'
     tags: '@tag{<numberBetween(1, 10)>..<numberBetween(1, 10)>}'
     author: '@author*'
+    isPublished: true
 
 AppBundle\Entity\Comment:
   comment{1..200}:
@@ -27,6 +27,7 @@ AppBundle\Entity\Comment:
     author: '@author*'
     createdAt: '<dateTimeBetween("-200 days", "now")>'
     article: '@article*'
+    isPublished: true
 
 AppBundle\Entity\Tag:
   tag{1..10}:

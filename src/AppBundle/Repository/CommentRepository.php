@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Comment;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -20,7 +21,7 @@ class CommentRepository extends EntityRepository
             ->leftJoin('comment.article', 'article')
             ->addSelect('article')
             ->andWhere('comment.article IS NOT NULL')
-            ->addOrderBy('article.createdAt', 'DESC')
+            ->addOrderBy('comment.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }
@@ -47,4 +48,14 @@ class CommentRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function countUnpublished()
+    {
+        return $this->createQueryBuilder('comment')
+            ->andWhere('comment.isPublished = false')
+            ->select('COUNT(comment)')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 }

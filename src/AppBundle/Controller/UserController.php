@@ -34,23 +34,36 @@ class UserController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @Route("/sign-in", name="login")
+     * @Route("/login", name="security_login")
      *
      * @return Response
      */
-    public function authorizationAction(Request $request)
+    public function authorizationAction()
     {
-        $form = $this->createForm(AuthorizationType::class);
+        $authenticationUtils = $this->get('security.authentication_utils');
 
-        $form->handleRequest($request);
+        $error = $authenticationUtils->getLastAuthenticationError();
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($error !== null){
+            $this->addFlash('failure', $error->getMessageKey());
         }
+        $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render(':Forms:authorization.html.twig', [
-            'authorizationType' => $form->createView(),
+        $form = $this->createForm(AuthorizationType::class, [
+            '_username' => $lastUsername
         ]);
+
+        return $this->render(':Forms:authorization.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * @Route("/logout", name="security_logout")
+     */
+    public function logoutAction()
+    {
+
     }
     /**
      * @Route("/about", name="about_me")

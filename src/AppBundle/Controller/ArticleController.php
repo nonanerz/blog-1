@@ -18,7 +18,7 @@ class ArticleController extends Controller
 {
     /**
      * @param $request
-     * @Route("/admin/article/new", name="new_article")
+     * @Route("/article/new", name="new_article")
      * @return Response
      */
     public function newAction(Request $request)
@@ -47,7 +47,7 @@ class ArticleController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $articles = $em->getRepository('AppBundle:Article')
-            ->findAllOrdered();
+            ->findAllPublished();
 
         if (!$articles) {
             throw new NotFoundHttpException('Noooo!');
@@ -209,5 +209,62 @@ class ArticleController extends Controller
         $em->flush();
 
         return new Response($article->getVoices());
+    }
+
+    /**
+     * @param Request $request
+     * @param int     $page
+     * @Route("/admin/articles/{page}", name="check_articles")
+     *
+     * @return Response
+     */
+    public function checkArticleAction(Request $request, $page = 1)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $pagination = $this->get('knp_paginator')
+            ->paginate($em->getRepository('AppBundle:Article')
+                ->findAllUnpublished(), $request->query->getInt('page', $page), 10);
+
+        return $this->render('Admin/articles.html.twig', [
+            'articles' => $pagination,
+        ]);
+    }
+
+    /**
+     * @param Article $article
+     * @Route("/admin/articles/status/{id}", name="article_allowed")
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function allowedAction(Article $article)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if ($article->getIsPublished()){
+
+            $article->setIsPublished(false);
+        }else{
+            $article->setIsPublished(true);
+        }
+
+        $em->persist($article);
+
+        $em->flush();
+
+        return $this->redirectToRoute('check_articles');
+    }
+
+    /**
+     *
+     * @return Response
+     */
+    public function countUnpublishedAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $result = $em->getRepository('AppBundle:Article')
+            ->countUnpublished();
+
+        return new Response($result[1]);
     }
 }

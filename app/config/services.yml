@@ -10,8 +10,20 @@ services:
 
   app.form_manager:
           class:        AppBundle\Services\Forms
-          arguments: ['@form.factory', '@doctrine', '@router', '@app.notifier']
+          autowire: true
+
   app.twig_extension:
           class: AppBundle\Twig\AppExtension
           tags:
               - { name: twig.extension }
+
+
+  app.security.login_form_authenticator:
+            class: AppBundle\Security\LoginFormAuthenticator
+            autowire: true
+
+  app.doctrine_listener.password_listener:
+              class: AppBundle\DoctrineListener\PasswordListener
+              autowire: true
+              tags:
+                - { name: doctrine.event_subscriber}

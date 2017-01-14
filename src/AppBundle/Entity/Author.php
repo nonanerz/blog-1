@@ -67,10 +67,10 @@ class Author
      *
      * @var string
      */
-    private $imageName;
+    private $imageName = 'avatar.png';
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User", inversedBy="author")
      */
     private $user;
 

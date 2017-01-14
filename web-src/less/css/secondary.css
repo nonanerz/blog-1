@@ -28,7 +28,7 @@ body{
 
 
  div.comment div:nth-child(2n){
-    background: rgba(240, 241, 246, 0.91);
+    background: rgba(249, 250, 255, 0.91);
 }
 
 #topo {
@@ -55,7 +55,7 @@ body{
         font-weight: bold;
         color: gray;
     }#menu-topo li a:hover{
-         background-color:#D6D6DC;
+         background-color: #f9f9ff;
          text-decoration: none;
      }.btn-collapse {
           width: 50px;

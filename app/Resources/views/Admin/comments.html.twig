@@ -7,15 +7,32 @@
             <th>Author</th>
             <th>Article</th>
             <th>Comment</th>
+            <th>Is published</th>
             <th>Date</th>
 
         </tr>
 
             {% for comment in comments %}
         <tr>
-                 <td><a href="{{ path('authored_comments', {'author':comment.author.id}) }}">{{ comment.author.firstName }} {{ comment.author.lastName }}</a></td>
-                 <td><a href="{{ path('show_article', {'id':comment.article.id}) }}">{{ comment.article.title }}</a></td>
+                 <td>
+                     <a href="{{ path('authored_comments', {'author':comment.author.id}) }}">
+                         {{ comment.author.firstName }} {{ comment.author.lastName }}
+                     </a>
+                 </td>
+                 <td>
+                     <a href="{{ path('show_article', {'id':comment.article.id}) }}">
+                         {{ comment.article.title }}
+                     </a>
+                 </td>
                  <td>{{ comment.content }}</td>
+                 <td>
+                     {% if not comment.isPublished %}
+                         <a href="{{ path('comment_allowed', {'id':comment.id}) }}"><img src="{{ asset('includes/img/sminus04.png') }}"></a>
+                     {% else %}
+                         <a href="{{ path('comment_allowed', {'id':comment.id}) }}"><img src="{{ asset('includes/img/scheck36.png') }}"></a>
+
+                     {% endif %}
+                 </td>
                  <td>{{ comment.createdAt|date('Y-m-d H:i') }}</td>
 
         </tr>

@@ -15,9 +15,6 @@
                             </div>
                         </form>
                     </div>
-                    <a style="margin-top: 20px" class="btn btn-success" href="{{ path('login') }}">
-                        <span class="glyphicon glyphicon-user"></span>Login
-                    </a>
                 </div>
                 <div class="col-md-6 col-ms-6 col-xs-6" id="abre-menu-topo">
                     <a href="#" class="btn-collapse">
@@ -29,17 +26,50 @@
             </div>
             <div class="row">
                 <ul id="menu-topo">
-                    <li><a href="{{ path("homepage") }}">Home</a></li>
+                    {% if app.user() %}
+                        <a style="margin-top: 20px" class="btn btn-info" href="{{ path('security_logout') }}">
+                            <span class="glyphicon glyphicon-user"></span>Log Out
+                        </a>
+                    {% else %}
+                        <a style="margin-top: 20px" class="btn btn-success" href="{{ path('security_login') }}">
+                            <span class="glyphicon glyphicon-user">&nbsp;Login</span>
+                        </a>
+                    {% endif %}
                     <li><a href="{{ path("about_me") }}">About me</a></li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Panel
-                            <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ path('check_comments') }}">Check comments</a></li>
-                            <li><a href="{{ path('check_users') }}">Check users</a></li>
-                            <li><a href="{{ path('new_article') }}">New article</a></li>
-                        </ul>
-                    </li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Panel
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+
+                                <div class="btn-group-vertical">
+                                    <li>
+                                        <a class="btn btn-default" href="{{ path('check_comments') }}">
+                                            Check comments <span class="badge"> {{ render(controller('AppBundle:Comment:countUnpublished')) }} </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="btn btn-default" href="{{ path('check_articles') }}">
+                                            Check articles <span class="badge">{{ render(controller('AppBundle:Article:countUnpublished')) }}</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="btn btn-default" href="{{ path('check_users') }}">
+                                            Check users
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="btn btn-default" href="{{ path('new_article') }}">
+                                            New article
+                                        </a>
+                                    </li>
+                                </div>
+
+                            </ul>
+                        </li>
+                    {% elseif app.user and not is_granted('ROLE_ADMIN') %}
+                        <li><a href="{{ path("new_article") }}">Give me an article!</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div><!--Fim da coontainer -->

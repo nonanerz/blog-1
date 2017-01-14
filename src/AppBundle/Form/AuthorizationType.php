@@ -12,8 +12,8 @@ class AuthorizationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('Login', TextType::class)
-                ->add('password', PasswordType::class)
+        $builder->add('_username')
+                ->add('_password', PasswordType::class)
             ;
     }
 
@@ -22,10 +22,5 @@ class AuthorizationType extends AbstractType
         $resolver->setDefaults(
             ['attr' => ['novalidate' => 'novalidate'],
             ]);
-    }
-
-    public function getName()
-    {
-        return 'app_bundle_authorization_type';
     }
 }
