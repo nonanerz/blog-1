@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\User;
 use AppBundle\Form\AuthorizationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +25,15 @@ class UserController extends Controller
             ->createNewUserForm($request);
 
         if (!$newUserResult instanceof Form) {
+            $this->addFlash('success', "Welcome {$newUserResult->getUsername()}!");
 
-            return $this->redirect($newUserResult);
+            return $this->get('security.authentication.guard_handler')
+                ->authenticateUserAndHandleSuccess(
+                    $newUserResult,
+                    $request,
+                    $this->get('app.security.login_form_authenticator'),
+                    'main'
+                );
         }
 
         return $this->render('Forms/Registration.html.twig', [
@@ -44,13 +52,13 @@ class UserController extends Controller
 
         $error = $authenticationUtils->getLastAuthenticationError();
 
-        if ($error !== null){
+        if ($error !== null) {
             $this->addFlash('failure', $error->getMessageKey());
         }
         $lastUsername = $authenticationUtils->getLastUsername();
 
         $form = $this->createForm(AuthorizationType::class, [
-            '_username' => $lastUsername
+            '_username' => $lastUsername,
         ]);
 
         return $this->render(':Forms:authorization.html.twig', array(
@@ -63,7 +71,6 @@ class UserController extends Controller
      */
     public function logoutAction()
     {
-
     }
     /**
      * @Route("/about", name="about_me")
@@ -77,7 +84,7 @@ class UserController extends Controller
 
     /**
      * @return Response
-     * @Route("/admin/checkUsers", name="check_users")
+     * @Route("/admin/users", name="check_users")
      */
     public function usersListAction()
     {
@@ -89,5 +96,28 @@ class UserController extends Controller
         return $this->render(':Admin:users.html.twig', [
             'authors' => $authors,
         ]);
+    }
+
+    /**
+     * @param User $user
+     * @Route("/admin/users/status/{id}", name="user_lock")
+     *
+     * @return Response
+     */
+    public function allowedAction(User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if ($user->getIsActive()) {
+            $user->setIsActive(false);
+        } else {
+            $user->setIsActive(true);
+        }
+
+        $em->persist($user);
+
+        $em->flush();
+
+        return $this->redirectToRoute('check_users');
     }
 }

@@ -42,9 +42,9 @@ class Notifier
         $this->mailer->send($authorMessage);
         $this->mailer->send($articleAuthorMessage);
 
-        $this->flashBag->add('success', 'New comment was created thanks ' . $author->getFirstName());
+        $this->flashBag->add('success', 'New comment has been created thanks '.$author->getFirstName());
 
-        $this->logger->info('new comment was created: '.$comment->getContent());
+        $this->logger->info('new comment has been created: '.$comment->getContent());
     }
 
     public function newArticleNotify(Article $article, Author $author)
@@ -57,9 +57,9 @@ class Notifier
 
         $this->mailer->send($authorMessage);
 
-        $this->flashBag->add('success', 'New article was created, thanks ' . $author->getFirstName());
+        $this->flashBag->add('success', 'New article has been created, thanks '.$author->getFirstName());
 
-        $this->logger->info('new article was created: '.$article->getContent());
+        $this->logger->info('new article has been created: '.$article->getContent());
     }
 
     public function removeCommentNotify()
@@ -82,6 +82,6 @@ class Notifier
 
     public function loginNotify()
     {
-        $this->flashBag->add('success', "Welcome back!");
+        $this->flashBag->add('success', 'Welcome back!');
     }
 }

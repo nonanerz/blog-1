@@ -27,9 +27,16 @@
                  <td>{{ comment.content }}</td>
                  <td>
                      {% if not comment.isPublished %}
-                         <a href="{{ path('comment_allowed', {'id':comment.id}) }}"><img src="{{ asset('includes/img/sminus04.png') }}"></a>
+
+                         <a href="{{ path('comment_allowed', {'id':comment.id}) }}">
+                             <button class="btn btn-danger toggle"><span class="glyphicon glyphicon-remove">&nbsp;Unpublished</span></button>
+                         </a>
+
                      {% else %}
-                         <a href="{{ path('comment_allowed', {'id':comment.id}) }}"><img src="{{ asset('includes/img/scheck36.png') }}"></a>
+
+                         <a href="{{ path('comment_allowed', {'id':comment.id}) }}">
+                             <button class="btn btn-success"><span class="glyphicon glyphicon-ok">&nbsp;Published</span></button>
+                         </a>
 
                      {% endif %}
                  </td>

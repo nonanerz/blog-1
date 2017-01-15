@@ -2,7 +2,6 @@
 
 namespace AppBundle\DoctrineListener;
 
-
 use AppBundle\Entity\User;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -10,12 +9,16 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 class PasswordListener implements EventSubscriber
 {
-
     private $passwordEncoder;
 
     public function __construct(UserPasswordEncoder $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
+    }
+
+    public function getSubscribedEvents()
+    {
+        return ['prePersist', 'preUpdate'];
     }
 
     public function prePersist(LifecycleEventArgs $args)
@@ -25,7 +28,11 @@ class PasswordListener implements EventSubscriber
             return;
         }
 
-        $this->encodePassword($entity);
+        $encoded = $this->passwordEncoder->encodePassword(
+            $entity,
+            $entity->getPlainPassword()
+        );
+        $entity->setPassword($encoded);
     }
 
     public function preUpdate(LifecycleEventArgs $args)
@@ -35,24 +42,6 @@ class PasswordListener implements EventSubscriber
             return;
         }
 
-        $this->encodePassword($entity);
-
-        // necessary to force the update to see the change
-        $em = $args->getEntityManager();
-        $meta = $em->getClassMetadata(get_class($entity));
-        $em->getUnitOfWork()->recomputeSingleEntityChangeSet($meta, $entity);
-    }
-
-    public function getSubscribedEvents()
-    {
-        return ['prePersist', 'preUpdate'];
-    }
-
-    /**
-     * @param User $entity
-     */
-    private function encodePassword(User $entity)
-    {
         if (!$entity->getPlainPassword()) {
             return;
         }

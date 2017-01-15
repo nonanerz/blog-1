@@ -19,6 +19,7 @@ class ArticleController extends Controller
     /**
      * @param $request
      * @Route("/article/new", name="new_article")
+     *
      * @return Response
      */
     public function newAction(Request $request)
@@ -234,16 +235,16 @@ class ArticleController extends Controller
     /**
      * @param Article $article
      * @Route("/admin/articles/status/{id}", name="article_allowed")
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function allowedAction(Article $article)
     {
         $em = $this->getDoctrine()->getManager();
 
-        if ($article->getIsPublished()){
-
+        if ($article->getIsPublished()) {
             $article->setIsPublished(false);
-        }else{
+        } else {
             $article->setIsPublished(true);
         }
 
@@ -255,7 +256,6 @@ class ArticleController extends Controller
     }
 
     /**
-     *
      * @return Response
      */
     public function countUnpublishedAction()

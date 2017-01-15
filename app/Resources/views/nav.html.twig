@@ -28,7 +28,7 @@
                 <ul id="menu-topo">
                     {% if app.user() %}
                         <a style="margin-top: 20px" class="btn btn-info" href="{{ path('security_logout') }}">
-                            <span class="glyphicon glyphicon-user"></span>Log Out
+                            <span class="glyphicon glyphicon-user">&nbsp;</span>Log Out
                         </a>
                     {% else %}
                         <a style="margin-top: 20px" class="btn btn-success" href="{{ path('security_login') }}">

@@ -12,7 +12,7 @@
     {% endblock javascript %}
     <title>{% block title %} {{ 'Welcome to my Blog!' }} {% endblock %}</title>
 </head>
-<body>
+<body style="background: url('{{ asset('includes/img/bg.png') }}')">
 <header class="navi">
     {% include 'nav.html.twig' %}
 </header>

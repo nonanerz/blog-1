@@ -304,5 +304,4 @@ class Article extends Paragraph
     {
         $this->isPublished = $isPublished;
     }
-
 }

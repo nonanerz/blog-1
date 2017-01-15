@@ -10,7 +10,7 @@
                     <img class="image_block img-rounded" src="{{ asset('includes/img/articles/') }}{{ article.image }}" width="165" height=""/>
                 <p>{{ article.author.firstName }} {{ article.author.lastName }}</p>
                 <p>Posted on {{ article.createdAt|date('Y-m-d H:i') }}</p><small class="glyphicon glyphicon-time"></small>
-                <span class="glyphicon glyphicon-thumbs-up">{{ article.voices }}</span><span> - people's likes it!</span>
+                <span class="glyphicon glyphicon-thumbs-up">&nbsp;{{ article.voices }}</span><span> - people's likes it!</span>
             </a>
         </div>
     {% endfor %}

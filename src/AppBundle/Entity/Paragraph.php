@@ -29,5 +29,4 @@ abstract class Paragraph
      * @ORM\Column(type="boolean")
      */
     protected $isPublished = false;
-
 }

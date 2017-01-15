@@ -2,17 +2,13 @@
 
 namespace AppBundle\Security;
 
-
 use AppBundle\Form\AuthorizationType;
 use AppBundle\Services\Notifier;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -20,19 +16,14 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
-
     private $formFactory;
 
     private $em;
 
     private $router;
-    /**
-     * @var Notifier
-     */
+
     private $notifier;
-    /**
-     * @var UserPasswordEncoder
-     */
+
     private $passwordEncoder;
 
     public function __construct(FormFactoryInterface $formFactory, EntityManager $em, RouterInterface $router, Notifier $notifier, UserPasswordEncoder $passwordEncoder)
@@ -46,29 +37,29 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function getCredentials(Request $request)
     {
-       $isSubmited = $request->getPathInfo() == '/login' && $request->isMethod('POST');
+        $isSubmited = $request->getPathInfo() == '/login' && $request->isMethod('POST');
 
-       if (!$isSubmited){
+        if (!$isSubmited) {
+            return;
+        }
 
-           return;
-       }
+        $form = $this->formFactory->create(AuthorizationType::class);
 
-       $form = $this->formFactory->create(AuthorizationType::class);
+        $form->handleRequest($request);
 
-       $form->handleRequest($request);
+        $data = $form->getData();
 
-       $data = $form->getData();
-
-       $request->getSession()->set(
+        $request->getSession()->set(
           Security::LAST_USERNAME, $data['_username']
        );
 
-       return $data;
+        return $data;
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $username = $credentials['_username'];
+
         return $this->em->getRepository('AppBundle:User')
             ->findOneBy(['username' => $username]);
     }
@@ -77,7 +68,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         $password = $credentials['_password'];
 
-        if ($this->passwordEncoder->isPasswordValid($user, $password)){
+        if ($this->passwordEncoder->isPasswordValid($user, $password)) {
             return true;
         }
 
@@ -91,9 +82,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     protected function getDefaultSuccessRedirectUrl()
     {
-        $this->notifier->loginNotify();
-
         return $this->router->generate('homepage');
     }
-
 }

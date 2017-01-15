@@ -28,10 +28,8 @@ class AppExtension extends \Twig_Extension
     public function preview($str, $length = 30)
     {
         $words = explode(' ', ($str));
-        return implode(' ', array_slice($words, 0, $length)) . '...';
 
-
-
+        return implode(' ', array_slice($words, 0, $length)).'...';
     }
 
     public function getName()

@@ -2,7 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,8 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @UniqueEntity("username")
+ * @UniqueEntity("email")
  */
-class User implements UserInterface
+class User implements AdvancedUserInterface, \Serializable
 {
     /**
      * @var int
@@ -174,13 +177,18 @@ class User implements UserInterface
      */
     public function getRoles()
     {
-        if (!$this->roles){
+        if (!$this->roles) {
             $this->roles[] = 'ROLE_USER';
         }
 
         return $this->roles;
     }
 
+    /**
+     * @param $roles
+     *
+     * @return $this
+     */
     public function setRoles($roles)
     {
         $this->roles[] = $roles;
@@ -188,6 +196,17 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param string $role
+     *
+     * @return $this
+     */
+    public function addRole($role)
+    {
+        array_push($this->roles, $role);
+
+        return $this;
+    }
 
     /**
      * Returns the salt that was originally used to encode the password.
@@ -244,5 +263,48 @@ class User implements UserInterface
     public function setIsActive($isActive)
     {
         $this->isActive = $isActive;
+    }
+
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return $this->isActive;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function isEnabled()
+    {
+        return true;
+    }
+
+    /** @see \Serializable::serialize()*/
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+        ));
+    }
+
+    /**
+     * @param string $serialized
+     *
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->username,
+            $this->password) = unserialize($serialized);
     }
 }

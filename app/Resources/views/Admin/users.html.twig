@@ -8,6 +8,7 @@
             <th>Last Name</th>
             <th>email</th>
             <th>login</th>
+            <th>Is Locked</th>
         </tr>
 
         {% for author in authors %}
@@ -16,9 +17,21 @@
                 <td>{{ author.lastName }}</td>
                 <td>{{ author.user.email }}</td>
                 <td>{{ author.user.username }}</td>
+                <td>
+                    {% if not author.user.isActive %}
+                    <a href="{{ path('user_lock', {'id':author.user.id}) }}">
+                            <button class="btn btn-danger"><span class="glyphicon glyphicon-remove">&nbsp;Locked</span></button>
+                    </a>
+                    {% else %}
+                        <a href="{{ path('user_lock', {'id':author.user.id}) }}">
+                            <button class="btn btn-success"><span class="glyphicon glyphicon-ok">&nbsp;Unlocked</span></button>
+                        </a>
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
 
     </table>
 </div>
 {% endblock %}
+

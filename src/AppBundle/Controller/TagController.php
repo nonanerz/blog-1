@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\TagType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +26,7 @@ class TagController extends Controller
             ->findAll();
 
         if (!$tagResult instanceof Form) {
-           return $this->redirect($tagResult);
+            return $this->redirect($tagResult);
         }
 
         return $this->render(':Forms:Tag.html.twig', [

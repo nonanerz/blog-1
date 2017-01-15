@@ -3,6 +3,7 @@
 namespace AppBundle\Services;
 
 use AppBundle\Entity\Article;
+use AppBundle\Entity\Author;
 use AppBundle\Entity\Comment;
 use AppBundle\Form\ArticleType;
 use AppBundle\Form\AuthorRegistrationType;
@@ -27,8 +28,7 @@ class Forms
                                 RouterInterface $router,
                                 Notifier $notifier,
                                 TokenStorageInterface $tokenStorage
-    )
-    {
+    ) {
         $this->formFactory = $formFactory;
         $this->doctrine = $doctrine;
         $this->router = $router;
@@ -130,8 +130,10 @@ class Forms
             $em->remove($article);
             $em->flush();
             $this->notifier->removeArticleNotify();
+
             return $this->router->generate('homepage');
         }
+
         return $form;
     }
 
@@ -144,7 +146,6 @@ class Forms
         $em = $this->doctrine->getManager();
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $tag = $form->getData();
 
             $em->persist($tag);
@@ -167,7 +168,7 @@ class Forms
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->doctrine->getManager();
-
+            /** @var Author $author */
             $author = $form->getData();
 
             $em->persist($author);
@@ -176,9 +177,7 @@ class Forms
 
             $em->flush();
 
-            $this->notifier->newUserNotify();
-
-            return $this->router->generate('homepage', [], 201);
+            return $author->getUser();
         }
 
         return $form;

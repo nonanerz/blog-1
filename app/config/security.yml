@@ -13,7 +13,6 @@ security:
           entity: { class: AppBundle\Entity\User, property: username }
 
     firewalls:
-
         main:
             anonymous: ~
             guard:
@@ -23,5 +22,7 @@ security:
                   path:   /logout
 
     access_control:
+      - { path: ^/admin/users, roles: ROLE_ADMIN }
       - { path: ^/admin, roles: ROLE_ADMIN }
+      - { path: ^/article/new, roles: ROLE_USER }
 

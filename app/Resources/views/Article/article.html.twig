@@ -90,7 +90,7 @@
             $("#like").bind("click", function(event) {
                 $.ajax({
                     url: "{{ path('article_like', {'id':article.id}) }}",
-                    type: "POST",
+                    type: "GET",
                     data: ($("#like").attr("data-id")),
                     dataType: "text",
                     success: function(result) {
