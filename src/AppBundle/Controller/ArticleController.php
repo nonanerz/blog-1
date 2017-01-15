@@ -24,6 +24,7 @@ class ArticleController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('create');
         $result = $this->get('app.form_manager')
             ->createArticleForm($request);
         if (!$result instanceof Form) {
@@ -66,12 +67,13 @@ class ArticleController extends Controller
     /**
      * @param $request
      * @param $article
-     * @Route("/admin/article/{id}/edit", name="edit_article")
+     * @Route("/article/{id}/edit", name="edit_article")
      *
      * @return Response
      */
     public function editAction(Request $request, Article $article)
     {
+        $this->denyAccessUnlessGranted('edit', $article);
         $result = $this->get('app.form_manager')
             ->createArticleForm($request, $article);
         if (!$result instanceof Form) {
@@ -180,6 +182,7 @@ class ArticleController extends Controller
      */
     public function tagAction(Request $request, $tag, $page = 1)
     {
+        $this->denyAccessUnlessGranted('create');
         $em = $this->getDoctrine()->getManager();
         $tag = $em->getRepository('AppBundle:Tag')
             ->findByTag($tag);
@@ -203,6 +206,9 @@ class ArticleController extends Controller
      */
     public function likeAction(Article $article)
     {
+        if (!$this->isGranted('ROLE_USER')){
+            return;
+        }
         $em = $this->getDoctrine()->getManager();
         $voices = $article->getVoices();
         $article->setVoices($voices + 1);

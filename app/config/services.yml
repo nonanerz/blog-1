@@ -4,6 +4,19 @@ parameters:
 #    parameter_name: value
 
 services:
+  app.article_voter:
+          class: AppBundle\Security\ArticleVoter
+          arguments: ['@security.access.decision_manager']
+          public: false
+          tags:
+              - { name: security.voter }
+  app.comment_voter:
+          class: AppBundle\Security\CommentVoter
+          arguments: ['@security.access.decision_manager']
+          public: false
+          tags:
+              - { name: security.voter }
+
   app.notifier:
           class:        AppBundle\Services\Notifier
           arguments: ['@mailer', '@logger', '@session.flash_bag']
