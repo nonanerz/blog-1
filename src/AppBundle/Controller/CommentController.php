@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Author;
 use AppBundle\Entity\Comment;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class CommentController.
  */
-class CommentController extends Controller
+class CommentController extends BaseController
 {
     /**
      * @param Request $request
@@ -25,10 +24,8 @@ class CommentController extends Controller
      */
     public function checkCommentsAction(Request $request, $page = 1)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $pagination = $this->get('knp_paginator')
-            ->paginate($em->getRepository('AppBundle:Comment')
+            ->paginate($this->em()->getRepository('AppBundle:Comment')
                 ->findAllOrdered(), $request->query->getInt('page', $page), 10);
 
         return $this->render('Admin/comments.html.twig', [
@@ -50,9 +47,8 @@ class CommentController extends Controller
             ->removeCommentForm($request, $comment, $article);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($comment);
-            $em->flush();
+            $this->em()->remove($comment);
+            $this->em()->flush();
 
             return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
         }
@@ -72,9 +68,7 @@ class CommentController extends Controller
      */
     public function showByAuthor(Request $request, Author $author, $page = 1)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $comments = $em->getRepository('AppBundle:Comment')
+        $comments = $this->em()->getRepository('AppBundle:Comment')
             ->findByAuthor($author);
 
         if (!$comments) {
@@ -99,17 +93,15 @@ class CommentController extends Controller
      */
     public function allowedAction(Comment $comment)
     {
-        $em = $this->getDoctrine()->getManager();
-
         if ($comment->getIsPublished()) {
             $comment->setIsPublished(false);
         } else {
             $comment->setIsPublished(true);
         }
 
-        $em->persist($comment);
+        $this->em()->persist($comment);
 
-        $em->flush();
+        $this->em()->flush();
 
         return $this->redirectToRoute('check_comments');
     }
@@ -119,9 +111,7 @@ class CommentController extends Controller
      */
     public function countUnpublishedAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $result = $em->getRepository('AppBundle:Comment')
+        $result = $this->em()->getRepository('AppBundle:Comment')
             ->countUnpublished();
 
         return new Response($result[1]);

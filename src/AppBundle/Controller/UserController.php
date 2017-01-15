@@ -4,14 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\AuthorizationType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Form;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
     /**
      * @param Request $request
@@ -88,9 +87,7 @@ class UserController extends Controller
      */
     public function usersListAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $authors = $em->getRepository('AppBundle:Author')
+        $authors = $this->em()->getRepository('AppBundle:Author')
             ->findAllWithUsers();
 
         return $this->render(':Admin:users.html.twig', [
@@ -106,17 +103,15 @@ class UserController extends Controller
      */
     public function allowedAction(User $user)
     {
-        $em = $this->getDoctrine()->getManager();
-
         if ($user->getIsActive()) {
             $user->setIsActive(false);
         } else {
             $user->setIsActive(true);
         }
 
-        $em->persist($user);
+        $this->em()->persist($user);
 
-        $em->flush();
+        $this->em()->flush();
 
         return $this->redirectToRoute('check_users');
     }

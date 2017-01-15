@@ -3,18 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
-use AppBundle\Form\ArticleType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class ArticleController.
- */
-class ArticleController extends Controller
+
+class ArticleController extends BaseController
 {
     /**
      * @param $request
@@ -45,9 +41,7 @@ class ArticleController extends Controller
      */
     public function listAction(Request $request, $page = 1)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $articles = $em->getRepository('AppBundle:Article')
+        $articles = $this->em()->getRepository('AppBundle:Article')
             ->findAllPublished();
 
         if (!$articles) {
@@ -66,7 +60,7 @@ class ArticleController extends Controller
     /**
      * @param $request
      * @param $article
-     * @Route("/admin/article/{id}/edit", name="edit_article")
+     * @Route("/article/edit/{id}", name="edit_article")
      *
      * @return Response
      */
@@ -93,9 +87,7 @@ class ArticleController extends Controller
      */
     public function showAction(Request $request, Article $article = null, $page = 1)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $article = $em->getRepository('AppBundle:Article')
+        $article = $this->em()->getRepository('AppBundle:Article')
             ->findByIdWithJoins($article);
 
         if (!$article) {
@@ -133,9 +125,7 @@ class ArticleController extends Controller
      */
     public function topArticlesAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $articles = $em->getRepository('AppBundle:Article')
+        $articles = $this->em()->getRepository('AppBundle:Article')
            ->findTopFive();
 
         return $this->render(':Article:top.html.twig', [
@@ -153,7 +143,7 @@ class ArticleController extends Controller
      */
     public function searchAction(Request $request, $page = 1)
     {
-        $result = $this->getDoctrine()->getManager()->getRepository('AppBundle:Article')
+        $result = $this->em()->getRepository('AppBundle:Article')
             ->search($request->query->get('q'));
         if (!$result) {
             $this->addFlash('failure', 'Nothing found');
@@ -169,31 +159,6 @@ class ArticleController extends Controller
         ]);
     }
 
-    /**
-     * @Route("/article/tag/{tag}/{page}", name="tags", requirements={"page": "\d+"})
-     *
-     * @param Request $request
-     * @param $tag
-     * @param int $page
-     *
-     * @return Response
-     */
-    public function tagAction(Request $request, $tag, $page = 1)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $tag = $em->getRepository('AppBundle:Tag')
-            ->findByTag($tag);
-
-        if (!$tag) {
-            throw new NotFoundHttpException();
-        }
-        $pagination = $this->get('knp_paginator')
-            ->paginate($tag->getArticles(), $request->query->getInt('page', $page), 5);
-
-        return $this->render('Article/list.html.twig', [
-            'articles' => $pagination,
-        ]);
-    }
 
     /**
      * @param Article $article
@@ -203,11 +168,10 @@ class ArticleController extends Controller
      */
     public function likeAction(Article $article)
     {
-        $em = $this->getDoctrine()->getManager();
         $voices = $article->getVoices();
         $article->setVoices($voices + 1);
-        $em->persist($article);
-        $em->flush();
+        $this->em()->persist($article);
+        $this->em()->flush();
 
         return new Response($article->getVoices());
     }
@@ -221,10 +185,8 @@ class ArticleController extends Controller
      */
     public function checkArticleAction(Request $request, $page = 1)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $pagination = $this->get('knp_paginator')
-            ->paginate($em->getRepository('AppBundle:Article')
+            ->paginate($this->em()->getRepository('AppBundle:Article')
                 ->findAllUnpublished(), $request->query->getInt('page', $page), 10);
 
         return $this->render('Admin/articles.html.twig', [
@@ -240,17 +202,15 @@ class ArticleController extends Controller
      */
     public function allowedAction(Article $article)
     {
-        $em = $this->getDoctrine()->getManager();
-
         if ($article->getIsPublished()) {
             $article->setIsPublished(false);
         } else {
             $article->setIsPublished(true);
         }
 
-        $em->persist($article);
+        $this->em()->persist($article);
 
-        $em->flush();
+        $this->em()->flush();
 
         return $this->redirectToRoute('check_articles');
     }
@@ -260,9 +220,7 @@ class ArticleController extends Controller
      */
     public function countUnpublishedAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $result = $em->getRepository('AppBundle:Article')
+        $result = $this->em()->getRepository('AppBundle:Article')
             ->countUnpublished();
 
         return new Response($result[1]);

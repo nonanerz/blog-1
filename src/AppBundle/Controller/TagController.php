@@ -2,13 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TagController extends Controller
+class TagController extends BaseController
 {
     /**
      * @param Request $request
@@ -20,9 +20,8 @@ class TagController extends Controller
     {
         $tagResult = $this->get('app.form_manager')
             ->createTagForm($request);
-        $em = $this->getDoctrine()->getManager();
 
-        $tags = $em->getRepository('AppBundle:Tag')
+        $tags = $this->entityManager->getRepository('AppBundle:Tag')
             ->findAll();
 
         if (!$tagResult instanceof Form) {
@@ -32,6 +31,30 @@ class TagController extends Controller
         return $this->render(':Forms:Tag.html.twig', [
             'Form' => $tagResult->createView(),
             'tags' => $tags,
+        ]);
+    }
+
+    /**
+     * @Route("/article/tag/{tag}/{page}", name="tags", requirements={"page": "\d+"})
+     *
+     * @param Request $request
+     * @param $tag
+     * @param int $page
+     *
+     * @return Response
+     */
+    public function showAction(Request $request, $tag, $page = 1)
+    {
+        $tag = $this->em()->getRepository('AppBundle:Tag')
+            ->findByTag($tag);
+
+        if (!$tag) {
+            throw new NotFoundHttpException();
+        }
+        $pagination = $this->pagination($tag->getArticles(), $request->query->getInt('page', $page), 5);
+
+        return $this->render('Article/list.html.twig', [
+            'articles' => $pagination,
         ]);
     }
 }
