@@ -31,7 +31,7 @@
         </div>
         <!-- end Tags -->
                 <hr>
-        {% if app.user and app.user.id == article.author.id  or is_granted('ROLE_ADMIN') %}
+        {% if app.user and app.user.author.id == article.author.id  or is_granted('ROLE_ADMIN') %}
             <a href="{{ path('edit_article', {'id':article.id}) }}"> <p class="glyphicon glyphicon-pencil">edit</p></a>
             <a href="#modal" role="button" data-toggle="modal" data-target="#remove-modal"><p class="glyphicon glyphicon-remove-circle icon-danger">remove</p></a>
         {% endif %}
@@ -53,7 +53,7 @@
                     <p>{{ comment.content }}</p>
                     <small><cite>{{ comment.author.user.username }}</cite></small>
                 </blockquote>
-                {% if app.user and app.user.id == comment.author.id or is_granted('ROLE_ADMIN') %}
+                {% if app.user and app.user.author.id == comment.author.id or is_granted('ROLE_ADMIN') %}
                     {{ render(controller('AppBundle:Comment:delete', {'article': article.id, 'comment': comment.id})) }}
                 {% endif %}
                 <p style="border-bottom: 2px solid gainsboro" class="small text-right"><span class="glyphicon glyphicon-time"></span> Posted on {{ comment.createdAt|date('Y-m-d H:i') }}</p>

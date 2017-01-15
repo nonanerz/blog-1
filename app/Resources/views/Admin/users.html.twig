@@ -8,6 +8,7 @@
             <th>Last Name</th>
             <th>email</th>
             <th>login</th>
+            <th>Give Role</th>
             <th>Is Locked</th>
         </tr>
 
@@ -17,6 +18,7 @@
                 <td>{{ author.lastName }}</td>
                 <td>{{ author.user.email }}</td>
                 <td>{{ author.user.username }}</td>
+                <td>{{ render(controller('AppBundle:User:roleManage', {'id': author.user.id})) }}</td>
                 <td>
                     {% if not author.user.isActive %}
                     <a href="{{ path('user_lock', {'id':author.user.id}) }}">

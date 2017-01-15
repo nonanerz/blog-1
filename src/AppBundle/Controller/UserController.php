@@ -6,6 +6,7 @@ use AppBundle\Entity\Author;
 use AppBundle\Entity\User;
 use AppBundle\Form\AuthorizationType;
 use AppBundle\Form\AuthorRegistrationType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -124,5 +125,45 @@ class UserController extends BaseController
         $this->em()->flush();
 
         return $this->redirectToRoute('check_users');
+    }
+
+    /**
+     * @param Request $request
+     * @param User    $user
+     * @Route("/admin/users/roles/{id}", name="manage_roles")
+     *
+     * @return Response
+     */
+    public function roleManageAction(Request $request, User $user)
+    {
+        $form = $this->createFormBuilder()
+               ->add('roles', ChoiceType::class, array(
+                        'choices' => array(
+                            'User' => 'ROLE_USER',
+                            'Moderator' => 'ROLE_MODERATOR',
+                            'Admin' => 'ROLE_ADMIN',
+                        ), 'label' => false,
+                    ))
+            ->getForm()
+        ;
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $role = $form->getData();
+
+            $user->addRole($role['roles']);
+
+            $this->em()->persist($user);
+
+            $this->em()->flush();
+
+            return $this->redirectToRoute('check_users');
+        }
+
+        return $this->render(':Forms:manageRoles.html.twig', [
+            'form' => $form->createView(),
+            'id' => $user->getId(),
+        ]);
     }
 }
