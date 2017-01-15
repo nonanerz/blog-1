@@ -3,12 +3,13 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
+use AppBundle\Form\ArticleType;
+use AppBundle\Security\ArticleVoter;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-
 
 class ArticleController extends BaseController
 {
@@ -20,14 +21,34 @@ class ArticleController extends BaseController
      */
     public function newAction(Request $request)
     {
-        $result = $this->get('app.form_manager')
-            ->createArticleForm($request);
-        if (!$result instanceof Form) {
-            return $this->redirect($result);
+        $form = $this->createForm(ArticleType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $article = $form->getData();
+
+            $this->denyAccessUnlessGranted(ArticleVoter::CREATE_ARTICLE, $article);
+            if (!$article->getImage()) {
+                $article->setImage('50708_1280x720-318x180.jpg');
+            }
+
+            $article->setAuthor($this->getUser()
+                ->getAuthor()
+            );
+
+            $this->em()->persist($article);
+
+            $this->em()->flush();
+
+            $this->get('app.notifier')
+                ->newArticleNotify($article, $article->getAuthor());
+
+            return $this->redirectToRoute('homepage');
         }
 
         return $this->render(':Article:new.html.twig', [
-            'articleType' => $result->createView(),
+            'articleType' => $form->createView(),
         ]);
     }
 
@@ -48,9 +69,8 @@ class ArticleController extends BaseController
             throw new NotFoundHttpException('Noooo!');
         }
 
-        $pagination = $this->get('knp_paginator')
-            ->paginate($articles,
-                $request->query->getInt('page', $page), 5);
+        $pagination = $this->pagination($articles,
+            $request->query->getInt('page', $page), 5);
 
         return $this->render('Article/list.html.twig', [
         'articles' => $pagination,
@@ -66,14 +86,67 @@ class ArticleController extends BaseController
      */
     public function editAction(Request $request, Article $article)
     {
-        $result = $this->get('app.form_manager')
-            ->createArticleForm($request, $article);
-        if (!$result instanceof Form) {
-            return $this->redirect($result);
+        $this->denyAccessUnlessGranted(ArticleVoter::EDIT_ARTICLE, $article);
+
+        $form = $this->createForm(ArticleType::class, $article);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $article = $form->getData();
+
+            if (!$article->getImage()) {
+                $article->setImage('50708_1280x720-318x180.jpg');
+            }
+
+            $article->setAuthor($this->getUser()
+                ->getAuthor()
+            );
+
+            $this->em()->persist($article);
+
+            $this->em()->flush();
+
+            return $this->redirectToRoute('show_article', ['id' => $article->getId()]);
         }
 
         return $this->render(':Article:edit.html.twig', [
-            'articleType' => $result->createView(),
+            'articleType' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Article $article
+     * @Route("/remove_comment/{article}", name="remove_article")
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function deleteAction(Request $request, Article $article)
+    {
+
+        /** @var Form $form */
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('remove_article', [
+                'article' => $article->getId(),
+            ]))
+            ->setMethod('DELETE')
+            ->getForm();
+
+        if ($request->isMethod('DELETE')) {
+            $this->denyAccessUnlessGranted(ArticleVoter::DELETE_ARTICLE, $article);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->em()->remove($article);
+                $this->em()->flush();
+
+                return $this->redirectToRoute('homepage');
+            }
+        }
+
+        return $this->render(':Forms:deleteArticle.html.twig', [
+            'removeArticleType' => $form->createView(),
         ]);
     }
 
@@ -87,6 +160,7 @@ class ArticleController extends BaseController
      */
     public function showAction(Request $request, Article $article = null, $page = 1)
     {
+        /** @var Article $article */
         $article = $this->em()->getRepository('AppBundle:Article')
             ->findByIdWithJoins($article);
 
@@ -94,29 +168,13 @@ class ArticleController extends BaseController
             throw new NotFoundHttpException('Article is not exist!');
         }
 
-        $newCommentResult = $this->get('app.form_manager')
-            ->newCommentForm($request, $article);
-
-        $removeArticleResult = $this->get('app.form_manager')
-            ->removeArticleForm($request, $article);
-
-        if (!$removeArticleResult instanceof Form) {
-            return $this->redirect($removeArticleResult);
-        }
-        if (!$newCommentResult instanceof Form) {
-            return $this->redirect($newCommentResult);
-        }
-
         $comments = $article->getComments();
 
-        $pagination = $this->get('knp_paginator')
-            ->paginate($comments, $request->query->getInt('page', $page), 5);
+        $pagination = $this->pagination($comments, $request->query->getInt('page', $page), 5);
 
         return $this->render('Article/article.html.twig', [
             'article' => $article,
             'comments' => $pagination,
-            'commentType' => $newCommentResult->createView(),
-            'removeArticleType' => $removeArticleResult->createView(),
         ]);
     }
 
@@ -150,15 +208,13 @@ class ArticleController extends BaseController
 
             return $this->listAction($request);
         } else {
-            $pagination = $this->get('knp_paginator')
-                ->paginate($result, $request->query->getInt('page', $page), 5);
+            $pagination = $this->pagination($result, $request->query->getInt('page', $page), 5);
         }
 
         return $this->render('Article/list.html.twig', [
             'articles' => $pagination,
         ]);
     }
-
 
     /**
      * @param Article $article
@@ -168,6 +224,9 @@ class ArticleController extends BaseController
      */
     public function likeAction(Article $article)
     {
+        if (!$this->isGranted('ROLE_USER')) {
+            return;
+        }
         $voices = $article->getVoices();
         $article->setVoices($voices + 1);
         $this->em()->persist($article);
@@ -185,8 +244,7 @@ class ArticleController extends BaseController
      */
     public function checkArticleAction(Request $request, $page = 1)
     {
-        $pagination = $this->get('knp_paginator')
-            ->paginate($this->em()->getRepository('AppBundle:Article')
+        $pagination = $this->pagination($this->em()->getRepository('AppBundle:Article')
                 ->findAllUnpublished(), $request->query->getInt('page', $page), 10);
 
         return $this->render('Admin/articles.html.twig', [

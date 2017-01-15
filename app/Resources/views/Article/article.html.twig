@@ -9,13 +9,8 @@
                     </div>
                     <div class="modal-body">Do you realy want to remove?</div>
                     <div class="modal-footer">
-                        {{ form_start(removeArticleType) }}
-                        {{ form_widget(removeArticleType) }}
-                        <div class="btn-group">
-                            <button type="submit" class="btn btn-danger">Remove!</button>
-                            <button href="#modal" class="btn btn-default" type="button" data-dismiss="modal">Close</button></div>
-                        </div>
-                    {{ form_end(removeArticleType) }}
+                        {{ render(controller('AppBundle:Article:delete', {'article': article.id})) }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,10 +64,7 @@
         {% if app.user %}
         <div class="main">
             <h1>New Comment</h1>
-            {{ form_start(commentType) }}
-            {{ form_widget(commentType) }}
-            <button type="submit" class="btn btn-primary">Сохранить</button>
-            {{ form_end(commentType) }}
+            {{ render(controller('AppBundle:Comment:new', {'article': article.id})) }}
         </div>
         {% endif %}
         <!-- new comment form end -->

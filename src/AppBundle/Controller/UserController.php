@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Author;
 use AppBundle\Entity\User;
 use AppBundle\Form\AuthorizationType;
+use AppBundle\Form\AuthorRegistrationType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,15 +22,23 @@ class UserController extends BaseController
      */
     public function newAction(Request $request)
     {
-        $newUserResult = $this->get('app.form_manager')
-            ->createNewUserForm($request);
+        $form = $this->createForm(AuthorRegistrationType::class);
 
-        if (!$newUserResult instanceof Form) {
-            $this->addFlash('success', "Welcome {$newUserResult->getUsername()}!");
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Author $author */
+            $author = $form->getData();
+
+            $this->em()->persist($author);
+
+            $this->em()->persist($author->getUser()->setRoles('ROLE_USER'));
+
+            $this->em()->flush();
 
             return $this->get('security.authentication.guard_handler')
                 ->authenticateUserAndHandleSuccess(
-                    $newUserResult,
+                    $author->getUser(),
                     $request,
                     $this->get('app.security.login_form_authenticator'),
                     'main'
@@ -36,7 +46,7 @@ class UserController extends BaseController
         }
 
         return $this->render('Forms/Registration.html.twig', [
-            'userType' => $newUserResult->createView(),
+            'userType' => $form->createView(),
         ]);
     }
 

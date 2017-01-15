@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\TagType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,24 +13,34 @@ class TagController extends BaseController
 {
     /**
      * @param Request $request
-     * @Route("/admin/article/new/tag", name="new_tag")
+     * @Route("/article/new/tag", name="new_tag")
      *
      * @return Response
      */
     public function createNewAction(Request $request)
     {
-        $tagResult = $this->get('app.form_manager')
-            ->createTagForm($request);
+        $form = $this->createForm(TagType::class);
 
-        $tags = $this->entityManager->getRepository('AppBundle:Tag')
-            ->findAll();
+        $form->handleRequest($request);
 
-        if (!$tagResult instanceof Form) {
-            return $this->redirect($tagResult);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $tag = $form->getData();
+
+            $this->em()->persist($tag);
+
+            $this->em()->flush();
+
+            $this->get('app.notifier')
+                ->newTagNotify();
+
+            return $this->redirectToRoute('new_article');
         }
 
+        $tags = $this->em()->getRepository('AppBundle:Tag')
+            ->findAll();
+
         return $this->render(':Forms:Tag.html.twig', [
-            'Form' => $tagResult->createView(),
+            'Form' => $form->createView(),
             'tags' => $tags,
         ]);
     }
