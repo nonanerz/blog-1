@@ -205,6 +205,8 @@ class User implements AdvancedUserInterface, \Serializable
     {
         array_push($this->roles, $role);
 
+        $this->roles = array_unique($this->roles);
+
         return $this;
     }
 

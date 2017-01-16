@@ -143,6 +143,7 @@ class UserController extends BaseController
                             'Moderator' => 'ROLE_MODERATOR',
                             'Admin' => 'ROLE_ADMIN',
                         ), 'label' => false,
+                            'attr' => ['onchange' => 'this.form.submit()'],
                     ))
             ->getForm()
         ;
