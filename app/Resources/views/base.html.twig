@@ -1,13 +1,55 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/web-src/favicon.ico" />
+    {% block stylesheets %}
+        <link href="{{ asset('includes/css/app.css') }}" rel="stylesheet" />
+
+    {% endblock stylesheets %}
+    {% block javascript %}
+        <script src="{{ asset('includes/js/app.min.js') }}"></script>
+    {% endblock javascript %}
+    <title>{% block title %} {{ 'Welcome to my Blog!' }} {% endblock %}</title>
+</head>
+<body style="background: url('{{ asset('includes/img/bg.png') }}')">
+<header class="navi">
+    {% include 'nav.html.twig' %}
+</header>
+    <div class="container">
+        <!--flash msg-->
+             {% block message %}
+
+                 {% for msg in app.session.flashBag.get('failure') %}
+
+                     <div style="position: relative; top: 100px;" class="row">
+                         <div class="alert alert-danger col-md-2 col-md-offset-5 text-center alert-msg">{{ msg }}</div>
+                     </div>
+
+                 {% endfor %}
+
+                {% for msg in app.session.flashBag.get('success') %}
+
+                    <div style="position: relative; top: 100px;" class="row">
+                        <div class="alert alert-success col-md-2 col-md-offset-5 text-center alert-msg">{{ msg }}</div>
+                    </div>
+
+                {% endfor %}
+            {% endblock message %}
+        <!--flash msg end-->
+
+        <!--content-->
+
+                <div class="row articles">
+                        {% block main %}{% endblock %}
+                </div>
+    </div>
+    <!--content-->
+    <footer class="footer">
+        <div class="container">
+           <img class="col-md-offset-5" src="{{ asset('includes/img/footer.png') }} "  height="80" width="142">
+            <p class="text-muted col-md-offset-5">Copyrights and.. whatever</p>
+        </div>
+    </footer>
     </body>
 </html>

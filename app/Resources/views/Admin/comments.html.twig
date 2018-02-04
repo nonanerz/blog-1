@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+<div class="col-lg-12 main">
+    <table class="table table-hover">
+        <tr>
+            <th>Author</th>
+            <th>Article</th>
+            <th>Comment</th>
+            <th>Is published</th>
+            <th>Date</th>
+
+        </tr>
+
+            {% for comment in comments %}
+        <tr>
+                 <td>
+                     <a href="{{ path('authored_comments', {'author':comment.author.id}) }}">
+                         {{ comment.author.firstName }} {{ comment.author.lastName }}
+                     </a>
+                 </td>
+                 <td>
+                     <a href="{{ path('show_article', {'id':comment.article.id}) }}">
+                         {{ comment.article.title }}
+                     </a>
+                 </td>
+                 <td>{{ comment.content }}</td>
+                 <td>
+                     {% if not comment.isPublished %}
+
+                         <a href="{{ path('comment_allowed', {'id':comment.id}) }}">
+                             <button class="btn btn-danger toggle"><span class="glyphicon glyphicon-remove">&nbsp;Unpublished</span></button>
+                         </a>
+
+                     {% else %}
+
+                         <a href="{{ path('comment_allowed', {'id':comment.id}) }}">
+                             <button class="btn btn-success"><span class="glyphicon glyphicon-ok">&nbsp;Published</span></button>
+                         </a>
+
+                     {% endif %}
+                 </td>
+                 <td>{{ comment.createdAt|date('Y-m-d H:i') }}</td>
+
+        </tr>
+            {% endfor %}
+
+    </table>
+    <div class="navigation col-md-offset-4">
+        {{ knp_pagination_render(comments) }}
+    </div>
+</div>
+{% endblock %}

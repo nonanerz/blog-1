@@ -1,0 +1,34 @@
+AppBundle\Entity\User:
+  user{1..10}:
+         username: <username()>
+         email: <email()>
+         plainPassword: Qwer1234
+
+AppBundle\Entity\Author:
+  author{1..10}:
+    firstName: <firstName()>
+    lastName: <lastName()>
+    user: '@user<current()>'
+
+AppBundle\Entity\Article:
+  article{1..20}:
+    title: '<text(50)>'
+    content: <realText(1000)>
+    image: '50%? 50708_1280x720-318x180.jpg : om160617-133-318x160.jpg'
+    createdAt: '<dateTimeBetween("-200 days", "now")>'
+    updatedAt: '<dateTimeBetween("-200 days", "now")>'
+    tags: '@tag{<numberBetween(1, 10)>..<numberBetween(1, 10)>}'
+    author: '@author*'
+    isPublished: true
+
+AppBundle\Entity\Comment:
+  comment{1..200}:
+    content: <realText(200)>
+    author: '@author*'
+    createdAt: '<dateTimeBetween("-200 days", "now")>'
+    article: '@article*'
+    isPublished: true
+
+AppBundle\Entity\Tag:
+  tag{1..10}:
+    title: <text(10)>

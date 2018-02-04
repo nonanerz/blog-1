@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    knp.doctrine_behaviors.timestampable_subscriber.db_field_type: datetimetz
 
 framework:
     #esi:             ~
@@ -31,11 +32,16 @@ framework:
     fragments:       ~
     http_method_override: true
     assets: ~
+    php_errors:
+        log: true
+
 
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form_themes:
+    - bootstrap_3_layout.html.twig
 
 # Doctrine Configuration
 doctrine:
@@ -61,8 +67,39 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
+    auth_mode: "%mailer_auth%"
+    encryption: "%mailer_encryption%"
     transport: "%mailer_transport%"
     host:      "%mailer_host%"
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+knp_paginator:
+    page_range: 5                      # default page range used in pagination control
+    default_options:
+        page_name: page                # page query parameter name
+        sort_field_name: sort          # sort field query parameter name
+        sort_direction_name: direction # sort direction query parameter name
+        distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
+    template:
+        pagination: KnpPaginatorBundle:Pagination:foundation_v5_pagination.html.twig    # sliding pagination controls template
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
+
+knp_doctrine_behaviors:
+    timestampable:      true
+
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        avatars_image:
+            uri_prefix:         /images/avatars
+            upload_destination: '%kernel.root_dir%/../web/includes/img/avatars'
+            namer:              vich_uploader.namer_uniqid
+        article_image:
+            uri_prefix:         /images/articles
+            upload_destination: '%kernel.root_dir%/../web/includes/img/articles'
+            namer:              vich_uploader.namer_uniqid
+
+            delete_on_remove:   false

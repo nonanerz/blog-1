@@ -14,3 +14,8 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
+/error.log
+/node_modules/
+/bower_components/
+!/app/DoctrineMigrations/.keep
+!/web/includes/.keep

@@ -1,5 +1,5 @@
 {
-    "name": "alex/blog",
+    "name": "alex/symf",
     "license": "proprietary",
     "type": "project",
     "autoload": {
@@ -18,21 +18,27 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "symfony/symfony": "3.1.*",
+        "symfony/symfony": "3.2.*",
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
         "symfony/swiftmailer-bundle": "^2.3",
-        "symfony/monolog-bundle": "~2.11.3",
+        "symfony/monolog-bundle": "^3.0",
         "symfony/polyfill-apcu": "^1.0",
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
-        "phpunit/phpunit": "^5.6"
+        "knplabs/knp-paginator-bundle": "^2.5",
+        "knplabs/doctrine-behaviors": "^1.4",
+        "phpunit/phpunit": "^5.7",
+        "vich/uploader-bundle": "^1.3"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
+        "symfony/phpunit-bridge": "^3.0",
+        "doctrine/doctrine-migrations-bundle": "^1.2",
+        "doctrine/doctrine-fixtures-bundle": "^2.3",
+        "nelmio/alice": "^2.2"
     },
     "scripts": {
         "symfony-scripts": [
@@ -59,6 +65,7 @@
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
-        }
+        },
+        "branch-alias": null
     }
 }

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+<div class="col-lg-12 main">
+    <table class="table table-hover">
+        <tr>
+            <th>Name</th>
+            <th>Last Name</th>
+            <th>email</th>
+            <th>login</th>
+            <th>Roles</th>
+            <th>Give Role</th>
+            <th>Is Locked</th>
+        </tr>
+
+        {% for author in authors %}
+            <tr>
+                <td>{{ author.firstName }}</td>
+                <td>{{ author.lastName }}</td>
+                <td>{{ author.user.email }}</td>
+                <td>{{ author.user.username }}</td>
+                <td>
+                    {% for role in author.user.roles %}
+                        <small>{{ role }}</small><br/>
+                    {% endfor %}
+                </td>
+                <td>
+                    {{ render(controller('AppBundle:User:roleManage', {'id': author.user.id})) }}
+                </td>
+                <td>
+                    {% if not author.user.isActive %}
+                    <a href="{{ path('user_lock', {'id':author.user.id}) }}">
+                            <button class="btn btn-danger"><span class="glyphicon glyphicon-remove">&nbsp;Locked</span></button>
+                    </a>
+                    {% else %}
+                        <a href="{{ path('user_lock', {'id':author.user.id}) }}">
+                            <button class="btn btn-success"><span class="glyphicon glyphicon-ok">&nbsp;Unlocked</span></button>
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+</div>
+{% endblock %}
+

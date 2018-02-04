@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+
+{% block main %}
+    <div class="col-sm-8 col-lg-8 main form">
+        {% block header %}<h1>New article</h1>{% endblock %}
+        {{ form_start(articleType) }}
+        {{ form_widget(articleType) }}
+        <div>
+            <a class="glyphicon glyphicon-tag" href="{{ path('new_tag') }}">+</a>
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        {{ form_end(articleType) }}
+    </div>
+        {% block topnews %}
+            {{ render(controller('AppBundle:Article:topArticles')) }}
+        {% endblock %}
+{% endblock %}

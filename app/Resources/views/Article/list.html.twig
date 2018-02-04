@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+<div class="col-lg-12">
+    {% for article in articles %}
+                <div class="main scrollflow -slide-top -opacity" data-scrollflow-start="0" data-scrollflow-distance="30" data-scrollflow-amount="200">
+                    <img class="img-rounded" src="{{ asset('includes/img/articles/') }}{{ article.image }}" alt="image">
+                    <a style="margin-left: 20px;" class="btn btn-lg btn-success" href="{{ path('show_article', {'id':article.id}) }}">Read more!</a>
+                    <div class="col-sm-6 col-md-6">
+                        <h4>{{ article.title }}</h4>
+                        <p>{{ preview(article.content, 40) }}</p>
+                        <small>published by {{ article.author|fullname }}
+                            on  {{ article.createdAt|date('Y-m-d H:i') }}
+                        </small>
+                        <span class="glyphicon glyphicon-thumbs-up">&nbsp;{{ article.voices }}</span><span> - people's likes it!</span>
+                    </div>
+                </div>
+    {% endfor %}
+</div>
+    <div class="navigation col-md-offset-4">
+        {{ knp_pagination_render(articles) }}
+    </div>
+{% endblock %}
+

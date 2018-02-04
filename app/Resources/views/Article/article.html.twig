@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+        <div id="remove-modal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header"><button class="close" type="button" data-dismiss="modal">×</button>
+                        <h4 class="modal-title">Remove article</h4>
+                    </div>
+                    <div class="modal-body">Do you realy want to remove?</div>
+                    <div class="modal-footer">
+                        {{ render(controller('AppBundle:Article:delete', {'article': article.id})) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Article -->
+    <div id="article" class="col-lg-offset-1 main">
+               <h1>{{ article.title }}</h1>
+               <p><span class="glyphicon glyphicon-time" data-scrollflow-start="0" data-scrollflow-distance="30" data-scrollflow-amount="200"></span>
+                   Posted on {{ article.createdAt|date('Y-m-d H:i') }} by {{ article.author|fullname }}</p>
+        <img class="image_block img-rounded" src="{{ asset('includes/img/articles/') }}{{ article.image }}"/>
+        <!-- end article -->
+        <!-- Tags -->
+        <div class="tags">
+            <h3>Tags:</h3>
+            {% for tag in article.tags %}
+                <a href="{{ path('tags', {'tag':tag.title}) }}"><span class="label label-info mark">{{ tag.title }}</span></a>
+            {% endfor %}
+            <span style="cursor: pointer;" class="glyphicon glyphicon-thumbs-up" id="like" data-id="{{ article.id }}">{{ article.voices }}</span><span> - people likes it!</span>
+        </div>
+        <!-- end Tags -->
+                <hr>
+        {% if app.user and app.user.author.id == article.author.id  or is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('edit_article', {'id':article.id}) }}"> <p class="glyphicon glyphicon-pencil">edit</p></a>
+            <a href="#modal" role="button" data-toggle="modal" data-target="#remove-modal"><p class="glyphicon glyphicon-remove-circle icon-danger">remove</p></a>
+        {% endif %}
+        <p class="lead">{{ article.content }}</p>
+
+    </div>
+        {% block topnews %}
+            {{ render(controller('AppBundle:Article:topArticles')) }}
+        {% endblock %}
+
+    <!-- Comments -->
+    <div id="comments" class="col-sm-8 col-lg-8  scrollflow -slide-right" data-scrollflow-start="0" data-scrollflow-distance="100" data-scrollflow-amount="30">
+        <h2>Comments:</h2>
+        {% for comment in comments %}
+            {% if comment.isPublished %}
+            <div class="comment main">
+                <img src="{{ asset('includes/img/avatars/') }}{{ comment.author.imageName }} " height="128" width="128">
+                <blockquote>
+                    <p>{{ comment.content }}</p>
+                    <small><cite>{{ comment.author.user.username }}</cite></small>
+                </blockquote>
+                {% if app.user and app.user.author.id == comment.author.id or is_granted('ROLE_ADMIN') %}
+                    {{ render(controller('AppBundle:Comment:delete', {'article': article.id, 'comment': comment.id})) }}
+                {% endif %}
+                <p style="border-bottom: 2px solid gainsboro" class="small text-right"><span class="glyphicon glyphicon-time"></span> Posted on {{ comment.createdAt|date('Y-m-d H:i') }}</p>
+            </div>
+            {% endif %}
+        {% endfor %}
+        <!-- new comment form -->
+        {% if app.user %}
+        <div class="main">
+            <h1>New Comment</h1>
+            {{ render(controller('AppBundle:Comment:new', {'article': article.id})) }}
+        </div>
+        {% endif %}
+        <!-- new comment form end -->
+        <div class="navigation col-md-offset-4">
+            {{ knp_pagination_render(comments) }}
+        </div>
+        <!-- end comments -->
+    </div>
+
+{% endblock %}
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#like").bind("click", function(event) {
+                $.ajax({
+                    url: "{{ path('article_like', {'id':article.id}) }}",
+                    type: "GET",
+                    data: ($("#like").attr("data-id")),
+                    dataType: "text",
+                    success: function(result) {
+                        if (result) {
+                            $("#like").text(result);
+                        }
+                        else $("#like").text('?');
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

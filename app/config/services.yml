@@ -4,6 +4,34 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+  app.article_voter:
+          class: AppBundle\Security\ArticleVoter
+          arguments: ['@security.access.decision_manager']
+          public: false
+          tags:
+              - { name: security.voter }
+  app.comment_voter:
+          class: AppBundle\Security\CommentVoter
+          arguments: ['@security.access.decision_manager']
+          public: false
+          tags:
+              - { name: security.voter }
+
+  app.notifier:
+          class:        AppBundle\Services\Notifier
+          arguments: ['@mailer', '@logger', '@session.flash_bag']
+
+  app.twig_extension:
+          class: AppBundle\Twig\AppExtension
+          tags:
+              - { name: twig.extension }
+
+  app.security.login_form_authenticator:
+            class: AppBundle\Security\LoginFormAuthenticator
+            autowire: true
+
+  app.doctrine_listener.password_listener:
+              class: AppBundle\DoctrineListener\PasswordListener
+              autowire: true
+              tags:
+                - { name: doctrine.event_subscriber}
